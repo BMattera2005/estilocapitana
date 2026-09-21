@@ -12,7 +12,11 @@ import { useEffect, type ReactNode } from "react";
 
 import { AppFooter } from "@/components/site/AppFooter";
 import { AppHeader } from "@/components/site/AppHeader";
+import { QuoteListPanel } from "@/components/site/QuoteListPanel";
 import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/sonner";
+import { QuoteListProvider } from "@/context/quote-list";
+
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";

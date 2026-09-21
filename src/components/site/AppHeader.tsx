@@ -14,6 +14,8 @@ import {
 import { siteConfig, type SiteNavigationItem } from "@/config/site";
 
 import { BrandLogo } from "./BrandLogo";
+import { QuoteListButton } from "./QuoteListButton";
+
 
 const navBaseClass =
   "rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
