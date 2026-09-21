@@ -20,37 +20,37 @@ export const Route = createFileRoute("/nosotros")({
 function NosotrosPage() {
   return (
     <>
-      <section className="border-b border-border bg-surface px-4 py-16 sm:px-6 lg:px-8">
+      <section className="border-b border-border bg-background px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <p className="font-mono text-xs text-technical">{siteConfig.officialBadge}</p>
           <h1 className="mt-4 max-w-3xl text-3xl font-semibold leading-tight text-foreground sm:text-5xl">
-            Distribución con respaldo del fabricante
+             Documentación y distribución con respaldo oficial
           </h1>
           <p className="mt-6 max-w-3xl text-base leading-7 text-muted-foreground">
             {siteConfig.about.intro}
           </p>
 
-          <div className="mt-10 grid gap-4 lg:grid-cols-2">
-            <article className="rounded-lg border border-border-strong bg-surface-glass p-6 shadow-glass">
+           <div className="mt-10 grid gap-4 lg:grid-cols-2">
+             <article className="border border-border bg-surface p-6 shadow-glass">
               <h2 className="font-mono text-xs text-technical">ALIANZA COMERCIAL</h2>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
                 {siteConfig.about.alianza}
               </p>
             </article>
-            <article className="rounded-lg border border-border-strong bg-surface-glass p-6 shadow-glass">
+             <article className="border border-border bg-surface p-6 shadow-glass">
               <h2 className="font-mono text-xs text-technical">CADENA DE SUMINISTRO</h2>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
                 {siteConfig.about.suministro}
               </p>
             </article>
-            <article className="rounded-lg border border-border-strong bg-surface-glass p-6 shadow-glass">
+             <article className="border border-border bg-surface p-6 shadow-glass">
               <h2 className="font-mono text-xs text-technical">TRAZABILIDAD</h2>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
                 {siteConfig.about.trazabilidad}
               </p>
             </article>
-            <article className="rounded-lg border border-border-strong bg-surface-glass p-6 shadow-glass">
-              <h2 className="font-mono text-xs text-technical">CALIDAD CERTIFICADA</h2>
+             <article className="border border-border bg-surface p-6 shadow-glass">
+               <h2 className="font-mono text-xs text-technical">DOCUMENTACIÓN TÉCNICA</h2>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
                 {siteConfig.about.calidad}
               </p>
@@ -66,7 +66,7 @@ function NosotrosPage() {
             {valores.map((valor) => (
               <article
                 key={valor.title}
-                className="rounded-lg border border-border bg-card p-6 shadow-glass transition-colors duration-200 hover:border-border-strong"
+                 className="border border-border bg-card p-6 shadow-glass transition-colors duration-200 hover:border-border-strong"
               >
                 <span className="grid size-10 place-items-center rounded-md border border-border-strong bg-background text-technical">
                   <IndustrialIcon icono={valor.icono} />
@@ -80,7 +80,7 @@ function NosotrosPage() {
       </section>
 
       <section className="border-t border-border bg-surface px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 rounded-lg border border-border-strong bg-surface-glass p-8 shadow-glass lg:flex-row lg:items-center lg:justify-between">
+         <div className="mx-auto flex max-w-7xl flex-col gap-6 border border-border bg-card p-8 shadow-glass lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h2 className="text-2xl font-semibold text-foreground">
               ¿Necesitás abastecer una obra o reposición?
