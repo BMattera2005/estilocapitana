@@ -7,8 +7,6 @@ import { siteConfig } from "@/config/site";
 import { routeMeta } from "@/config/seo";
 import { officialCatalogs, type OfficialCatalog } from "@/data/catalogs";
 import { buildWhatsAppUrl } from "@/lib/quote-message";
-import indiaCatalogAsset from "@/assets/catalogos/india_porcelanatos_coleccion.pdf.asset.json";
-import viguetasCatalogAsset from "@/assets/catalogos/viguetas_pretensadas.pdf.asset.json";
 
 type CatalogFilter = "todos" | "porcelanatos" | "ceramica" | "estructuras";
 
@@ -31,11 +29,6 @@ function originLabel(catalog: OfficialCatalog) {
   return catalog.origin;
 }
 
-function getDownloadUrl(catalog: OfficialCatalog) {
-  if (catalog.id === "cat-india") return indiaCatalogAsset.url;
-  if (catalog.id === "cat-viguetas") return viguetasCatalogAsset.url;
-  return catalog.fileUrl;
-}
 
 export const Route = createFileRoute("/catalogo")({
   head: () =>
@@ -74,12 +67,16 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
           <span className="font-mono text-xs font-semibold text-foreground">{catalog.format}</span>
         </div>
         <div className="grid gap-2">
-          <Button asChild variant="industrial">
-            <a href={getDownloadUrl(catalog)} download target="_blank" rel="noopener noreferrer">
-              <Download aria-hidden="true" />
-              Descargar Catálogo PDF
-            </a>
-          </Button>
+          <a
+            href={catalog.fileUrl}
+            download
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-semibold bg-sky-600 text-white hover:bg-sky-500"
+          >
+            <Download aria-hidden="true" className="size-4" />
+            Descargar Catálogo PDF
+          </a>
           {whatsappUrl ? (
             <Button asChild variant="industrialOutline">
               <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
