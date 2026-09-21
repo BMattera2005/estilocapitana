@@ -1,16 +1,10 @@
-import logoAsset from "@/assets/logo-estilocapitana-2.png.asset.json";
 import { siteConfig } from "@/config/site";
 
 export function BrandLogo() {
   return (
     <div className="flex min-w-0 items-center gap-3">
-      <span className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-md border border-border-strong bg-surface shadow-glass">
-        <img
-          src={logoAsset.url}
-          alt="Logo de Estilo Capitana"
-          className="size-full object-cover"
-        />
-      </span>
+      <img src="/logo.png" alt="Estilo Capitana" className="h-10 w-auto object-contain" />
+
       <span className="min-w-0">
         <span className="block truncate text-sm font-bold text-foreground sm:text-base">
           {siteConfig.brandNameDisplay}
