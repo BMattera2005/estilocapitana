@@ -12,9 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CatalogoRouteImport } from './routes/catalogo'
 import { Route as ContactoRouteImport } from './routes/contacto'
-import { Route as ListasDePreciosRouteImport } from './routes/listas-de-precios'
 import { Route as NosotrosRouteImport } from './routes/nosotros'
-import { Route as PedidosRouteImport } from './routes/pedidos'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -31,19 +29,9 @@ const ContactoRoute = ContactoRouteImport.update({
   path: '/contacto',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ListasDePreciosRoute = ListasDePreciosRouteImport.update({
-  id: '/listas-de-precios',
-  path: '/listas-de-precios',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const NosotrosRoute = NosotrosRouteImport.update({
   id: '/nosotros',
   path: '/nosotros',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PedidosRoute = PedidosRouteImport.update({
-  id: '/pedidos',
-  path: '/pedidos',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -51,61 +39,34 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/catalogo': typeof CatalogoRoute
   '/contacto': typeof ContactoRoute
-  '/listas-de-precios': typeof ListasDePreciosRoute
   '/nosotros': typeof NosotrosRoute
-  '/pedidos': typeof PedidosRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/catalogo': typeof CatalogoRoute
   '/contacto': typeof ContactoRoute
-  '/listas-de-precios': typeof ListasDePreciosRoute
   '/nosotros': typeof NosotrosRoute
-  '/pedidos': typeof PedidosRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/catalogo': typeof CatalogoRoute
   '/contacto': typeof ContactoRoute
-  '/listas-de-precios': typeof ListasDePreciosRoute
   '/nosotros': typeof NosotrosRoute
-  '/pedidos': typeof PedidosRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/catalogo'
-    | '/contacto'
-    | '/listas-de-precios'
-    | '/nosotros'
-    | '/pedidos'
+  fullPaths: '/' | '/catalogo' | '/contacto' | '/nosotros'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/catalogo'
-    | '/contacto'
-    | '/listas-de-precios'
-    | '/nosotros'
-    | '/pedidos'
-  id:
-    | '__root__'
-    | '/'
-    | '/catalogo'
-    | '/contacto'
-    | '/listas-de-precios'
-    | '/nosotros'
-    | '/pedidos'
+  to: '/' | '/catalogo' | '/contacto' | '/nosotros'
+  id: '__root__' | '/' | '/catalogo' | '/contacto' | '/nosotros'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CatalogoRoute: typeof CatalogoRoute
   ContactoRoute: typeof ContactoRoute
-  ListasDePreciosRoute: typeof ListasDePreciosRoute
   NosotrosRoute: typeof NosotrosRoute
-  PedidosRoute: typeof PedidosRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -131,25 +92,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/listas-de-precios': {
-      id: '/listas-de-precios'
-      path: '/listas-de-precios'
-      fullPath: '/listas-de-precios'
-      preLoaderRoute: typeof ListasDePreciosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/nosotros': {
       id: '/nosotros'
       path: '/nosotros'
       fullPath: '/nosotros'
       preLoaderRoute: typeof NosotrosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pedidos': {
-      id: '/pedidos'
-      path: '/pedidos'
-      fullPath: '/pedidos'
-      preLoaderRoute: typeof PedidosRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -159,9 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CatalogoRoute: CatalogoRoute,
   ContactoRoute: ContactoRoute,
-  ListasDePreciosRoute: ListasDePreciosRoute,
   NosotrosRoute: NosotrosRoute,
-  PedidosRoute: PedidosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

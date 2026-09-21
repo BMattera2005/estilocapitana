@@ -22,7 +22,7 @@ export const Route = createFileRoute("/contacto")({
     routeMeta({
       title: "Contacto comercial — Estilo Capitana",
       description:
-        "Datos de logística, horarios y formulario de contacto para solicitar cotizaciones de porcelanatos y piezas técnicas.",
+        "Contacto comercial para cotizaciones mayoristas sobre porcelanatos, cerámicos, viguetas pretensadas y EPS.",
       path: "/contacto",
     }),
   component: ContactoPage,
@@ -124,11 +124,11 @@ function ContactoPage() {
       <div className="mx-auto max-w-7xl">
         <p className="font-mono text-xs text-technical">CONTACTO COMERCIAL</p>
         <h1 className="mt-4 text-3xl font-semibold text-foreground sm:text-4xl">
-          Hablemos de tu próxima compra
+           Consultas técnicas y cotizaciones mayoristas
         </h1>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
-          <aside className="grid gap-4 rounded-lg border border-border-strong bg-surface-glass p-6 shadow-glass">
+           <aside className="grid gap-4 border border-border bg-surface p-6 shadow-glass">
             <div className="flex gap-3">
               <Truck aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-technical" />
               <div>
@@ -188,7 +188,7 @@ function ContactoPage() {
           <form
             onSubmit={handleSubmit(onSubmit)}
             noValidate
-            className="grid gap-5 rounded-lg border border-border bg-card p-6 shadow-glass sm:p-8"
+             className="grid gap-5 border border-border bg-card p-6 shadow-glass sm:p-8"
           >
             <div className="grid gap-5 sm:grid-cols-2">
               <div className="grid gap-2">
@@ -235,7 +235,7 @@ function ContactoPage() {
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="sku">SKU o rubro</Label>
+                 <Label htmlFor="sku">Catálogo, producto o rubro</Label>
                 <Input id="sku" className="font-mono" {...register("sku")} />
               </div>
 

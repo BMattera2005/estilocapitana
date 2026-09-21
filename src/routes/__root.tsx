@@ -12,11 +12,9 @@ import { useEffect, type ReactNode } from "react";
 
 import { AppFooter } from "@/components/site/AppFooter";
 import { AppHeader } from "@/components/site/AppHeader";
-import { QuoteListPanel } from "@/components/site/QuoteListPanel";
+import { FloatingWhatsApp } from "@/components/site/FloatingWhatsApp";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
-import { AuthProvider } from "@/context/auth";
-import { QuoteListProvider } from "@/context/quote-list";
 
 
 import appCss from "../styles.css?url";
@@ -102,7 +100,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="es-AR" className="dark">
+    <html lang="es-AR">
       <head>
         <HeadContent />
       </head>
@@ -124,8 +122,6 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-      <QuoteListProvider>
         <div className="min-h-dvh bg-background text-foreground">
           <AppHeader />
           <main className="min-h-dvh pt-20">
@@ -133,11 +129,9 @@ function RootComponent() {
             <Outlet />
           </main>
           <AppFooter />
-          <QuoteListPanel />
+          <FloatingWhatsApp />
           <Toaster />
         </div>
-      </QuoteListProvider>
-      </AuthProvider>
     </QueryClientProvider>
 
   );

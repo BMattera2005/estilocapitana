@@ -7,7 +7,10 @@ export function AppFooter() {
     <footer className="border-t border-border bg-surface">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 md:grid-cols-[minmax(0,1fr)_auto] lg:px-8">
         <div className="max-w-xl">
-          <p className="text-base font-semibold text-foreground">{siteConfig.brandNameDisplay}</p>
+          <div className="flex items-center gap-3">
+            <img src="/logo.png" alt="Estilo Capitana" className="h-10 w-auto object-contain" />
+            <p className="text-base font-semibold text-foreground">{siteConfig.brandNameDisplay}</p>
+          </div>
           <p className="mt-2 text-sm text-muted-foreground">{siteConfig.description}</p>
           <p className="mt-3 font-mono text-xs text-technical">{siteConfig.officialBadge}</p>
         </div>
