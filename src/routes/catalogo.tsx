@@ -1,32 +1,47 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Building2, Download, FileText, Globe2, MessageCircle } from "lucide-react";
+import { BookOpen, Building2, Download, FileText, Globe2, MessageCircle } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import indiaAsset from "@/assets/catalogos/india.pdf.asset.json";
+import viguetasAsset from "@/assets/catalogos/viguetas.pdf.asset.json";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { routeMeta } from "@/config/seo";
 import { officialCatalogs, type OfficialCatalog } from "@/data/catalogs";
 import { buildWhatsAppUrl } from "@/lib/quote-message";
 
-type CatalogFilter = "todos" | "porcelanatos" | "ceramica" | "estructuras";
+type CatalogFilter = "todos" | "porcelanatos" | "ceramica" | "viguetas" | "eps";
 
 const filters: { id: CatalogFilter; label: string }[] = [
   { id: "todos", label: "Todos (7)" },
   { id: "porcelanatos", label: "Porcelanatos Importados" },
   { id: "ceramica", label: "Cerámica Salteña" },
-  { id: "estructuras", label: "Estructuras & EPS" },
+  { id: "viguetas", label: "Viguetas" },
+  { id: "eps", label: "EPS Aislaciones" },
 ];
 
 function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
   if (filter === "todos") return true;
   if (filter === "porcelanatos") return catalog.category === "Porcelanatos Importados";
-  if (filter === "ceramica") return catalog.category === "Cerámica Tradicional";
-  return catalog.category === "Obra Gruesa & Estructuras";
+  if (filter === "ceramica") return catalog.category === "Cerámica Salteña";
+  if (filter === "viguetas") return catalog.category === "Estructuras & Viguetas";
+  return catalog.category === "Aislaciones & EPS";
 }
 
 function originLabel(catalog: OfficialCatalog) {
   if (catalog.origin === "India" || catalog.origin === "China") return `Importado ${catalog.origin}`;
   return catalog.origin;
+}
+
+// Los catálogos pesados (India y Viguetas) se sirven como archivos externos;
+// el resto vive en /catalogos/ con su nombre de archivo exacto.
+const externalHrefs: Record<string, string> = {
+  "/catalogos/india.pdf": indiaAsset.url,
+  "/catalogos/viguetas.pdf": viguetasAsset.url,
+};
+
+function catalogHref(catalog: OfficialCatalog) {
+  return externalHrefs[catalog.fileUrl] ?? catalog.fileUrl;
 }
 
 
