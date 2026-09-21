@@ -290,37 +290,43 @@ function CatalogoPage() {
 
           <div className="mt-8 grid gap-5 rounded-lg border border-border bg-surface-glass p-5 shadow-glass lg:grid-cols-[1fr_1fr_1.4fr]">
             <div className="grid gap-2">
-              <Label htmlFor="formato-productos">Medida / Formato</Label>
-              <select
-                id="formato-productos"
-                value={format}
-                onInput={(event) => setFormat(event.currentTarget.value as FormatFilter)}
-                onChange={(event) => setFormat(event.target.value as FormatFilter)}
-                className="h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
-              >
+              <p id="formato-productos" className="text-sm font-medium text-foreground">
+                Medida / Formato
+              </p>
+              <div className="flex flex-wrap gap-2" role="group" aria-labelledby="formato-productos">
                 {formatOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
+                  <Button
+                    key={option.value}
+                    type="button"
+                    size="sm"
+                    variant={format === option.value ? "industrial" : "industrialOutline"}
+                    aria-pressed={format === option.value}
+                    onClick={() => setFormat(option.value)}
+                  >
                     {option.label}
-                  </option>
+                  </Button>
                 ))}
-              </select>
+              </div>
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="acabado-productos">Acabado</Label>
-              <select
-                id="acabado-productos"
-                value={finish}
-                onInput={(event) => setFinish(event.currentTarget.value as FinishFilter)}
-                onChange={(event) => setFinish(event.target.value as FinishFilter)}
-                className="h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
-              >
+              <p id="acabado-productos" className="text-sm font-medium text-foreground">
+                Acabado
+              </p>
+              <div className="flex flex-wrap gap-2" role="group" aria-labelledby="acabado-productos">
                 {finishOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
+                  <Button
+                    key={option.value}
+                    type="button"
+                    size="sm"
+                    variant={finish === option.value ? "industrial" : "industrialOutline"}
+                    aria-pressed={finish === option.value}
+                    onClick={() => setFinish(option.value)}
+                  >
                     {option.label}
-                  </option>
+                  </Button>
                 ))}
-              </select>
+              </div>
             </div>
 
             <div className="grid gap-2">
