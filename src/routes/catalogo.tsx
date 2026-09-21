@@ -7,6 +7,8 @@ import { siteConfig } from "@/config/site";
 import { routeMeta } from "@/config/seo";
 import { officialCatalogs, type OfficialCatalog } from "@/data/catalogs";
 import { buildWhatsAppUrl } from "@/lib/quote-message";
+import indiaCatalogAsset from "@/assets/catalogos/india_porcelanatos_coleccion.pdf.asset.json";
+import viguetasCatalogAsset from "@/assets/catalogos/viguetas_pretensadas.pdf.asset.json";
 
 type CatalogFilter = "todos" | "porcelanatos" | "ceramica" | "estructuras";
 
@@ -27,6 +29,12 @@ function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
 function originLabel(catalog: OfficialCatalog) {
   if (catalog.origin === "India" || catalog.origin === "China") return `Importado ${catalog.origin}`;
   return catalog.origin;
+}
+
+function getDownloadUrl(catalog: OfficialCatalog) {
+  if (catalog.id === "cat-india") return indiaCatalogAsset.url;
+  if (catalog.id === "cat-viguetas") return viguetasCatalogAsset.url;
+  return catalog.fileUrl;
 }
 
 export const Route = createFileRoute("/catalogo")({
@@ -67,7 +75,7 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
         </div>
         <div className="grid gap-2">
           <Button asChild variant="industrial">
-            <a href={catalog.fileUrl} download>
+            <a href={getDownloadUrl(catalog)} download={`${catalog.id}.pdf`}>
               <Download aria-hidden="true" />
               Descargar Catálogo PDF
             </a>

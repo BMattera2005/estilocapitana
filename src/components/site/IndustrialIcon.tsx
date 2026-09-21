@@ -10,7 +10,6 @@ import {
   Truck,
 } from "lucide-react";
 
-import type { Rubro } from "@/data/rubros";
 import type { Valor } from "@/data/valores";
 
 const iconMap = {
@@ -23,7 +22,7 @@ const iconMap = {
   "scan-line": ScanLine,
   "badge-check": BadgeCheck,
   headset: Headset,
-} satisfies Record<Rubro["icono"] | Valor["icono"], typeof Sparkles>;
+} satisfies Record<Valor["icono"] | "sparkles" | "layers" | "grid", typeof Sparkles>;
 
 export type IndustrialIconName = keyof typeof iconMap;
 
