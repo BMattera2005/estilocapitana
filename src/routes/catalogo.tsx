@@ -1,17 +1,54 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowDown, FileText, Search, Send } from "lucide-react";
+import { ArrowDown, FileText, MessageCircle, Search } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 
 import { CatalogCover } from "@/components/site/CatalogCover";
 import { IndustrialIcon } from "@/components/site/IndustrialIcon";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { catalogFiles } from "@/config/site";
+import { catalogFiles, siteConfig } from "@/config/site";
 import { routeMeta } from "@/config/seo";
-import { countProductsByRubro, products, type Product } from "@/data/products";
-import { getRubro, rubros, type Rubro } from "@/data/rubros";
+import {
+  countProductsByRubro,
+  getProductRubroSlug,
+  products,
+  type Product,
+  type ProductFormat,
+} from "@/data/products";
+import { rubros, type Rubro } from "@/data/rubros";
 import { normalizeText } from "@/lib/text";
+
+type FormatFilter = "todos" | ProductFormat;
+type FinishFilter = "todos" | "Glossy (Pulido)" | "Rustic (Mate)" | "Velvet";
+
+const formatOptions: { value: FormatFilter; label: string }[] = [
+  { value: "todos", label: "Todos" },
+  { value: "60x120 cm", label: "60x120 cm" },
+  { value: "120x120 cm", label: "120x120 cm" },
+];
+
+const finishOptions: { value: FinishFilter; label: string }[] = [
+  { value: "todos", label: "Todos" },
+  { value: "Glossy (Pulido)", label: "Glossy (Pulido)" },
+  { value: "Rustic (Mate)", label: "Rustic (Mate)" },
+  { value: "Velvet", label: "Velvet" },
+];
+
+const technicalStandards = [
+  "ISO 10545-2: dimensiones y calidad superficial",
+  "ISO 10545-3: absorción de agua",
+  "ISO 10545-4: carga de rotura y resistencia a la flexión",
+  "ISO 10545-13 / 10545-14: resistencia química y manchas",
+  "IRAM aplicable según ficha técnica oficial del lote",
+];
 
 export const Route = createFileRoute("/catalogo")({
   validateSearch: (search: Record<string, unknown>) => {
@@ -22,7 +59,7 @@ export const Route = createFileRoute("/catalogo")({
     routeMeta({
       title: "Catálogos técnicos — Estilo Capitana",
       description:
-        "Catálogos técnicos de porcelanatos y piezas especiales, con explorador de productos y solicitud de cotización B2B.",
+        "Catálogo técnico de porcelanatos importados, filtros por formato y acabado, fichas rápidas y consulta de cotización B2B.",
       path: "/catalogo",
     }),
   component: CatalogoPage,
@@ -62,49 +99,111 @@ function CatalogCard({ rubro, onExplore }: { rubro: Rubro; onExplore: (slug: Rub
   );
 }
 
+function getFinishBadge(finish: Product["finish"]): string {
+  if (finish === "Glossy & Velvet") return "Glossy / Velvet";
+  return finish.replace(" (Pulido)", "").replace(" (Mate)", "");
+}
+
+function getProductWhatsAppUrl(product: Product): string {
+  const number = siteConfig.contact.whatsappNumber.replace(/\D/g, "");
+  const message = `Hola Estilo Capitana, consulto cotización y disponibilidad del porcelanato ${product.name} SKU: ${product.sku}`;
+  const base = number ? `https://wa.me/${number}` : "https://wa.me/";
+  return `${base}?text=${encodeURIComponent(message)}`;
+}
+
 function ProductCard({ product }: { product: Product }) {
-  const rubro = getRubro(product.rubroSlug);
+  const [isFichaOpen, setIsFichaOpen] = useState(false);
+  const isLargeFormat = product.format === "120x120 cm";
+  const shownSpecs = product.specs.slice(0, 3);
 
   return (
     <article className="flex flex-col rounded-lg border border-border bg-card p-5 shadow-glass transition-colors duration-200 hover:border-primary">
-      <p className="font-mono text-xs text-technical">{product.sku}</p>
-      <h3 className="mt-2 text-lg font-semibold text-foreground">{product.name}</h3>
-      {rubro ? <p className="mt-1 text-xs text-muted-foreground">{rubro.nombre}</p> : null}
+      <div className="flex items-start justify-between gap-3">
+        <p className="font-mono text-xs text-technical">{product.sku}</p>
+        <span className="rounded-sm border border-border-strong bg-background px-2 py-1 font-mono text-[0.7rem] text-foreground">
+          {product.format}
+        </span>
+      </div>
 
-      {product.tags.length > 0 ? (
-        <ul className="mt-4 flex flex-wrap gap-2">
-          {product.tags.map((tag) => (
-            <li
-              key={tag}
-              className="rounded-sm border border-border-strong bg-background px-2 py-1 font-mono text-[0.7rem] text-muted-foreground"
-            >
-              {tag}
-            </li>
-          ))}
-        </ul>
-      ) : null}
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <h3 className="mr-auto text-lg font-semibold text-foreground">{product.name}</h3>
+        <span className="rounded-sm border border-border-strong bg-surface px-2 py-1 font-mono text-[0.7rem] text-technical">
+          {getFinishBadge(product.finish)}
+        </span>
+      </div>
 
-      {product.description ? (
-        <p className="mt-4 text-sm leading-6 text-muted-foreground">{product.description}</p>
-      ) : null}
+      <div className="mt-3 flex flex-wrap gap-2">
+        <span className="rounded-sm border border-border-strong bg-background px-2 py-1 font-mono text-[0.7rem] text-muted-foreground">
+          {product.faces}
+        </span>
+        <span className="rounded-sm border border-border-strong bg-background px-2 py-1 font-mono text-[0.7rem] text-muted-foreground">
+          {product.body}
+        </span>
+        {isLargeFormat ? (
+          <span className="rounded-sm border border-border-strong bg-background px-2 py-1 font-mono text-[0.7rem] text-muted-foreground">
+            📦 2 piezas · 2.88 m² · 60 kg/caja
+          </span>
+        ) : null}
+      </div>
 
-      {product.specs.length > 0 ? (
-        <ul className="mt-4 grid gap-1 text-sm text-muted-foreground">
-          {product.specs.map((spec) => (
-            <li key={spec} className="font-mono text-xs">
-              · {spec}
-            </li>
-          ))}
-        </ul>
-      ) : null}
+      <p className="mt-4 text-sm leading-6 text-muted-foreground">{product.description}</p>
+
+      <ul className="mt-4 grid gap-2 text-sm text-muted-foreground">
+        {shownSpecs.map((spec) => (
+          <li key={spec} className="flex gap-2">
+            <span aria-hidden="true" className="mt-2 size-1.5 shrink-0 rounded-full bg-industrial-green" />
+            <span>{spec}</span>
+          </li>
+        ))}
+      </ul>
+
+      <p className="mt-4 font-mono text-xs text-muted-foreground">{product.packaging}</p>
 
       <div className="mt-5 flex-1" />
-      <Button asChild variant="industrialOutline">
-        <Link to="/contacto" search={{ sku: product.sku }}>
-          <Send aria-hidden="true" />
-          Solicitar cotización
-        </Link>
-      </Button>
+      <div className="mt-5 grid gap-2 sm:grid-cols-2">
+        <Button asChild variant="industrial">
+          <a href={getProductWhatsAppUrl(product)} target="_blank" rel="noopener noreferrer">
+            <MessageCircle aria-hidden="true" />
+            Cotizar por WhatsApp
+          </a>
+        </Button>
+        <Button type="button" variant="industrialOutline" onClick={() => setIsFichaOpen(true)}>
+          <FileText aria-hidden="true" />
+          Ver ficha técnica
+        </Button>
+      </div>
+
+      <Dialog open={isFichaOpen} onOpenChange={setIsFichaOpen}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto border-border bg-card">
+          <DialogHeader>
+            <DialogTitle>{product.name}</DialogTitle>
+            <DialogDescription>
+              {product.sku} · {product.format} · {product.finish}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-5">
+            <div>
+              <p className="font-mono text-xs text-technical">ESPECIFICACIÓN DECLARADA</p>
+              <ul className="mt-3 grid gap-2 text-sm text-muted-foreground">
+                {product.specs.map((spec) => (
+                  <li key={spec}>· {spec}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="font-mono text-xs text-technical">NORMAS ISO / IRAM DE REFERENCIA</p>
+              <ul className="mt-3 grid gap-2 text-sm text-muted-foreground">
+                {technicalStandards.map((standard) => (
+                  <li key={standard}>· {standard}</li>
+                ))}
+              </ul>
+            </div>
+            <p className="rounded-md border border-border bg-background p-3 text-xs leading-5 text-muted-foreground">
+              Confirmar disponibilidad, lote y documentación técnica oficial al momento de cotizar.
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </article>
   );
 }
@@ -113,6 +212,8 @@ function CatalogoPage() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
   const [query, setQuery] = useState("");
+  const [format, setFormat] = useState<FormatFilter>("todos");
+  const [finish, setFinish] = useState<FinishFilter>("todos");
   const explorerRef = useRef<HTMLElement>(null);
 
   const activeRubro = typeof search.rubro === "string" ? search.rubro : null;
@@ -120,14 +221,27 @@ function CatalogoPage() {
   const filtered = useMemo(() => {
     const normalizedQuery = normalizeText(query);
     return products.filter((product) => {
-      if (activeRubro && product.rubroSlug !== activeRubro) return false;
+      if (activeRubro && getProductRubroSlug(product) !== activeRubro) return false;
+      if (format !== "todos" && product.format !== format) return false;
+      if (finish === "Velvet" && !product.finish.includes("Velvet")) return false;
+      if (finish !== "todos" && finish !== "Velvet" && product.finish !== finish) return false;
       if (!normalizedQuery) return true;
       const haystack = normalizeText(
-        [product.sku, product.name, product.description, ...product.specs, ...product.tags].join(" "),
+        [
+          product.sku,
+          product.name,
+          product.format,
+          product.finish,
+          product.body,
+          product.faces,
+          product.description,
+          product.packaging,
+          ...product.specs,
+        ].join(" "),
       );
       return haystack.includes(normalizedQuery);
     });
-  }, [activeRubro, query]);
+  }, [activeRubro, finish, format, query]);
 
   function selectRubro(slug: string | null) {
     void navigate({ search: slug ? { rubro: slug } : {} });
@@ -141,6 +255,13 @@ function CatalogoPage() {
     });
   }
 
+  function clearFilters() {
+    setQuery("");
+    setFormat("todos");
+    setFinish("todos");
+    selectRubro(null);
+  }
+
   return (
     <div>
       <section className="border-b border-border bg-background px-4 py-14 sm:px-6 lg:px-8">
@@ -150,8 +271,8 @@ function CatalogoPage() {
             Documentación técnica por rubro
           </h1>
           <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground">
-            Consultá las especificaciones de cada familia y armá tu solicitud de cotización. Sin
-            precios públicos ni compra online.
+            Consultá especificaciones técnicas de porcelanatos importados y solicitá cotización por
+            modelo, SKU y disponibilidad. Sin precios públicos ni compra online.
           </p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -164,12 +285,52 @@ function CatalogoPage() {
 
       <section ref={explorerRef} className="scroll-mt-20 bg-surface px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="font-mono text-sm text-technical">EXPLORADOR DE PRODUCTOS</p>
-          <h2 className="mt-3 text-3xl font-semibold text-foreground">Buscá por SKU o palabra clave</h2>
+          <p className="font-mono text-sm text-technical">EXPLORADOR DE PORCELANATOS</p>
+          <h2 className="mt-3 text-3xl font-semibold text-foreground">Filtrá por medida, acabado o SKU</h2>
 
-          <div className="mt-8 grid gap-5 rounded-lg border border-border bg-surface-glass p-5 shadow-glass">
+          <div className="mt-8 grid gap-5 rounded-lg border border-border bg-surface-glass p-5 shadow-glass lg:grid-cols-[1fr_1fr_1.4fr]">
             <div className="grid gap-2">
-              <Label htmlFor="buscador-productos">Buscar producto</Label>
+              <p id="formato-productos" className="text-sm font-medium text-foreground">
+                Medida / Formato
+              </p>
+              <div className="flex flex-wrap gap-2" role="group" aria-labelledby="formato-productos">
+                {formatOptions.map((option) => (
+                  <Button
+                    key={option.value}
+                    type="button"
+                    size="sm"
+                    variant={format === option.value ? "industrial" : "industrialOutline"}
+                    aria-pressed={format === option.value}
+                    onClick={() => setFormat(option.value)}
+                  >
+                    {option.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <p id="acabado-productos" className="text-sm font-medium text-foreground">
+                Acabado
+              </p>
+              <div className="flex flex-wrap gap-2" role="group" aria-labelledby="acabado-productos">
+                {finishOptions.map((option) => (
+                  <Button
+                    key={option.value}
+                    type="button"
+                    size="sm"
+                    variant={finish === option.value ? "industrial" : "industrialOutline"}
+                    aria-pressed={finish === option.value}
+                    onClick={() => setFinish(option.value)}
+                  >
+                    {option.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="buscador-productos">Buscador rápido por nombre o SKU</Label>
               <div className="relative">
                 <Search
                   aria-hidden="true"
@@ -179,14 +340,14 @@ function CatalogoPage() {
                   id="buscador-productos"
                   type="search"
                   className="pl-9"
-                  placeholder="Ej.: MNC-001, velvet, 1200x1200"
+                  placeholder="Ej.: MNC-001, Carrara, Unico"
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
                 />
               </div>
             </div>
 
-            <div>
+            <div className="lg:col-span-3">
               <p className="text-sm font-medium text-foreground">Filtrar por rubro</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 <Button
@@ -213,7 +374,7 @@ function CatalogoPage() {
               </div>
             </div>
 
-            <p aria-live="polite" className="font-mono text-xs text-technical">
+            <p aria-live="polite" className="font-mono text-xs text-technical lg:col-span-3">
               {filtered.length} {filtered.length === 1 ? "resultado" : "resultados"}
             </p>
           </div>
@@ -222,15 +383,11 @@ function CatalogoPage() {
             <div className="mt-8 rounded-lg border border-border bg-card p-8 text-center shadow-glass">
               <p className="text-lg font-semibold text-foreground">Sin resultados</p>
               <p className="mt-2 text-sm text-muted-foreground">
-                No encontramos artículos con esa búsqueda. Probá con otro SKU o quitá el filtro de
-                rubro.
+                No encontramos porcelanatos con esos filtros. Probá otra medida, acabado o SKU.
               </p>
               <div className="mt-5 flex flex-wrap justify-center gap-2">
-                <Button type="button" variant="industrialOutline" onClick={() => setQuery("")}>
-                  Limpiar búsqueda
-                </Button>
-                <Button type="button" variant="industrialOutline" onClick={() => selectRubro(null)}>
-                  Ver todos los rubros
+                <Button type="button" variant="industrialOutline" onClick={clearFilters}>
+                  Limpiar filtros
                 </Button>
               </div>
             </div>
@@ -247,7 +404,6 @@ function CatalogoPage() {
           </p>
         </div>
       </section>
-
     </div>
   );
 }
