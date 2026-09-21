@@ -1,22 +1,14 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Download, FileText, Plus, Search } from "lucide-react";
-import { useMemo, useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { ArrowDown, FileText, Search, Send } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
 
 import { CatalogCover } from "@/components/site/CatalogCover";
 import { IndustrialIcon } from "@/components/site/IndustrialIcon";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { catalogFiles } from "@/config/site";
 import { routeMeta } from "@/config/seo";
-import { useQuoteList } from "@/context/quote-list";
 import { countProductsByRubro, products, type Product } from "@/data/products";
 import { getRubro, rubros, type Rubro } from "@/data/rubros";
 import { normalizeText } from "@/lib/text";
@@ -36,9 +28,8 @@ export const Route = createFileRoute("/catalogo")({
   component: CatalogoPage,
 });
 
-function CatalogCard({ rubro, onOpenViewer }: { rubro: Rubro; onOpenViewer: (rubro: Rubro) => void }) {
+function CatalogCard({ rubro, onExplore }: { rubro: Rubro; onExplore: (slug: Rubro["slug"]) => void }) {
   const file = catalogFiles[rubro.slug];
-  const hasFile = file.pdfUrl.trim().length > 0;
 
   return (
     <article className="flex flex-col rounded-lg border border-border bg-card p-5 shadow-glass">
@@ -50,41 +41,28 @@ function CatalogCard({ rubro, onOpenViewer }: { rubro: Rubro; onOpenViewer: (rub
         <h3 className="text-lg font-semibold text-foreground">{rubro.nombre}</h3>
       </div>
       <p className="mt-4 font-mono text-xs text-technical">
-        {countProductsByRubro(rubro.slug)} ítems · {file.fileSize}
+        {countProductsByRubro(rubro.slug)} artículos
+      </p>
+      <p className="mt-2 text-xs leading-5 text-muted-foreground">
+        Formatos: {file.formats.join(" | ")}
       </p>
       <div className="mt-5 grid gap-2">
-        {hasFile ? (
-          <>
-            <Button type="button" variant="industrial" onClick={() => onOpenViewer(rubro)}>
-              <FileText aria-hidden="true" />
-              Ver catálogo digital
-            </Button>
-            <Button asChild variant="industrialOutline">
-              <a href={file.pdfUrl} download target="_blank" rel="noreferrer">
-                <Download aria-hidden="true" />
-                Descargar PDF
-              </a>
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button type="button" variant="industrial" disabled>
-              <FileText aria-hidden="true" />
-              Próximamente
-            </Button>
-            <Button type="button" variant="industrialOutline" disabled>
-              <Download aria-hidden="true" />
-              Próximamente
-            </Button>
-          </>
-        )}
+        <Button type="button" variant="industrial" onClick={() => onExplore(rubro.slug)}>
+          <ArrowDown aria-hidden="true" />
+          Explorar artículos
+        </Button>
+        <Button asChild variant="industrialOutline">
+          <Link to="/contacto" search={{ sku: rubro.nombre }}>
+            <FileText aria-hidden="true" />
+            Solicitar ficha técnica
+          </Link>
+        </Button>
       </div>
     </article>
   );
 }
 
 function ProductCard({ product }: { product: Product }) {
-  const { addItem, setOpen, hasItem } = useQuoteList();
   const rubro = getRubro(product.rubroSlug);
 
   return (
@@ -121,16 +99,11 @@ function ProductCard({ product }: { product: Product }) {
       ) : null}
 
       <div className="mt-5 flex-1" />
-      <Button
-        type="button"
-        variant="industrialOutline"
-        onClick={() => {
-          addItem({ sku: product.sku, name: product.name });
-          setOpen(true);
-        }}
-      >
-        <Plus aria-hidden="true" />
-        {hasItem(product.sku) ? "Sumar a cotización" : "Agregar a cotización"}
+      <Button asChild variant="industrialOutline">
+        <Link to="/contacto" search={{ sku: product.sku }}>
+          <Send aria-hidden="true" />
+          Solicitar cotización
+        </Link>
       </Button>
     </article>
   );
@@ -140,7 +113,7 @@ function CatalogoPage() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
   const [query, setQuery] = useState("");
-  const [viewerRubro, setViewerRubro] = useState<Rubro | null>(null);
+  const explorerRef = useRef<HTMLElement>(null);
 
   const activeRubro = typeof search.rubro === "string" ? search.rubro : null;
 
@@ -160,7 +133,13 @@ function CatalogoPage() {
     void navigate({ search: slug ? { rubro: slug } : {} });
   }
 
-  const viewerFile = viewerRubro ? catalogFiles[viewerRubro.slug] : null;
+  function exploreRubro(slug: Rubro["slug"]) {
+    void navigate({ search: { rubro: slug } });
+    window.requestAnimationFrame(() => {
+      explorerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById("buscador-productos")?.focus({ preventScroll: true });
+    });
+  }
 
   return (
     <div>
@@ -177,13 +156,13 @@ function CatalogoPage() {
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {rubros.map((rubro) => (
-              <CatalogCard key={rubro.slug} rubro={rubro} onOpenViewer={setViewerRubro} />
+              <CatalogCard key={rubro.slug} rubro={rubro} onExplore={exploreRubro} />
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-surface px-4 py-14 sm:px-6 lg:px-8">
+      <section ref={explorerRef} className="scroll-mt-20 bg-surface px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <p className="font-mono text-sm text-technical">EXPLORADOR DE PRODUCTOS</p>
           <h2 className="mt-3 text-3xl font-semibold text-foreground">Buscá por SKU o palabra clave</h2>
@@ -269,21 +248,6 @@ function CatalogoPage() {
         </div>
       </section>
 
-      <Dialog open={Boolean(viewerRubro)} onOpenChange={(open) => !open && setViewerRubro(null)}>
-        <DialogContent className="max-w-4xl border-border-strong">
-          <DialogHeader>
-            <DialogTitle>Catálogo digital — {viewerRubro?.nombre}</DialogTitle>
-            <DialogDescription>Visor del catálogo técnico en PDF.</DialogDescription>
-          </DialogHeader>
-          {viewerFile?.pdfUrl ? (
-            <iframe
-              title={`Catálogo ${viewerRubro?.nombre}`}
-              src={viewerFile.pdfUrl}
-              className="h-[70dvh] w-full rounded-md border border-border bg-background"
-            />
-          ) : null}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

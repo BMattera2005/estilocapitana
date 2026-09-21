@@ -48,18 +48,24 @@ export const siteConfig = {
 export type SiteNavigationItem = (typeof siteConfig.navigation)[number];
 
 export type CatalogFile = {
-  /** URL del PDF del catálogo. Vacío = botones deshabilitados con "Próximamente". */
+  /** URL del PDF del catálogo, cuando esté disponible. */
   pdfUrl: string;
-  /** Peso del archivo, texto libre. */
-  fileSize: string;
+  /** Formatos presentes en la carga parcial del catálogo. */
+  formats: readonly string[];
 };
 
-/** CONFIRMAR: URLs y pesos reales de los catálogos técnicos oficiales. */
+/** CONFIRMAR: URLs reales de las fichas técnicas oficiales. */
 export const catalogFiles: Record<RubroSlug, CatalogFile> = {
-  "porcelanatos-glossy": { pdfUrl: "", fileSize: "Peso a confirmar" }, // CONFIRMAR
-  "carving-posh": { pdfUrl: "", fileSize: "Peso a confirmar" }, // CONFIRMAR
-  "rusticos-grandes-formatos": { pdfUrl: "", fileSize: "Peso a confirmar" }, // CONFIRMAR
-  "piezas-tecnicas-especiales": { pdfUrl: "", fileSize: "Peso a confirmar" }, // CONFIRMAR
+  "porcelanatos-glossy": { pdfUrl: "", formats: ["60x120 cm"] }, // CONFIRMAR URL
+  "carving-posh": { pdfUrl: "", formats: ["60x120 cm"] }, // CONFIRMAR URL
+  "rusticos-grandes-formatos": {
+    pdfUrl: "",
+    formats: ["80x80 cm", "100x100 cm", "120x120 cm"],
+  }, // CONFIRMAR URL
+  "piezas-tecnicas-especiales": {
+    pdfUrl: "",
+    formats: ["60x120 cm", "80x160 cm", "120x180 cm"],
+  }, // CONFIRMAR URL
 };
 
 export type PriceListInfo = {
