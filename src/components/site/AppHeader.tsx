@@ -67,18 +67,21 @@ export function AppHeader() {
         </nav>
 
         <div className="hidden items-center justify-end gap-3 lg:flex">
+          <QuoteListButton />
           <Button type="button" variant="industrialOutline" disabled>
             Ingreso clientes
           </Button>
         </div>
 
-        <div className="lg:hidden">
+        <div className="flex items-center justify-end gap-2 lg:hidden">
+          <QuoteListButton />
           <Sheet>
             <SheetTrigger asChild>
               <Button type="button" variant="industrialOutline" size="icon" aria-label="Abrir menú">
                 <Menu aria-hidden="true" />
               </Button>
             </SheetTrigger>
+
             <SheetContent className="w-[min(92vw,24rem)] border-border-strong">
               <SheetHeader className="pr-10 text-left">
                 <SheetTitle>Menú</SheetTitle>
