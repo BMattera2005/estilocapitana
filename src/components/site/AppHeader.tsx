@@ -14,10 +14,6 @@ import {
 import { siteConfig, type SiteNavigationItem } from "@/config/site";
 
 import { BrandLogo } from "./BrandLogo";
-import { ClientAccessButton } from "./ClientAccessButton";
-import { QuoteListButton } from "./QuoteListButton";
-
-
 const navBaseClass =
   "rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
@@ -54,7 +50,7 @@ function MobileNavLink({ item }: { item: SiteNavigationItem }) {
 export function AppHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-40 border-b border-border bg-background/90 backdrop-blur-xl">
-      <div className="mx-auto grid h-20 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 sm:px-6 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)_auto] lg:px-8">
+      <div className="mx-auto grid h-20 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 sm:px-6 lg:px-8">
         <Link
           to="/"
           aria-label="Ir al inicio de Estilo Capitana"
@@ -69,13 +65,7 @@ export function AppHeader() {
           ))}
         </nav>
 
-        <div className="hidden items-center justify-end gap-3 lg:flex">
-          <QuoteListButton />
-          <ClientAccessButton />
-        </div>
-
         <div className="flex items-center justify-end gap-2 lg:hidden">
-          <QuoteListButton />
           <Sheet>
             <SheetTrigger asChild>
               <Button type="button" variant="industrialOutline" size="icon" aria-label="Abrir menú">
@@ -92,9 +82,6 @@ export function AppHeader() {
                 {siteConfig.navigation.map((item) => (
                   <MobileNavLink key={item.to} item={item} />
                 ))}
-                <div className="mt-2">
-                  <ClientAccessButton className="w-full justify-start" />
-                </div>
               </div>
             </SheetContent>
           </Sheet>
