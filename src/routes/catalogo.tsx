@@ -14,13 +14,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { catalogFiles, siteConfig } from "@/config/site";
 import { routeMeta } from "@/config/seo";
 import {
@@ -298,34 +291,34 @@ function CatalogoPage() {
           <div className="mt-8 grid gap-5 rounded-lg border border-border bg-surface-glass p-5 shadow-glass lg:grid-cols-[1fr_1fr_1.4fr]">
             <div className="grid gap-2">
               <Label htmlFor="formato-productos">Medida / Formato</Label>
-              <Select value={format} onValueChange={(value) => setFormat(value as FormatFilter)}>
-                <SelectTrigger id="formato-productos">
-                  <SelectValue placeholder="Todos" />
-                </SelectTrigger>
-                <SelectContent>
-                  {formatOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <select
+                id="formato-productos"
+                value={format}
+                onChange={(event) => setFormat(event.target.value as FormatFilter)}
+                className="h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+              >
+                {formatOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="grid gap-2">
               <Label htmlFor="acabado-productos">Acabado</Label>
-              <Select value={finish} onValueChange={(value) => setFinish(value as FinishFilter)}>
-                <SelectTrigger id="acabado-productos">
-                  <SelectValue placeholder="Todos" />
-                </SelectTrigger>
-                <SelectContent>
-                  {finishOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <select
+                id="acabado-productos"
+                value={finish}
+                onChange={(event) => setFinish(event.target.value as FinishFilter)}
+                className="h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+              >
+                {finishOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="grid gap-2">
