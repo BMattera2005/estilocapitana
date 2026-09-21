@@ -15,6 +15,7 @@ import { AppHeader } from "@/components/site/AppHeader";
 import { QuoteListPanel } from "@/components/site/QuoteListPanel";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/context/auth";
 import { QuoteListProvider } from "@/context/quote-list";
 
 
@@ -123,6 +124,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <AuthProvider>
       <QuoteListProvider>
         <div className="min-h-dvh bg-background text-foreground">
           <AppHeader />
@@ -135,6 +137,7 @@ function RootComponent() {
           <Toaster />
         </div>
       </QuoteListProvider>
+      </AuthProvider>
     </QueryClientProvider>
 
   );
