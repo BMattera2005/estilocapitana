@@ -75,7 +75,7 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
         </div>
         <div className="grid gap-2">
           <Button asChild variant="industrial">
-            <a href={getDownloadUrl(catalog)} download={`${catalog.id}.pdf`}>
+            <a href={getDownloadUrl(catalog)} download target="_blank" rel="noopener noreferrer">
               <Download aria-hidden="true" />
               Descargar Catálogo PDF
             </a>
