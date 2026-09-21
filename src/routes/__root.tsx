@@ -123,14 +123,19 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-dvh bg-background text-foreground">
-        <AppHeader />
-        <main className="min-h-dvh pt-20">
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </main>
-        <AppFooter />
-      </div>
+      <QuoteListProvider>
+        <div className="min-h-dvh bg-background text-foreground">
+          <AppHeader />
+          <main className="min-h-dvh pt-20">
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <Outlet />
+          </main>
+          <AppFooter />
+          <QuoteListPanel />
+          <Toaster />
+        </div>
+      </QuoteListProvider>
     </QueryClientProvider>
+
   );
 }
