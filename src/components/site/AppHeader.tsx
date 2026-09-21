@@ -14,6 +14,8 @@ import {
 import { siteConfig, type SiteNavigationItem } from "@/config/site";
 
 import { BrandLogo } from "./BrandLogo";
+import { QuoteListButton } from "./QuoteListButton";
+
 
 const navBaseClass =
   "rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
@@ -67,18 +69,21 @@ export function AppHeader() {
         </nav>
 
         <div className="hidden items-center justify-end gap-3 lg:flex">
+          <QuoteListButton />
           <Button type="button" variant="industrialOutline" disabled>
             Ingreso clientes
           </Button>
         </div>
 
-        <div className="lg:hidden">
+        <div className="flex items-center justify-end gap-2 lg:hidden">
+          <QuoteListButton />
           <Sheet>
             <SheetTrigger asChild>
               <Button type="button" variant="industrialOutline" size="icon" aria-label="Abrir menú">
                 <Menu aria-hidden="true" />
               </Button>
             </SheetTrigger>
+
             <SheetContent className="w-[min(92vw,24rem)] border-border-strong">
               <SheetHeader className="pr-10 text-left">
                 <SheetTitle>Menú</SheetTitle>

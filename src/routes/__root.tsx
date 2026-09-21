@@ -12,7 +12,11 @@ import { useEffect, type ReactNode } from "react";
 
 import { AppFooter } from "@/components/site/AppFooter";
 import { AppHeader } from "@/components/site/AppHeader";
+import { QuoteListPanel } from "@/components/site/QuoteListPanel";
 import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/sonner";
+import { QuoteListProvider } from "@/context/quote-list";
+
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -119,14 +123,19 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-dvh bg-background text-foreground">
-        <AppHeader />
-        <main className="min-h-dvh pt-20">
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </main>
-        <AppFooter />
-      </div>
+      <QuoteListProvider>
+        <div className="min-h-dvh bg-background text-foreground">
+          <AppHeader />
+          <main className="min-h-dvh pt-20">
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <Outlet />
+          </main>
+          <AppFooter />
+          <QuoteListPanel />
+          <Toaster />
+        </div>
+      </QuoteListProvider>
     </QueryClientProvider>
+
   );
 }
