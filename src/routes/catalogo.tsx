@@ -56,6 +56,7 @@ export const Route = createFileRoute("/catalogo")({
 });
 
 function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
+  const href = catalogHref(catalog);
   const whatsappUrl = buildWhatsAppUrl(
     `Hola Estilo Capitana, consulto cotización y disponibilidad sobre el catálogo ${catalog.title}`,
   );
@@ -83,14 +84,23 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
         </div>
         <div className="grid gap-2">
           <a
-            href={catalog.fileUrl}
-            download
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-semibold border border-border bg-surface text-foreground hover:border-primary hover:text-primary"
+          >
+            <BookOpen aria-hidden="true" className="size-4" />
+            Ver Online
+          </a>
+          <a
+            href={href}
+            download={catalog.downloadName}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-semibold bg-sky-600 text-white hover:bg-sky-500"
           >
             <Download aria-hidden="true" className="size-4" />
-            Descargar Catálogo PDF
+            Descargar PDF
           </a>
           {whatsappUrl ? (
             <Button asChild variant="industrialOutline">
