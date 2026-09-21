@@ -1,10 +1,13 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Lock } from "lucide-react";
+import { Lock, LockOpen } from "lucide-react";
+import { toast } from "sonner";
 
+import { ClientAccessButton } from "@/components/site/ClientAccessButton";
 import { IndustrialIcon } from "@/components/site/IndustrialIcon";
 import { Button } from "@/components/ui/button";
 import { priceLists } from "@/config/site";
 import { routeMeta } from "@/config/seo";
+import { useAuth } from "@/context/auth";
 import { rubros } from "@/data/rubros";
 
 export const Route = createFileRoute("/listas-de-precios")({
@@ -19,6 +22,8 @@ export const Route = createFileRoute("/listas-de-precios")({
 });
 
 function ListasDePreciosPage() {
+  const { client } = useAuth();
+
   return (
     <section className="bg-background px-4 py-14 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -31,6 +36,11 @@ function ListasDePreciosPage() {
           <p className="font-mono text-sm text-foreground">
             Listas mayoristas sujetas a cuenta comercial y volumen.
           </p>
+          {client ? (
+            <p className="mt-2 text-xs text-muted-foreground">
+              Sesión de demostración activa · {client.tier.label}
+            </p>
+          ) : null}
         </div>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -47,10 +57,16 @@ function ListasDePreciosPage() {
                   </span>
                   <span
                     className="grid size-9 place-items-center rounded-md border border-border-strong bg-background text-muted-foreground"
-                    title="Acceso restringido"
+                    title={client ? "Acceso de demostración" : "Acceso restringido"}
                   >
-                    <Lock aria-hidden="true" className="size-4" />
-                    <span className="sr-only">Acceso restringido</span>
+                    {client ? (
+                      <LockOpen aria-hidden="true" className="size-4" />
+                    ) : (
+                      <Lock aria-hidden="true" className="size-4" />
+                    )}
+                    <span className="sr-only">
+                      {client ? "Acceso de demostración" : "Acceso restringido"}
+                    </span>
                   </span>
                 </div>
 
@@ -61,9 +77,17 @@ function ListasDePreciosPage() {
 
                 <div className="mt-5 flex-1" />
                 <div className="grid gap-2">
-                  <Button type="button" variant="industrial" disabled>
-                    Ingresar
-                  </Button>
+                  {client ? (
+                    <Button
+                      type="button"
+                      variant="industrial"
+                      onClick={() => toast.info("Todavía no hay listas cargadas.")}
+                    >
+                      Descargar (demo)
+                    </Button>
+                  ) : (
+                    <ClientAccessButton label="Ingresar" variant="industrial" />
+                  )}
                   <Button asChild variant="industrialOutline">
                     <Link to="/contacto">Contactar a ventas</Link>
                   </Button>
@@ -74,8 +98,9 @@ function ListasDePreciosPage() {
         </div>
 
         <p className="mt-8 max-w-3xl text-sm leading-6 text-muted-foreground">
-          El ingreso de clientes todavía no está habilitado. Para solicitar una cuenta comercial y
-          recibir la lista vigente, escribinos desde Contacto.
+          {client
+            ? "Estás en modo demostración: todavía no hay listas cargadas para descargar. Escribinos desde Contacto para recibir la lista vigente."
+            : "El ingreso es de demostración por ahora. Para solicitar una cuenta comercial y recibir la lista vigente, escribinos desde Contacto."}
         </p>
       </div>
     </section>

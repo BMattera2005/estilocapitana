@@ -14,6 +14,7 @@ import {
 import { siteConfig, type SiteNavigationItem } from "@/config/site";
 
 import { BrandLogo } from "./BrandLogo";
+import { ClientAccessButton } from "./ClientAccessButton";
 import { QuoteListButton } from "./QuoteListButton";
 
 
@@ -70,9 +71,7 @@ export function AppHeader() {
 
         <div className="hidden items-center justify-end gap-3 lg:flex">
           <QuoteListButton />
-          <Button type="button" variant="industrialOutline" disabled>
-            Ingreso clientes
-          </Button>
+          <ClientAccessButton />
         </div>
 
         <div className="flex items-center justify-end gap-2 lg:hidden">
@@ -93,9 +92,9 @@ export function AppHeader() {
                 {siteConfig.navigation.map((item) => (
                   <MobileNavLink key={item.to} item={item} />
                 ))}
-                <Button type="button" variant="industrialOutline" disabled className="mt-2 justify-start">
-                  Ingreso clientes
-                </Button>
+                <div className="mt-2">
+                  <ClientAccessButton className="w-full justify-start" />
+                </div>
               </div>
             </SheetContent>
           </Sheet>
