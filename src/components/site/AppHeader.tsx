@@ -51,7 +51,7 @@ function MobileNavLink({ item }: { item: SiteNavigationItem }) {
 export function AppHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-40 border-b border-border bg-background/90 backdrop-blur-xl">
-      <div className="mx-auto grid h-20 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto grid h-20 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 sm:px-6 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)_auto] lg:px-8">
         <Link
           to="/"
           aria-label="Ir al inicio de Estilo Capitana"
@@ -60,7 +60,7 @@ export function AppHeader() {
           <BrandLogo />
         </Link>
 
-        <nav aria-label="Navegación principal" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label="Navegación principal" className="hidden min-w-0 items-center justify-end gap-1 lg:flex">
           {siteConfig.navigation.map((item) => (
             <NavLink key={item.to} item={item} />
           ))}
