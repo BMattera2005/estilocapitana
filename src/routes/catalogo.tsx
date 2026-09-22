@@ -113,7 +113,7 @@ function CatalogoPage() {
 
   return (
     <div>
-      <section className="border-b border-border bg-background px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+      <section className="brand-watermark-section border-b border-border bg-background px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-normal uppercase text-primary">Representación comercial B2B</p>
           <h1 className="mt-3 max-w-4xl text-4xl font-bold leading-tight text-foreground sm:text-5xl">
@@ -125,21 +125,27 @@ function CatalogoPage() {
         </div>
       </section>
 
-      <section className="bg-surface px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+      <section className="brand-watermark-section bg-surface px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar catálogos por familia comercial">
-            {filters.map((filter) => (
-              <Button
-                key={filter.id}
-                type="button"
-                size="sm"
-                variant={activeFilter === filter.id ? "industrial" : "industrialOutline"}
-                aria-pressed={activeFilter === filter.id}
-                onClick={() => setActiveFilter(filter.id)}
-              >
-                {filter.label}
-              </Button>
-            ))}
+            {filters.map((filter) => {
+              const isActive = activeFilter === filter.id;
+              return (
+                <Button
+                  key={filter.id}
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  className={isActive
+                    ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
+                    : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"}
+                  aria-pressed={isActive}
+                  onClick={() => setActiveFilter(filter.id)}
+                >
+                  {filter.label}
+                </Button>
+              );
+            })}
           </div>
 
           <p className="mt-6 text-xs font-normal text-muted-foreground" aria-live="polite">

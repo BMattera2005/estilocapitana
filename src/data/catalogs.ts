@@ -20,9 +20,9 @@ export const officialCatalogs: OfficialCatalog[] = [
   {
     id: "cat-china",
     family: "Línea Porcelanatos",
-    title: "Colección Habitat MA · Línea de Porcelanatos",
-    description: "Curamos esta colección pensando en la máxima calidad de diseño para espacios corporativos y edificios de alta gama. Pulidos, mate y brillante, granulados, carving y Posh.",
-    origin: "Importado",
+    title: "Slabs de Sintered Stone",
+    description: "Superficies de Sintered Stone seleccionadas para espacios corporativos y edificios de alta gama. Terminaciones pulidas, mate, brillantes, granuladas, carving y Posh.",
+    origin: "Sintered Stone",
     fileUrl: "/catalogos/china_porcelanatos.pdf",
   },
   {
@@ -44,8 +44,8 @@ export const officialCatalogs: OfficialCatalog[] = [
   {
     id: "cat-viguetas",
     family: "Viguetas",
-    title: "Viguetas",
-    description: "Elementos estructurales de alta resistencia para cubiertas y entrepisos. Aprobadas por la Universidad Nacional de San Juan como uso Antisismico",
+    title: "Viguetas de Hormigón Pretensado",
+    description: "Elementos estructurales de hormigón pretensado de alta resistencia para cubiertas y entrepisos. Aprobadas por la Universidad Nacional de San Juan para uso antisísmico.",
     origin: "Salteña",
     fileUrl: "/catalogos/viguetas.pdf",
     certificateUrl: "/catalogos/certificado_viguetas.pdf",
