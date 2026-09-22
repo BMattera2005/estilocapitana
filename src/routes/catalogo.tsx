@@ -108,7 +108,13 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
 }
 
 function CatalogoPage() {
-  const [activeFilter, setActiveFilter] = useState<CatalogFilter>("todas");
+  const { linea } = Route.useSearch();
+  const [activeFilter, setActiveFilter] = useState<CatalogFilter>(linea ?? "todas");
+
+  useEffect(() => {
+    if (linea) setActiveFilter(linea);
+  }, [linea]);
+
   const visibleCatalogs = useMemo(
     () => officialCatalogs.filter((catalog) => matchesFilter(catalog, activeFilter)),
     [activeFilter],
