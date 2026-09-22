@@ -38,7 +38,13 @@ function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
   return catalog.id === "cat-eps";
 }
 
+const FILTER_IDS = filters.map((filter) => filter.id);
+
 export const Route = createFileRoute("/catalogo")({
+  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter } => {
+    const linea = typeof search.linea === "string" ? (search.linea as CatalogFilter) : undefined;
+    return { linea: linea && FILTER_IDS.includes(linea) ? linea : undefined };
+  },
   head: () =>
     routeMeta({
       title: "Catálogos de materiales — estilo.capitana",
