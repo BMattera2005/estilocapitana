@@ -17,7 +17,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         industrial:
-          "bg-primary text-primary-foreground shadow-industrial hover:bg-primary/90 motion-safe:hover:-translate-y-0.5",
+          "bg-brand-gradient text-primary-foreground shadow-industrial hover:brightness-105 motion-safe:hover:-translate-y-0.5",
         industrialOutline:
           "border border-border-strong bg-surface-glass text-foreground shadow-glass hover:border-primary hover:bg-accent hover:text-accent-foreground",
         whatsapp:

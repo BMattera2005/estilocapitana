@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { routeMeta } from "@/config/seo";
 import { siteConfig } from "@/config/site";
+import { buildStockGmailUrl, buildStockWhatsAppUrl } from "@/lib/contact-links";
 import { buildWhatsAppUrl } from "@/lib/quote-message";
 
 export const Route = createFileRoute("/contacto")({
@@ -70,20 +71,22 @@ function ContactoPage() {
     }
   }
 
-  const directWhatsapp = buildWhatsAppUrl("Hola estilo.capitana, quisiera realizar una consulta comercial.");
+  const directWhatsapp = buildStockWhatsAppUrl();
+  const directEmail = buildStockGmailUrl();
 
   return (
     <section className="bg-background px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
       <div className="mx-auto max-w-7xl">
         <p className="text-xs font-normal uppercase text-primary">Contacto</p>
-        <h1 className="mt-4 max-w-3xl text-4xl font-bold text-foreground sm:text-5xl">Hablemos de tu próxima oportunidad comercial.</h1>
-        <p className="mt-5 max-w-2xl text-lg font-normal leading-8 text-muted-foreground">Consultanos por líneas, disponibilidad y cotizaciones para tu proyecto o canal profesional.</p>
+        <h1 className="mt-4 max-w-3xl text-4xl font-bold text-foreground sm:text-5xl">Hablemos de tu próxima oportunidad comercial</h1>
+        <p className="mt-5 max-w-2xl text-lg font-normal leading-8 text-muted-foreground">Consultanos por líneas, disponibilidad y cotizaciones para tu proyecto o canal profesional</p>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
           <aside className="grid content-start gap-5 rounded-lg border border-border bg-surface p-6 shadow-glass">
-            <div className="flex gap-3"><Mail aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-primary" /><div className="min-w-0"><h2 className="text-sm font-semibold text-foreground">Correo electrónico</h2><a href={`mailto:${siteConfig.contact.email}`} className="mt-1 block break-words text-sm font-normal text-primary hover:underline">{siteConfig.contact.email}</a></div></div>
-            <div className="flex gap-3"><MessageCircle aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-industrial-green" /><div><h2 className="text-sm font-semibold text-foreground">WhatsApp comercial</h2><a href={directWhatsapp ?? "https://wa.me/5491161208162"} target="_blank" rel="noopener noreferrer" className="mt-1 block text-sm font-normal text-primary hover:underline">{siteConfig.contact.whatsapp}</a></div></div>
-            <Button asChild variant="whatsapp"><a href={directWhatsapp ?? "https://wa.me/5491161208162"} target="_blank" rel="noopener noreferrer"><MessageCircle aria-hidden="true" />Escribir por WhatsApp</a></Button>
+            <div className="flex gap-3"><Mail aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-primary" /><div className="min-w-0"><h2 className="text-sm font-semibold text-foreground">Correo electrónico</h2><a href={directEmail} target="_blank" rel="noopener noreferrer" className="mt-1 block break-words text-sm font-normal text-primary hover:underline">{siteConfig.contact.email}</a></div></div>
+            <div className="flex gap-3"><MessageCircle aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-industrial-green" /><div><h2 className="text-sm font-semibold text-foreground">WhatsApp comercial</h2><a href={directWhatsapp} target="_blank" rel="noopener noreferrer" className="mt-1 block text-sm font-normal text-industrial-green hover:underline">{siteConfig.contact.whatsapp}</a></div></div>
+            <Button asChild variant="whatsapp"><a href={directWhatsapp} target="_blank" rel="noopener noreferrer"><MessageCircle aria-hidden="true" />Consultar stock por WhatsApp</a></Button>
+            <Button asChild variant="industrialOutline"><a href={directEmail} target="_blank" rel="noopener noreferrer"><Mail aria-hidden="true" />Consultar stock por email</a></Button>
           </aside>
 
           <form onSubmit={handleSubmit(onSubmit)} noValidate className="grid gap-5 rounded-lg border border-border bg-card p-6 shadow-glass sm:p-8">

@@ -11,3 +11,6 @@
 - [x] Verificar el portal definitivo en móvil y escritorio.
 - [x] Actualizar porcelanatos chinos a Slabs de Sintered Stone y Viguetas de Hormigón Pretensado.
 - [x] Incorporar la identidad cian-verde del logo en pestañas activas y fondos tipo marca de agua.
+- [x] Unificar la comunicación como líneas de productos y quitar puntos finales de los títulos.
+- [x] Precargar consultas de stock en todos los enlaces de correo y WhatsApp.
+- [x] Completar Respaldo industrial con las unidades representadas.
