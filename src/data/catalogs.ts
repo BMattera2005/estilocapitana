@@ -20,14 +20,14 @@ export const officialCatalogs: OfficialCatalog[] = [
   {
     id: "cat-china",
     family: "Línea Porcelanatos",
-    title: "Porcelanatos Importados",
+    title: "Colección Habitat MA · Línea de Porcelanatos",
     description: "Curamos esta colección pensando en la máxima calidad de diseño para espacios corporativos y edificios de alta gama. Pulidos, mate y brillante, granulados, carving y Posh.",
     origin: "Importado",
     fileUrl: "/catalogos/china_porcelanatos.pdf",
   },
   {
     id: "cat-ferrazzano-36",
-    family: "Línea Ferrazzano (Salteña)",
+    family: "Línea Ferrazzano ",
     title: "Línea Ferrazzano · Formato 36x36cm",
     description: "Línea pensada y respetada con tradición. Calidad superior en el rango de formato. Diseñados con ingeniería y aprobación de pliegos licitatorios.",
     origin: "Salteña",
@@ -35,7 +35,7 @@ export const officialCatalogs: OfficialCatalog[] = [
   },
   {
     id: "cat-ferrazzano-43",
-    family: "Línea Ferrazzano (Salteña)",
+    family: "Línea Ferrazzano ",
     title: "Línea Ferrazzano · Formato 43x43cm",
     description: "Nuestra línea pensada para mayor rotación de tus activos. Productos atractivos, excelente relación precio/formato y un plus de diseño y prestaciones.",
     origin: "Salteña",
