@@ -2,9 +2,9 @@
 export const valores = [
   {
     icono: "handshake",
-    title: "Alianza comercial con el fabricante",
+    title: "Alianza con el fabricante",
     description:
-      "Trabajamos como distribuidor oficial, con acceso directo a catálogos, novedades y condiciones de la línea.",
+      "Trabajamos en forma directa con el fabricante, sus catálogos, novedades y condiciones de cada línea.",
   },
   {
     icono: "truck",

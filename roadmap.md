@@ -6,6 +6,6 @@
 - [x] Simplificar navegación y retirar acceso demo, precios, pedidos y cotización acumulada.
 - [x] Agregar acceso flotante de WhatsApp con comportamiento honesto.
 - [x] Verificar rutas, filtros, descargas y visualización móvil/escritorio.
-- [ ] Aplicar la identidad y los textos comerciales definitivos de estilo.capitana.
-- [ ] Actualizar las seis líneas oficiales, los archivos y el certificado de Viguetas.
+- [x] Aplicar la identidad y los textos comerciales definitivos de estilo.capitana.
+- [x] Actualizar las seis líneas oficiales, los archivos y el certificado de Viguetas.
 - [ ] Verificar el portal definitivo en móvil y escritorio.
