@@ -1,13 +1,10 @@
 import { MessageCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
-import { buildWhatsAppUrl } from "@/lib/quote-message";
+import { buildStockWhatsAppUrl } from "@/lib/contact-links";
 
 export function FloatingWhatsApp() {
-  const href = buildWhatsAppUrl("Hola estilo.capitana, quisiera realizar una consulta comercial.");
-
-  if (!href) return null;
+  const href = buildStockWhatsAppUrl();
 
   return (
     <div className="group fixed bottom-5 right-5 z-40">

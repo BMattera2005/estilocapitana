@@ -8,7 +8,7 @@ import { siteConfig } from "@/config/site";
 const strengths = [
   { title: "Criterio comercial", description: "Seleccionamos materiales por su rendimiento, valor, diseño y capacidad de rotación en canales profesionales.", icon: LineChart },
   { title: "Representación B2B", description: "Conectamos productos y oportunidades con distribuidores, desarrolladores, constructoras y estudios de arquitectura.", icon: Handshake },
-  { title: "Respaldo industrial", description: "Trabajamos con Salteña Equipamientos & Suministros, fabricante con planta industrial en Salta.", icon: Building2 },
+  { title: "Respaldo industrial", description: "Representamos todas las Unidades de Negocio de Cerámica Salteña SA", items: ["Vigueta Perfecta", "Pisos Ferrazzano", "Famapol"], icon: Building2 },
   { title: "Información técnica", description: "Facilitamos catálogos y documentación para acompañar decisiones comerciales y de especificación.", icon: ShieldCheck },
 ] as const;
 
@@ -28,7 +28,7 @@ function NosotrosPage() {
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-normal uppercase text-primary">Quiénes somos</p>
           <h1 className="mt-4 max-w-4xl text-4xl font-bold leading-tight text-foreground sm:text-5xl">
-            Una agencia comercial enfocada en materiales que generan valor.
+            Una agencia comercial enfocada en materiales que generan valor
           </h1>
           <p className="mt-6 max-w-3xl text-lg font-normal leading-8 text-muted-foreground">{siteConfig.about.intro}</p>
         </div>
@@ -38,7 +38,7 @@ function NosotrosPage() {
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
           <div>
             <p className="text-xs font-normal uppercase text-primary">Nuestra alianza</p>
-            <h2 className="mt-3 text-3xl font-semibold text-foreground">Industria en origen, criterio comercial en cada mercado.</h2>
+            <h2 className="mt-3 text-3xl font-semibold text-foreground">Industria en origen, criterio comercial en cada mercado</h2>
             <p className="mt-5 text-base font-normal leading-7 text-muted-foreground">{siteConfig.about.alianza}</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -49,6 +49,11 @@ function NosotrosPage() {
                   <span className="grid size-10 place-items-center rounded-md bg-accent text-accent-foreground"><Icon aria-hidden="true" /></span>
                   <h3 className="mt-5 text-lg font-semibold text-foreground">{strength.title}</h3>
                   <p className="mt-3 text-sm font-normal leading-6 text-muted-foreground">{strength.description}</p>
+                   {"items" in strength ? (
+                     <ul className="mt-4 grid gap-2 text-sm font-semibold text-foreground">
+                       {strength.items.map((item) => <li key={item} className="flex items-center gap-2 before:size-1.5 before:rounded-full before:bg-industrial-green">{item}</li>)}
+                     </ul>
+                   ) : null}
                 </article>
               );
             })}
@@ -58,7 +63,7 @@ function NosotrosPage() {
 
       <section className="border-t border-border bg-background px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
-          <div><h2 className="text-2xl font-semibold text-foreground">Conocé nuestras líneas comerciales.</h2><p className="mt-2 text-sm font-normal text-muted-foreground">Accedé a los catálogos o consultanos por una oportunidad puntual.</p></div>
+          <div><h2 className="text-2xl font-semibold text-foreground">Conocé nuestras líneas comerciales</h2><p className="mt-2 text-sm font-normal text-muted-foreground">Accedé a los catálogos o consultanos por una oportunidad puntual</p></div>
           <div className="flex flex-wrap gap-3"><Button asChild variant="industrial"><Link to="/catalogo">Ver catálogos</Link></Button><Button asChild variant="industrialOutline"><Link to="/contacto">Contactar</Link></Button></div>
         </div>
       </section>

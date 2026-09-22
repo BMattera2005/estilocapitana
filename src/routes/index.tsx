@@ -30,10 +30,10 @@ function Index() {
           <div className="max-w-4xl">
             <p className="text-xs font-normal uppercase text-primary">{siteConfig.descriptor}</p>
             <h1 className="mt-5 text-4xl font-bold leading-tight text-foreground sm:text-5xl lg:text-6xl">
-              Materiales de arquitectura seleccionados para vender y rendir mejor.
+              Materiales de arquitectura seleccionados para vender y rendir mejor
             </h1>
             <p className="mt-6 max-w-3xl text-lg font-normal leading-8 text-muted-foreground">
-              Representamos líneas de porcelanatos, cerámicos, viguetas y EPS con foco en la rotación del stock, las prestaciones y el valor comercial.
+              Representamos líneas de porcelanatos, cerámicos, viguetas y EPS con foco en la rotación del stock, las prestaciones y el valor comercial
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild variant="industrial" size="lg">
@@ -55,7 +55,7 @@ function Index() {
        <section className="brand-watermark-section bg-surface px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-normal uppercase text-primary">Líneas comerciales</p>
-          <h2 className="mt-3 max-w-3xl text-3xl font-semibold text-foreground sm:text-4xl">Cuatro familias para proyectos y canales profesionales.</h2>
+          <h2 className="mt-3 max-w-3xl text-3xl font-semibold text-foreground sm:text-4xl">Cuatro líneas de productos para proyectos y canales profesionales</h2>
           <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {productFamilies.map((family) => {
               const Icon = family.icon;
@@ -83,7 +83,7 @@ function Index() {
 
       <section className="border-y border-border bg-background px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
-          <div><p className="text-xs font-normal uppercase text-primary">Consulta comercial</p><h2 className="mt-3 text-3xl font-semibold text-foreground">Encontrá la línea adecuada para tu proyecto o canal.</h2></div>
+          <div><p className="text-xs font-normal uppercase text-primary">Consulta comercial</p><h2 className="mt-3 text-3xl font-semibold text-foreground">Encontrá la línea adecuada para tu proyecto o canal</h2></div>
           <Button asChild variant="industrial" size="lg"><Link to="/contacto">Consultar stock<ArrowRight aria-hidden="true" /></Link></Button>
         </div>
       </section>

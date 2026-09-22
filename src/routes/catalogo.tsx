@@ -71,7 +71,7 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="bg-brand-gradient inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <ExternalLink aria-hidden="true" className="size-4" />
           Ver / Descargar Catálogo
@@ -120,14 +120,14 @@ function CatalogoPage() {
             Líneas y catálogos de materiales
           </h1>
           <p className="mt-5 max-w-3xl text-lg font-normal leading-8 text-muted-foreground">
-            Explorá cada familia, consultá su documentación y contactanos para disponibilidad y cotización comercial.
+            Explorá cada línea de productos, consultá su documentación y contactanos para disponibilidad y cotización comercial
           </p>
         </div>
       </section>
 
       <section className="brand-watermark-section bg-surface px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto max-w-7xl">
-          <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar catálogos por familia comercial">
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar catálogos por línea de productos">
             {filters.map((filter) => {
               const isActive = activeFilter === filter.id;
               return (
