@@ -7,16 +7,16 @@ import { routeMeta } from "@/config/seo";
 import { officialCatalogs } from "@/data/catalogs";
 
 const productFamilies = [
-  { title: "Porcelanatos India y China", detail: "Colecciones curadas para máxima rotación, proyectos corporativos y edificios de alta gama.", icon: PanelsTopLeft },
+  { title: "Línea Porcelanatos", detail: "Colecciones curadas para máxima rotación, proyectos corporativos y edificios de alta gama.", icon: PanelsTopLeft },
   { title: "Línea Ferrazzano", detail: "Cerámicos Salteña de 36x36 cm y 43x43 cm, concebidos para rendimiento, diseño y rotación.", icon: Layers3 },
-  { title: "Viguetas Salteña", detail: "Elementos estructurales pretensados de alta resistencia para cubiertas y entrepisos.", icon: Blocks },
-  { title: "EPS Telgopor Salteña", detail: "Soluciones livianas y aislantes para sistemas de techos con viguetas y aplicaciones térmicas.", icon: FileText },
+  { title: "Viguetas", detail: "Elementos estructurales pretensados de alta resistencia para cubiertas y entrepisos.", icon: Blocks },
+  { title: "EPS Telgopor", detail: "Soluciones livianas y aislantes para sistemas de techos con viguetas y aplicaciones térmicas.", icon: FileText },
 ] as const;
 
 export const Route = createFileRoute("/")({
   head: () => routeMeta({
     title: "estilo.capitana — Agencia comercial de materiales de arquitectura",
-    description: "Representación comercial B2B de porcelanatos, cerámicos Ferrazzano, viguetas y EPS Salteña.",
+    description: "Representación comercial B2B de porcelanatos, cerámicos Ferrazzano, viguetas y EPS Telgopor.",
     path: "/",
   }),
   component: Index,
