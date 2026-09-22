@@ -7,10 +7,10 @@ import { routeMeta } from "@/config/seo";
 import { officialCatalogs } from "@/data/catalogs";
 
 const productFamilies = [
-  { title: "Línea Porcelanatos", detail: "Colecciones curadas para máxima rotación, proyectos corporativos y edificios de alta gama.", icon: PanelsTopLeft },
-  { title: "Línea Ferrazzano", detail: "Cerámicos Salteña de 36x36 cm y 43x43 cm, concebidos para rendimiento, diseño y rotación.", icon: Layers3 },
-  { title: "Viguetas", detail: "Elementos estructurales pretensados de alta resistencia para cubiertas y entrepisos.", icon: Blocks },
-  { title: "EPS Telgopor", detail: "Soluciones livianas y aislantes para sistemas de techos con viguetas y aplicaciones térmicas.", icon: FileText },
+  { filter: "porcelanatos", title: "Línea Porcelanatos", detail: "Colecciones curadas para máxima rotación, proyectos corporativos y edificios de alta gama.", icon: PanelsTopLeft },
+  { filter: "ferrazzano", title: "Línea Ferrazzano", detail: "Cerámicos Salteña de 36x36 cm y 43x43 cm, concebidos para rendimiento, diseño y rotación.", icon: Layers3 },
+  { filter: "viguetas", title: "Viguetas", detail: "Elementos estructurales pretensados de alta resistencia para cubiertas y entrepisos.", icon: Blocks },
+  { filter: "eps", title: "EPS Telgopor", detail: "Soluciones livianas y aislantes para sistemas de techos con viguetas y aplicaciones térmicas.", icon: FileText },
 ] as const;
 
 export const Route = createFileRoute("/")({
@@ -60,11 +60,21 @@ function Index() {
             {productFamilies.map((family) => {
               const Icon = family.icon;
               return (
-                <article key={family.title} className="rounded-lg border border-border bg-card p-6 shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial">
+                <Link
+                  key={family.filter}
+                  to="/catalogo"
+                  search={{ linea: family.filter }}
+                  aria-label={`Ver la línea ${family.title} en el catálogo`}
+                  className="group flex min-h-[14rem] flex-col rounded-lg border border-border bg-card p-6 shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
                   <span className="grid size-11 place-items-center rounded-md bg-accent text-accent-foreground"><Icon aria-hidden="true" /></span>
                   <h3 className="mt-5 text-lg font-semibold text-foreground">{family.title}</h3>
                   <p className="mt-3 text-sm font-normal leading-6 text-muted-foreground">{family.detail}</p>
-                </article>
+                  <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-primary">
+                    Ver línea
+                    <ArrowRight aria-hidden="true" className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                  </span>
+                </Link>
               );
             })}
           </div>
