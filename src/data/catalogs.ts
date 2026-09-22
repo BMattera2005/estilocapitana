@@ -44,8 +44,8 @@ export const officialCatalogs: OfficialCatalog[] = [
   {
     id: "cat-viguetas",
     family: "Viguetas",
-    title: "Viguetas Pretensadas",
-    description: "Elementos estructurales pretensados de alta resistencia para cubiertas y entrepisos. Aprobadas por la Universidad Nacional de San Juan como uso Antisismico",
+    title: "Viguetas",
+    description: "Elementos estructurales de alta resistencia para cubiertas y entrepisos. Aprobadas por la Universidad Nacional de San Juan como uso Antisismico",
     origin: "Salteña",
     fileUrl: "/catalogos/viguetas.pdf",
     certificateUrl: "/catalogos/certificado_viguetas.pdf",
