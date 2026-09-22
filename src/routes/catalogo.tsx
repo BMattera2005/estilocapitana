@@ -2,9 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Award, ExternalLink, FileText, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import chinaAsset from "@/assets/catalogos/china.pdf.asset.json";
-import indiaAsset from "@/assets/catalogos/india.pdf.asset.json";
-import viguetasAsset from "@/assets/catalogos/viguetas.pdf.asset.json";
 import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
 import { officialCatalogs, type OfficialCatalog } from "@/data/catalogs";
@@ -20,14 +17,8 @@ const filters: { id: CatalogFilter; label: string }[] = [
   { id: "eps", label: "EPS Telgopor" },
 ];
 
-const externalHrefs: Record<string, string> = {
-  "/catalogos/india_porcelanatos_coleccion.pdf": indiaAsset.url,
-  "/catalogos/china_porcelanatos.pdf": chinaAsset.url,
-  "/catalogos/viguetas.pdf": viguetasAsset.url,
-};
-
 function catalogHref(catalog: OfficialCatalog) {
-  return externalHrefs[catalog.fileUrl] ?? catalog.fileUrl;
+  return catalog.fileUrl;
 }
 
 function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
