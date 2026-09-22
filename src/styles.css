@@ -172,6 +172,12 @@
   border-image: var(--gradient-brand) 1;
 }
 
+@utility text-brand-gradient {
+  background-image: var(--gradient-brand);
+  background-clip: text;
+  color: transparent;
+}
+
 @utility brand-watermark-section {
   position: relative;
   isolation: isolate;

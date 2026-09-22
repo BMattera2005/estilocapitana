@@ -137,7 +137,7 @@ function CatalogoPage() {
                   size="sm"
                   variant="ghost"
                   className={isActive
-                    ? "relative rounded-none bg-transparent px-1 pb-3 text-primary shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent hover:text-primary"
+                    ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
                     : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"}
                   aria-pressed={isActive}
                   onClick={() => setActiveFilter(filter.id)}
