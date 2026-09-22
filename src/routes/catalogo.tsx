@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Award, ExternalLink, FileText, MessageCircle } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import chinaAsset from "@/assets/catalogos/china.pdf.asset.json";
 import indiaAsset from "@/assets/catalogos/india.pdf.asset.json";
