@@ -5,7 +5,7 @@ import { siteConfig } from "@/config/site";
 import { buildWhatsAppUrl } from "@/lib/quote-message";
 
 export function FloatingWhatsApp() {
-  const href = buildWhatsAppUrl("Hola Estilo Capitana, quisiera realizar una consulta comercial.");
+  const href = buildWhatsAppUrl("Hola estilo.capitana, quisiera realizar una consulta comercial.");
 
   if (!href) return null;
 

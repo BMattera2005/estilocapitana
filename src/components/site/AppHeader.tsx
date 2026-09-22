@@ -53,7 +53,7 @@ export function AppHeader() {
       <div className="mx-auto grid h-20 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 sm:px-6 lg:px-8">
         <Link
           to="/"
-          aria-label="Ir al inicio de Estilo Capitana"
+          aria-label="Ir al inicio de estilo.capitana"
           className="min-w-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           <BrandLogo />
@@ -76,7 +76,7 @@ export function AppHeader() {
             <SheetContent className="w-[min(92vw,24rem)] border-border-strong">
               <SheetHeader className="pr-10 text-left">
                 <SheetTitle>Menú</SheetTitle>
-                <SheetDescription>{siteConfig.brandNameDisplay}</SheetDescription>
+                <SheetDescription>{siteConfig.descriptor}</SheetDescription>
               </SheetHeader>
               <div className="mt-8 grid gap-3">
                 {siteConfig.navigation.map((item) => (
