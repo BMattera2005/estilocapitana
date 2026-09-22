@@ -24,7 +24,7 @@ function catalogHref(catalog: OfficialCatalog) {
 function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
   if (filter === "todas") return true;
   if (filter === "porcelanatos") return catalog.family === "Línea Porcelanatos";
-  if (filter === "ferrazzano") return catalog.family === "Línea Ferrazzano (Salteña)";
+  if (filter === "ferrazzano") return catalog.family === "Línea Ferrazzano";
   if (filter === "viguetas") return catalog.id === "cat-viguetas";
   return catalog.id === "cat-eps";
 }
