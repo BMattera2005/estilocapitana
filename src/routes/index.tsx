@@ -7,9 +7,9 @@ import { routeMeta } from "@/config/seo";
 import { officialCatalogs } from "@/data/catalogs";
 
 const productFamilies = [
-  { filter: "porcelanatos", title: "Línea Porcelanatos", detail: "Colecciones curadas para máxima rotación, proyectos corporativos y edificios de alta gama.", icon: PanelsTopLeft },
+  { filter: "porcelanatos", title: "Línea Porcelanatos", detail: "Porcelanatos seleccionados y Slabs de Sintered Stone para proyectos corporativos y edificios de alta gama.", icon: PanelsTopLeft },
   { filter: "ferrazzano", title: "Línea Ferrazzano", detail: "Cerámicos Salteña de 36x36 cm y 43x43 cm, concebidos para rendimiento, diseño y rotación.", icon: Layers3 },
-  { filter: "viguetas", title: "Viguetas", detail: "Elementos estructurales de alta resistencia para cubiertas y entrepisos.", icon: Blocks },
+  { filter: "viguetas", title: "Viguetas de Hormigón Pretensado", detail: "Elementos estructurales de alta resistencia para cubiertas y entrepisos.", icon: Blocks },
   { filter: "eps", title: "EPS Telgopor", detail: "Soluciones livianas y aislantes para sistemas de techos con viguetas y aplicaciones térmicas.", icon: FileText },
 ] as const;
 
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <div>
-      <section className="border-b border-border bg-background px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <section className="brand-watermark-section border-b border-border bg-background px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-4xl">
             <p className="text-xs font-normal uppercase text-primary">{siteConfig.descriptor}</p>
@@ -52,7 +52,7 @@ function Index() {
         </div>
       </section>
 
-      <section className="bg-surface px-4 py-16 sm:px-6 lg:px-8">
+       <section className="brand-watermark-section bg-surface px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-normal uppercase text-primary">Líneas comerciales</p>
           <h2 className="mt-3 max-w-3xl text-3xl font-semibold text-foreground sm:text-4xl">Cuatro familias para proyectos y canales profesionales.</h2>
