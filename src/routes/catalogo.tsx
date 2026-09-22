@@ -23,7 +23,7 @@ const filters: { id: CatalogFilter; label: string }[] = [
 const externalHrefs: Record<string, string> = {
   "/catalogos/india_porcelanatos_coleccion.pdf": indiaAsset.url,
   "/catalogos/china_porcelanatos.pdf": chinaAsset.url,
-  "/catalogos/viguetas_presentadas.pdf": viguetasAsset.url,
+  "/catalogos/viguetas.pdf": viguetasAsset.url,
 };
 
 function catalogHref(catalog: OfficialCatalog) {
