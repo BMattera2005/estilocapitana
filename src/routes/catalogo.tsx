@@ -17,14 +17,8 @@ const filters: { id: CatalogFilter; label: string }[] = [
   { id: "eps", label: "EPS Telgopor" },
 ];
 
-const externalHrefs: Record<string, string> = {
-  "/catalogos/india_porcelanatos_coleccion.pdf": indiaAsset.url,
-  "/catalogos/china_porcelanatos.pdf": chinaAsset.url,
-  "/catalogos/viguetas.pdf": viguetasAsset.url,
-};
-
 function catalogHref(catalog: OfficialCatalog) {
-  return externalHrefs[catalog.fileUrl] ?? catalog.fileUrl;
+  return catalog.fileUrl;
 }
 
 function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
