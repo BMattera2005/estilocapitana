@@ -12,17 +12,17 @@ export const officialCatalogs: OfficialCatalog[] = [
   {
     id: "cat-india",
     family: "Línea Porcelanatos",
-    title: "Colección Habitat MA · Línea de Porcelanatos (India)",
+    title: "Colección Habitat MA · Línea de Porcelanatos",
     description: "Línea especialmente curada y elegida para garantizar máxima rotación del stock. Pisos mates, revestimientos pulidos y la increíble suavidad del pulido mate 'piel de bebe'.",
-    origin: "Importado India",
+    origin: "Importado",
     fileUrl: "/catalogos/india_porcelanatos_coleccion.pdf",
   },
   {
     id: "cat-china",
     family: "Línea Porcelanatos",
-    title: "Porcelanatos Importados · Colección China",
+    title: "Porcelanatos Importados",
     description: "Curamos esta colección pensando en la máxima calidad de diseño para espacios corporativos y edificios de alta gama. Pulidos, mate y brillante, granulados, carving y Posh.",
-    origin: "Importado China",
+    origin: "Importado",
     fileUrl: "/catalogos/china_porcelanatos.pdf",
   },
   {
@@ -45,9 +45,9 @@ export const officialCatalogs: OfficialCatalog[] = [
     id: "cat-viguetas",
     family: "Viguetas",
     title: "Viguetas Pretensadas",
-    description: "Elementos estructurales pretensados de alta resistencia para cubiertas y entrepisos. Aprobadas por la Universidad Nacional de Jan Juan como uso Antisismico",
+    description: "Elementos estructurales pretensados de alta resistencia para cubiertas y entrepisos. Aprobadas por la Universidad Nacional de San Juan como uso Antisismico",
     origin: "Salteña",
-    fileUrl: "/catalogos/viguetas_presentadas.pdf",
+    fileUrl: "/catalogos/viguetas.pdf",
     certificateUrl: "/catalogos/certificado_viguetas.pdf",
   },
   {
