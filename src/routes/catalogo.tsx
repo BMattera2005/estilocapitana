@@ -41,9 +41,9 @@ function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
 const FILTER_IDS = filters.map((filter) => filter.id);
 
 export const Route = createFileRoute("/catalogo")({
-  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter } => {
-    const linea = typeof search.linea === "string" ? (search.linea as CatalogFilter) : undefined;
-    return { linea: linea && FILTER_IDS.includes(linea) ? linea : undefined };
+  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter | undefined } => {
+    const linea = typeof search["linea"] === "string" ? (search["linea"] as CatalogFilter) : undefined;
+    return linea && FILTER_IDS.includes(linea) ? { linea } : {};
   },
   head: () =>
     routeMeta({
