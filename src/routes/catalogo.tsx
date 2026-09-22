@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Award, ExternalLink, FileText, MessageCircle } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import chinaAsset from "@/assets/catalogos/china.pdf.asset.json";
 import indiaAsset from "@/assets/catalogos/india.pdf.asset.json";
@@ -38,7 +38,13 @@ function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
   return catalog.id === "cat-eps";
 }
 
+const FILTER_IDS = filters.map((filter) => filter.id);
+
 export const Route = createFileRoute("/catalogo")({
+  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter | undefined } => {
+    const linea = typeof search["linea"] === "string" ? (search["linea"] as CatalogFilter) : undefined;
+    return linea && FILTER_IDS.includes(linea) ? { linea } : {};
+  },
   head: () =>
     routeMeta({
       title: "Catálogos de materiales — estilo.capitana",
@@ -102,7 +108,13 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
 }
 
 function CatalogoPage() {
-  const [activeFilter, setActiveFilter] = useState<CatalogFilter>("todas");
+  const { linea } = Route.useSearch();
+  const [activeFilter, setActiveFilter] = useState<CatalogFilter>(linea ?? "todas");
+
+  useEffect(() => {
+    if (linea) setActiveFilter(linea);
+  }, [linea]);
+
   const visibleCatalogs = useMemo(
     () => officialCatalogs.filter((catalog) => matchesFilter(catalog, activeFilter)),
     [activeFilter],
