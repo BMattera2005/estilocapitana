@@ -11,7 +11,7 @@ export type OfficialCatalog = {
 export const officialCatalogs: OfficialCatalog[] = [
   {
     id: "cat-india",
-    family: "Línea Porcelanatos (India y China)",
+    family: "Línea Porcelanatos",
     title: "Colección Habitat MA · Línea de Porcelanatos (India)",
     description: "Línea especialmente curada y elegida para garantizar máxima rotación del stock. Pisos mates, revestimientos pulidos y la increíble suavidad del pulido mate 'piel de bebe'.",
     origin: "Importado India",
@@ -19,7 +19,7 @@ export const officialCatalogs: OfficialCatalog[] = [
   },
   {
     id: "cat-china",
-    family: "Línea Porcelanatos (India y China)",
+    family: "Línea Porcelanatos",
     title: "Porcelanatos Importados · Colección China",
     description: "Curamos esta colección pensando en la máxima calidad de diseño para espacios corporativos y edificios de alta gama. Pulidos, mate y brillante, granulados, carving y Posh.",
     origin: "Importado China",
@@ -43,8 +43,8 @@ export const officialCatalogs: OfficialCatalog[] = [
   },
   {
     id: "cat-viguetas",
-    family: "Viguetas (Viguetas Salteña)",
-    title: "Viguetas Pretensadas Salteña",
+    family: "Viguetas",
+    title: "Viguetas Pretensadas",
     description: "Elementos estructurales pretensados de alta resistencia para cubiertas y entrepisos. Aprobadas por la Universidad Nacional de Jan Juan como uso Antisismico",
     origin: "Salteña",
     fileUrl: "/catalogos/viguetas_presentadas.pdf",
@@ -52,8 +52,8 @@ export const officialCatalogs: OfficialCatalog[] = [
   },
   {
     id: "cat-eps",
-    family: "EPS Telgopor (EPS Salteña)",
-    title: "EPS Telgopor Salteña",
+    family: "EPS Telgopor",
+    title: "EPS Telgopor",
     description: "Poliestireno expandido para techos alivianados con viguetas, placas termicas y soluciones aislantes.",
     origin: "Salteña",
     fileUrl: "/catalogos/eps_telgopor_aislaciones.pdf",

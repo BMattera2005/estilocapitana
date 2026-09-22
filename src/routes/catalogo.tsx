@@ -14,7 +14,7 @@ type CatalogFilter = "todas" | "porcelanatos" | "ferrazzano" | "viguetas" | "eps
 
 const filters: { id: CatalogFilter; label: string }[] = [
   { id: "todas", label: "Todas las Líneas" },
-  { id: "porcelanatos", label: "Porcelanatos (India y China)" },
+  { id: "porcelanatos", label: "Línea Porcelanatos" },
   { id: "ferrazzano", label: "Línea Ferrazzano" },
   { id: "viguetas", label: "Viguetas" },
   { id: "eps", label: "EPS Telgopor" },
@@ -32,7 +32,7 @@ function catalogHref(catalog: OfficialCatalog) {
 
 function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
   if (filter === "todas") return true;
-  if (filter === "porcelanatos") return catalog.family === "Línea Porcelanatos (India y China)";
+  if (filter === "porcelanatos") return catalog.family === "Línea Porcelanatos";
   if (filter === "ferrazzano") return catalog.family === "Línea Ferrazzano (Salteña)";
   if (filter === "viguetas") return catalog.id === "cat-viguetas";
   return catalog.id === "cat-eps";
