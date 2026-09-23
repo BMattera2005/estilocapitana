@@ -15,7 +15,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     title: "Colección Habitat MA · Línea de Porcelanatos",
     description: "Línea especialmente curada y elegida para garantizar máxima rotación del stock. Pisos mates, revestimientos pulidos y la increíble suavidad del pulido mate 'piel de bebe'.",
     origin: "Importado",
-    fileUrl: "/catalogos/india_porcelanatos_coleccion.pdf",
+    fileUrl: "/catalogos/coleccion_habitat_MA.pdf",
   },
   {
     id: "cat-china",
@@ -23,7 +23,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     title: "Slabs de Sintered Stone",
     description: "Superficies de Sintered Stone seleccionadas para espacios corporativos y edificios de alta gama. Terminaciones pulidas, mate, brillantes, granuladas, carving y Posh.",
     origin: "Sintered Stone",
-    fileUrl: "/catalogos/china_porcelanatos.pdf",
+    fileUrl: "/catalogos/slabs_sinteres_stone.pdf",
   },
   {
     id: "cat-ferrazzano-36",
@@ -31,7 +31,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     title: "Línea Ferrazzano · Formato 36x36cm",
     description: "Línea pensada y respetada con tradición. Calidad superior en el rango de formato. Diseñados con ingeniería y aprobación de pliegos licitatorios.",
     origin: "Salteña",
-    fileUrl: "/catalogos/saltena_ceramica_36x36.pdf",
+    fileUrl: "/catalogos/ferrazzano_36x36.pdf",
   },
   {
     id: "cat-ferrazzano-43",
@@ -39,7 +39,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     title: "Línea Ferrazzano · Formato 43x43cm",
     description: "Nuestra línea pensada para mayor rotación de tus activos. Productos atractivos, excelente relación precio/formato y un plus de diseño y prestaciones.",
     origin: "Salteña",
-    fileUrl: "/catalogos/saltena_ceramica_43x43.pdf",
+    fileUrl: "/catalogos/ferrazzano_43x43.pdf",
   },
   {
     id: "cat-viguetas",
