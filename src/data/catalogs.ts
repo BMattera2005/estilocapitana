@@ -23,7 +23,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     title: "Slabs de Sintered Stone",
     description: "Superficies de Sintered Stone seleccionadas para espacios corporativos y edificios de alta gama. Terminaciones pulidas, mate, brillantes, granuladas, carving y Posh.",
     origin: "Sintered Stone",
-    fileUrl: "/catalogos/slabs_sinteres_stone.pdf",
+    fileUrl: "/catalogos/slabs_sintered_stone.pdf",
   },
   {
     id: "cat-ferrazzano-36",
