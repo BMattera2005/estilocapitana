@@ -5,7 +5,7 @@ export const siteConfig = {
   partnerName: "Salteña Equipamientos & Suministros",
   description: "Agencia comercial especializada en materiales de arquitectura",
   contact: {
-    whatsapp: "+54 9 351 267-5960",
+    whatsapp: "+54 9 11 6120-8162",
     whatsappNumber: "5491161208162",
     email: "info@estilocapitana.com",
   },
