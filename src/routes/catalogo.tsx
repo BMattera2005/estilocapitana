@@ -39,7 +39,7 @@ export const Route = createFileRoute("/catalogo")({
   head: () =>
     routeMeta({
       title: "Catálogos de materiales — estilo.capitana",
-      description: "Consultá las líneas comerciales de porcelanatos, Ferrazzano, viguetas y EPS representadas por estilo.capitana.",
+      description: "Consultá las líneas de Sintered Stone, Porcelanato, Pisos Cerámicos, Viguetas Pretensadas y Telgopor de Construcción representadas por estilo.capitana.",
       path: "/catalogo",
     }),
   component: CatalogoPage,
