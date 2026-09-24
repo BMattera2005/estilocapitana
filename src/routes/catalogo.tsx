@@ -6,16 +6,21 @@ import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
 import { officialCatalogs, type OfficialCatalog } from "@/data/catalogs";
 import { buildWhatsAppUrl } from "@/lib/quote-message";
+import { normalizeText } from "@/lib/text";
 
-type CatalogFilter = "todas" | "porcelanatos" | "ferrazzano" | "viguetas" | "eps";
+/** Convierte una línea en slug de URL: "Línea Porcelanatos" -> "linea-porcelanatos". */
+function slugifyLinea(value: string) {
+  return normalizeText(value).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
 
-const filters: { id: CatalogFilter; label: string }[] = [
-  { id: "todas", label: "Todas las Líneas" },
-  { id: "porcelanatos", label: "Línea Porcelanatos" },
-  { id: "ferrazzano", label: "Línea Ferrazzano" },
-  { id: "viguetas", label: "Viguetas" },
-  { id: "eps", label: "EPS Telgopor" },
-];
+// Los filtros se derivan de los datos: cualquier filterGroup nuevo aparece solo.
+const lineFilters = Array.from(new Set(officialCatalogs.map((catalog) => catalog.filterGroup))).map(
+  (group) => ({ id: slugifyLinea(group), label: group }),
+);
+
+type CatalogFilter = "todas" | (string & {});
+
+const FILTER_IDS = lineFilters.map((filter) => filter.id);
 
 function catalogHref(catalog: OfficialCatalog) {
   return catalog.fileUrl;
@@ -23,13 +28,11 @@ function catalogHref(catalog: OfficialCatalog) {
 
 function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
   if (filter === "todas") return true;
-  return catalog.filterGroup === filter;
+  return slugifyLinea(catalog.filterGroup) === filter;
 }
 
-const FILTER_IDS = filters.map((filter) => filter.id);
-
 export const Route = createFileRoute("/catalogo")({
-  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter | undefined } => {
+  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter } => {
     const linea = typeof search["linea"] === "string" ? (search["linea"] as CatalogFilter) : undefined;
     return linea && FILTER_IDS.includes(linea) ? { linea } : {};
   },
@@ -64,7 +67,7 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
       <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
 
       <div className="mt-auto grid gap-2 pt-7">
-        
+        <a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
@@ -74,7 +77,7 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
           Ver / Descargar Catálogo
         </a>
         {catalog.certificateUrl ? (
-          
+          <a
             href={catalog.certificateUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -125,7 +128,20 @@ function CatalogoPage() {
       <section className="brand-watermark-section bg-surface px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar catálogos por línea de productos">
-            {filters.map((filter) => {
+            <Button
+              key="todas"
+              type="button"
+              size="sm"
+              variant="ghost"
+              className={activeFilter === "todas"
+                ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
+                : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"}
+              aria-pressed={activeFilter === "todas"}
+              onClick={() => setActiveFilter("todas")}
+            >
+              Todas las Líneas
+            </Button>
+            {lineFilters.map((filter) => {
               const isActive = activeFilter === filter.id;
               return (
                 <Button
