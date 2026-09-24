@@ -1,8 +1,8 @@
 export interface CatalogItem {
   id: string;
-  origin: string;       // El raviolito verde: "Novedad Importada" / "Industria Argentina"
-  category: string;     // El texto azul: "Sintered Stone", "Pisos Cerámicos", etc.
-  title: string;        // El título principal
+  origin: "Novedad Importada" | "Industria Argentina"; // Raviolito verde
+  category: string;                                    // Texto azul (las 5 familias limpias)
+  title: string;                                       // Título principal
   description: string;
   fileUrl: string;
   certificateUrl?: string;
@@ -14,7 +14,7 @@ export const officialCatalogs: CatalogItem[] = [
     origin: "Novedad Importada",
     category: "Sintered Stone",
     title: "Habitat - Full Body",
-    description: "Superficies de Sintered Stone Full Body para mesadas, solados y arquitectura de alta gama.",
+    description: "Superficies de Sintered Stone Full Body de máxima resistencia para mesadas, solados y arquitectura de alta gama.",
     fileUrl: "/catalogos/habitat_ma_full_body.pdf",
   },
   {
@@ -22,7 +22,7 @@ export const officialCatalogs: CatalogItem[] = [
     origin: "Novedad Importada",
     category: "Sintered Stone",
     title: "Habitat - Láminas 120x270",
-    description: "Placas XL Sintered Stone en 120x270 cm. Mínima cantidad de juntas y continuidad visual extrema.",
+    description: "Placas XL Sintered Stone en formato 120x270 cm. Mínima cantidad de juntas y continuidad visual extrema.",
     fileUrl: "/catalogos/slabs_sintered_stone.pdf",
   },
   {
@@ -30,7 +30,7 @@ export const officialCatalogs: CatalogItem[] = [
     origin: "Novedad Importada",
     category: "Porcelanato",
     title: "Habitat - Porcelanato Esmaltado",
-    description: "Línea completa de porcelanatos esmaltados en acabados Glossy, Carving y Velvet de alta gama.",
+    description: "Línea completa de porcelanatos esmaltados en acabados Glossy, Carving y Velvet de alta rotación.",
     fileUrl: "/catalogos/coleccion_habitat_MA.pdf",
   },
   {
@@ -61,7 +61,7 @@ export const officialCatalogs: CatalogItem[] = [
   {
     id: "cat-eps",
     origin: "Industria Argentina",
-    category: "Telgopor de Construcción",
+    category: "Telgopor de Construccion",
     title: "EPS Famapol",
     description: "Bovedillas y paneles de poliestireno expandido para techos alivianados y aislación térmica superior.",
     fileUrl: "/catalogos/eps_telgopor_aislaciones.pdf",
