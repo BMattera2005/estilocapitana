@@ -1,61 +1,69 @@
-export type OfficialCatalog = {
+export interface CatalogItem {
   id: string;
-  family: string;
-  title: string;
+  badge: "Novedad Importada" | "Industria Argentina"; // Raviolito verde
+  category: string; // Texto azul
+  title: string; // Título principal
   description: string;
-  origin: string;
   fileUrl: string;
   certificateUrl?: string;
-};
+}
 
-export const officialCatalogs: OfficialCatalog[] = [
+export const officialCatalogs: CatalogItem[] = [
   {
-    id: "cat-india",
-    family: "Línea Porcelanatos",
-    title: "Colección Habitat MA · Línea de Porcelanatos",
-    description: "Línea especialmente curada y elegida para garantizar máxima rotación del stock. Pisos mates, revestimientos pulidos y la increíble suavidad del pulido mate 'piel de bebe'.",
-    origin: "Importado",
-    fileUrl: "/catalogos/coleccion_habitat_MA.pdf",
+    id: "cat-habitat-full-body",
+    badge: "Novedad Importada",
+    category: "Sintered Stone",
+    title: "Habitat - Full Body",
+    description: "Superficies de Sintered Stone Full Body de máxima resistencia para mesadas, solados y arquitectura de alta gama.",
+    fileUrl: "/catalogos/habitat_ma_full_body.pdf",
   },
   {
-    id: "cat-china",
-    family: "Línea Porcelanatos",
-    title: "Slabs de Sintered Stone",
-    description: "Superficies de Sintered Stone seleccionadas para espacios corporativos y edificios de alta gama. Terminaciones pulidas, mate, brillantes, granuladas, carving y Posh.",
-    origin: "Sintered Stone",
+    id: "cat-habitat-laminas",
+    badge: "Novedad Importada",
+    category: "Sintered Stone",
+    title: "Habitat - Láminas 120x270",
+    description: "Placas XL Sintered Stone en formato 120x270 cm. Mínima cantidad de juntas y continuidad visual extrema.",
     fileUrl: "/catalogos/slabs_sintered_stone.pdf",
   },
   {
+    id: "cat-habitat-porcelanato",
+    badge: "Novedad Importada",
+    category: "Porcelanato",
+    title: "Habitat - Porcelanato Esmaltado",
+    description: "Línea completa de porcelanatos esmaltados en acabados Glossy, Carving y Velvet de alta gama.",
+    fileUrl: "/catalogos/coleccion_habitat_MA.pdf",
+  },
+  {
     id: "cat-ferrazzano-36",
-    family: "Línea Ferrazzano",
-    title: "Línea Ferrazzano · Formato 36x36cm",
-    description: "Línea pensada y respetada con tradición. Calidad superior en el rango de formato. Diseñados con ingeniería y aprobación de pliegos licitatorios.",
-    origin: "Salteña",
+    badge: "Industria Argentina",
+    category: "Pisos Cerámicos",
+    title: "Ferrazzano - Pisos 36x36cm",
+    description: "Pisos cerámicos de fabricación tradicional Salteña en formato 36x36 cm, diseñados con ingeniería de pliegos.",
     fileUrl: "/catalogos/ferrazzano_36x36.pdf",
   },
   {
     id: "cat-ferrazzano-43",
-    family: "Línea Ferrazzano",
-    title: "Línea Ferrazzano · Formato 43x43cm",
-    description: "Nuestra línea pensada para mayor rotación de tus activos. Productos atractivos, excelente relación precio/formato y un plus de diseño y prestaciones.",
-    origin: "Salteña",
+    badge: "Industria Argentina",
+    category: "Pisos Cerámicos",
+    title: "Ferrazzano - Pisos 43x43cm",
+    description: "Línea pensada para mayor rotación de stock con excelente relación precio/formato y variedad antideslizante.",
     fileUrl: "/catalogos/ferrazzano_43x43.pdf",
   },
   {
     id: "cat-viguetas",
-    family: "Viguetas",
-    title: "Viguetas de Hormigón Pretensado",
-    description: "Elementos estructurales de hormigón pretensado de alta resistencia para cubiertas y entrepisos. Aprobadas por la Universidad Nacional de San Juan para uso antisísmico.",
-    origin: "Salteña",
+    badge: "Industria Argentina",
+    category: "Viguetas Pretensadas",
+    title: "Vigueta Perfecta",
+    description: "Viguetas pretensadas de hormigón para techos y entrepisos. Tablas de cálculo y memoria estructural.",
     fileUrl: "/catalogos/viguetas.pdf",
     certificateUrl: "/catalogos/certificado_viguetas.pdf",
   },
   {
     id: "cat-eps",
-    family: "EPS Telgopor",
-    title: "EPS Telgopor",
-    description: "Poliestireno expandido para techos alivianados con viguetas, placas termicas y soluciones aislantes.",
-    origin: "Salteña",
+    badge: "Industria Argentina",
+    category: "Telgopor de Construcción",
+    title: "EPS Famapol",
+    description: "Bovedillas y paneles de poliestireno expandido para techos alivianados y aislación térmica superior.",
     fileUrl: "/catalogos/eps_telgopor_aislaciones.pdf",
   },
 ];
