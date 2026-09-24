@@ -23,10 +23,7 @@ function catalogHref(catalog: OfficialCatalog) {
 
 function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
   if (filter === "todas") return true;
-  if (filter === "porcelanatos") return catalog.family === "Línea Porcelanatos";
-  if (filter === "ferrazzano") return catalog.family === "Línea Ferrazzano";
-  if (filter === "viguetas") return catalog.id === "cat-viguetas";
-  return catalog.id === "cat-eps";
+  return catalog.filterGroup === filter;
 }
 
 const FILTER_IDS = filters.map((filter) => filter.id);
@@ -62,12 +59,12 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
         </span>
       </div>
 
-      <p className="mt-7 text-xs font-normal uppercase text-primary">{catalog.family}</p>
+      <p className="mt-7 text-xs font-normal uppercase text-primary">{catalog.category}</p>
       <h2 className="mt-3 text-xl font-semibold leading-snug text-foreground">{catalog.title}</h2>
       <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
 
       <div className="mt-auto grid gap-2 pt-7">
-        <a
+        
           href={href}
           target="_blank"
           rel="noopener noreferrer"
@@ -77,7 +74,7 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
           Ver / Descargar Catálogo
         </a>
         {catalog.certificateUrl ? (
-          <a
+          
             href={catalog.certificateUrl}
             target="_blank"
             rel="noopener noreferrer"
