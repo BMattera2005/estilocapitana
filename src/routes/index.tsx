@@ -7,10 +7,10 @@ import { routeMeta } from "@/config/seo";
 import { officialCatalogs } from "@/data/catalogs";
 
 const productFamilies = [
-  { filter: "porcelanatos", title: "Línea Porcelanatos", detail: "Porcelanatos seleccionados y Slabs de Sintered Stone para proyectos corporativos y edificios de alta gama.", icon: PanelsTopLeft },
-  { filter: "ferrazzano", title: "Línea Ferrazzano", detail: "Cerámicos Salteña de 36x36 cm y 43x43 cm, concebidos para rendimiento, diseño y rotación.", icon: Layers3 },
+  { filter: "linea-porcelanatos", title: "Línea Porcelanatos", detail: "Porcelanatos seleccionados y Slabs de Sintered Stone para proyectos corporativos y edificios de alta gama.", icon: PanelsTopLeft },
+  { filter: "linea-ferrazzano", title: "Línea Ferrazzano", detail: "Cerámicos Salteña de 36x36 cm y 43x43 cm, concebidos para rendimiento, diseño y rotación.", icon: Layers3 },
   { filter: "viguetas", title: "Viguetas de Hormigón Pretensado", detail: "Elementos estructurales de alta resistencia para cubiertas y entrepisos.", icon: Blocks },
-  { filter: "eps", title: "EPS Telgopor", detail: "Soluciones livianas y aislantes para sistemas de techos con viguetas y aplicaciones térmicas.", icon: FileText },
+  { filter: "eps-telgopor", title: "EPS Telgopor", detail: "Soluciones livianas y aislantes para sistemas de techos con viguetas y aplicaciones térmicas.", icon: FileText },
 ] as const;
 
 export const Route = createFileRoute("/")({
