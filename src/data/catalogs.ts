@@ -1,8 +1,8 @@
 export interface CatalogItem {
   id: string;
-  badge: "Novedad Importada" | "Industria Argentina"; // Raviolito verde
-  category: string; // Texto azul
-  title: string; // Título principal
+  origin: string;       // El raviolito verde: "Novedad Importada" / "Industria Argentina"
+  category: string;     // El texto azul: "Sintered Stone", "Pisos Cerámicos", etc.
+  title: string;        // El título principal
   description: string;
   fileUrl: string;
   certificateUrl?: string;
@@ -11,23 +11,23 @@ export interface CatalogItem {
 export const officialCatalogs: CatalogItem[] = [
   {
     id: "cat-habitat-full-body",
-    badge: "Novedad Importada",
+    origin: "Novedad Importada",
     category: "Sintered Stone",
     title: "Habitat - Full Body",
-    description: "Superficies de Sintered Stone Full Body de máxima resistencia para mesadas, solados y arquitectura de alta gama.",
+    description: "Superficies de Sintered Stone Full Body para mesadas, solados y arquitectura de alta gama.",
     fileUrl: "/catalogos/habitat_ma_full_body.pdf",
   },
   {
     id: "cat-habitat-laminas",
-    badge: "Novedad Importada",
+    origin: "Novedad Importada",
     category: "Sintered Stone",
     title: "Habitat - Láminas 120x270",
-    description: "Usos en arquitectura de mesas de altas prestaciones, countertop o mesadas técnicas. Resistente a agentes químicos.",
+    description: "Placas XL Sintered Stone en 120x270 cm. Mínima cantidad de juntas y continuidad visual extrema.",
     fileUrl: "/catalogos/slabs_sintered_stone.pdf",
   },
   {
     id: "cat-habitat-porcelanato",
-    badge: "Novedad Importada",
+    origin: "Novedad Importada",
     category: "Porcelanato",
     title: "Habitat - Porcelanato Esmaltado",
     description: "Línea completa de porcelanatos esmaltados en acabados Glossy, Carving y Velvet de alta gama.",
@@ -35,7 +35,7 @@ export const officialCatalogs: CatalogItem[] = [
   },
   {
     id: "cat-ferrazzano-36",
-    badge: "Industria Argentina",
+    origin: "Industria Argentina",
     category: "Pisos Cerámicos",
     title: "Ferrazzano - Pisos 36x36cm",
     description: "Pisos cerámicos de fabricación tradicional Salteña en formato 36x36 cm, diseñados con ingeniería de pliegos.",
@@ -43,7 +43,7 @@ export const officialCatalogs: CatalogItem[] = [
   },
   {
     id: "cat-ferrazzano-43",
-    badge: "Industria Argentina",
+    origin: "Industria Argentina",
     category: "Pisos Cerámicos",
     title: "Ferrazzano - Pisos 43x43cm",
     description: "Línea pensada para mayor rotación de stock con excelente relación precio/formato y variedad antideslizante.",
@@ -51,7 +51,7 @@ export const officialCatalogs: CatalogItem[] = [
   },
   {
     id: "cat-viguetas",
-    badge: "Industria Argentina",
+    origin: "Industria Argentina",
     category: "Viguetas Pretensadas",
     title: "Vigueta Perfecta",
     description: "Viguetas pretensadas de hormigón para techos y entrepisos. Tablas de cálculo y memoria estructural.",
@@ -60,7 +60,7 @@ export const officialCatalogs: CatalogItem[] = [
   },
   {
     id: "cat-eps",
-    badge: "Industria Argentina",
+    origin: "Industria Argentina",
     category: "Telgopor de Construcción",
     title: "EPS Famapol",
     description: "Bovedillas y paneles de poliestireno expandido para techos alivianados y aislación térmica superior.",
