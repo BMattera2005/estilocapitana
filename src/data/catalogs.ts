@@ -22,7 +22,7 @@ export const officialCatalogs: CatalogItem[] = [
     badge: "Novedad Importada",
     category: "Sintered Stone",
     title: "Habitat - Láminas 120x270",
-    description: "Placas XL Sintered Stone en formato 120x270 cm. Mínima cantidad de juntas y continuidad visual extrema.",
+    description: "Usos en arquitectura de mesas de altas prestaciones, countertop o mesadas técnicas. Resistente a agentes químicos.",
     fileUrl: "/catalogos/slabs_sintered_stone.pdf",
   },
   {
