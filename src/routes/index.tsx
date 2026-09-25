@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Blocks, FileText, Layers3, MessageCircle, PanelsTopLeft } from "lucide-react";
+import { ArrowRight, Blocks, FileText, Grid3x3, Layers3, MessageCircle, PanelsTopLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
@@ -7,10 +7,11 @@ import { routeMeta } from "@/config/seo";
 import { officialCatalogs } from "@/data/catalogs";
 
 const productFamilies = [
-  { filter: "porcelanatos", title: "Línea Porcelanatos", detail: "Porcelanatos seleccionados y Slabs de Sintered Stone para proyectos corporativos y edificios de alta gama.", icon: PanelsTopLeft },
-  { filter: "ferrazzano", title: "Línea Ferrazzano", detail: "Cerámicos Salteña de 36x36 cm y 43x43 cm, concebidos para rendimiento, diseño y rotación.", icon: Layers3 },
-  { filter: "viguetas", title: "Viguetas de Hormigón Pretensado", detail: "Elementos estructurales de alta resistencia para cubiertas y entrepisos.", icon: Blocks },
-  { filter: "eps", title: "EPS Telgopor", detail: "Soluciones livianas y aislantes para sistemas de techos con viguetas y aplicaciones térmicas.", icon: FileText },
+  { filter: "sintered-stone", title: "Sintered Stone", detail: "Full Body y Láminas 120x270 para arquitectura de alta gama con máxima resistencia.", icon: Layers3 },
+  { filter: "porcelanato", title: "Porcelanato", detail: "Porcelanatos esmaltados en acabados Glossy, Carving y Velvet de alta rotación.", icon: PanelsTopLeft },
+  { filter: "pisos-ceramicos", title: "Pisos Cerámicos", detail: "Ferrazzano en formatos 36x36 cm y 43x43 cm, diseñados para rendimiento y rotación.", icon: Grid3x3 },
+  { filter: "viguetas-pretensadas", title: "Viguetas Pretensadas", detail: "Vigueta Perfecta: elementos estructurales de alta resistencia para cubiertas y entrepisos.", icon: Blocks },
+  { filter: "telgopor-de-construccion", title: "Telgopor de Construcción", detail: "EPS Famapol: bovedillas y paneles para techos alivianados y aislación térmica.", icon: FileText },
 ] as const;
 
 export const Route = createFileRoute("/")({
@@ -55,8 +56,8 @@ function Index() {
        <section className="brand-watermark-section bg-surface px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-normal uppercase text-primary">Líneas comerciales</p>
-          <h2 className="mt-3 max-w-3xl text-3xl font-semibold text-foreground sm:text-4xl">Cuatro líneas de productos para proyectos y canales profesionales</h2>
-          <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <h2 className="mt-3 max-w-3xl text-3xl font-semibold text-foreground sm:text-4xl">Cinco líneas de productos para proyectos y canales profesionales</h2>
+          <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
             {productFamilies.map((family) => {
               const Icon = family.icon;
               return (

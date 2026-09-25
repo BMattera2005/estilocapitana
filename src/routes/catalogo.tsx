@@ -6,16 +6,21 @@ import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
 import { officialCatalogs, type OfficialCatalog } from "@/data/catalogs";
 import { buildWhatsAppUrl } from "@/lib/quote-message";
+import { normalizeText } from "@/lib/text";
 
-type CatalogFilter = "todas" | "porcelanatos" | "ferrazzano" | "viguetas" | "eps";
+/** Convierte una línea en slug de URL: "Línea Porcelanatos" -> "linea-porcelanatos". */
+function slugifyLinea(value: string) {
+  return normalizeText(value).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
 
-const filters: { id: CatalogFilter; label: string }[] = [
-  { id: "todas", label: "Todas las Líneas" },
-  { id: "porcelanatos", label: "Línea Porcelanatos" },
-  { id: "ferrazzano", label: "Línea Ferrazzano" },
-  { id: "viguetas", label: "Viguetas" },
-  { id: "eps", label: "EPS Telgopor" },
-];
+// Los filtros se derivan de los datos: cualquier filterGroup nuevo aparece solo.
+const lineFilters = Array.from(new Set(officialCatalogs.map((catalog) => catalog.filterGroup))).map(
+  (group) => ({ id: slugifyLinea(group), label: group }),
+);
+
+type CatalogFilter = "todas" | (string & {});
+
+const FILTER_IDS = lineFilters.map((filter) => filter.id);
 
 function catalogHref(catalog: OfficialCatalog) {
   return catalog.fileUrl;
@@ -23,23 +28,18 @@ function catalogHref(catalog: OfficialCatalog) {
 
 function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
   if (filter === "todas") return true;
-  if (filter === "porcelanatos") return catalog.family === "Línea Porcelanatos";
-  if (filter === "ferrazzano") return catalog.family === "Línea Ferrazzano";
-  if (filter === "viguetas") return catalog.id === "cat-viguetas";
-  return catalog.id === "cat-eps";
+  return slugifyLinea(catalog.filterGroup) === filter;
 }
 
-const FILTER_IDS = filters.map((filter) => filter.id);
-
 export const Route = createFileRoute("/catalogo")({
-  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter | undefined } => {
+  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter } => {
     const linea = typeof search["linea"] === "string" ? (search["linea"] as CatalogFilter) : undefined;
     return linea && FILTER_IDS.includes(linea) ? { linea } : {};
   },
   head: () =>
     routeMeta({
       title: "Catálogos de materiales — estilo.capitana",
-      description: "Consultá las líneas comerciales de porcelanatos, Ferrazzano, viguetas y EPS representadas por estilo.capitana.",
+      description: "Consultá las líneas de Sintered Stone, Porcelanato, Pisos Cerámicos, Viguetas Pretensadas y Telgopor de Construcción representadas por estilo.capitana.",
       path: "/catalogo",
     }),
   component: CatalogoPage,
@@ -62,7 +62,7 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
         </span>
       </div>
 
-      <p className="mt-7 text-xs font-normal uppercase text-primary">{catalog.family}</p>
+      <p className="mt-7 text-xs font-normal uppercase text-primary">{catalog.category}</p>
       <h2 className="mt-3 text-xl font-semibold leading-snug text-foreground">{catalog.title}</h2>
       <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
 
@@ -128,7 +128,20 @@ function CatalogoPage() {
       <section className="brand-watermark-section bg-surface px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar catálogos por línea de productos">
-            {filters.map((filter) => {
+            <Button
+              key="todas"
+              type="button"
+              size="sm"
+              variant="ghost"
+              className={activeFilter === "todas"
+                ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
+                : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"}
+              aria-pressed={activeFilter === "todas"}
+              onClick={() => setActiveFilter("todas")}
+            >
+              Todas las Líneas
+            </Button>
+            {lineFilters.map((filter) => {
               const isActive = activeFilter === filter.id;
               return (
                 <Button
