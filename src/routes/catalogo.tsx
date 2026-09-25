@@ -47,7 +47,7 @@ export const Route = createFileRoute("/catalogo")({
   component: CatalogoPage,
 });
 
-function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
+function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect?: () => void }) {
   const href = catalogHref(catalog);
   const whatsappUrl = buildWhatsAppUrl(
     `Hola estilo.capitana, quisiera consultar stock y cotización de la línea ${catalog.title}.`,
@@ -72,7 +72,7 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
       {catalog.id === "cat-ferrazzano-43" ? (
   <button
     type="button"
-    onClick={() => setSelectedCatalogId("cat-ferrazzano-43")}
+    onClick={onSelect}
     className="inline-flex items-center justify-center px-4 py-2.5 bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer"
   >
     Ver Modelos en Pantalla
@@ -182,7 +182,11 @@ function CatalogoPage() {
           </p>
 
           <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {visibleCatalogs.map((catalog) => <CatalogCard key={catalog.id} catalog={catalog} />)}
+            {visibleCatalogs.map((catalog) =><CatalogCard 
+            key={catalog.id} 
+            catalog={catalog} 
+            onSelect={() => setSelectedCatalogId(catalog.id)} 
+            />)}
           </div>
         </div>
       </section>
