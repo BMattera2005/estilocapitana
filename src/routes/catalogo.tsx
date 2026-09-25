@@ -1,3 +1,5 @@
+import { Catalog43Detail } from '../components/Catalog43Detail';
+
 import { createFileRoute } from "@tanstack/react-router";
 import { Award, ExternalLink, FileText, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -67,15 +69,24 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
       <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
 
       <div className="mt-auto grid gap-2 pt-7">
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-brand-gradient inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        >
-          <ExternalLink aria-hidden="true" className="size-4" />
-          Ver / Descargar Catálogo
-        </a>
+      {catalog.id === "cat-ferrazzano-43" ? (
+  <button
+    type="button"
+    onClick={() => setSelectedCatalogId("cat-ferrazzano-43")}
+    className="inline-flex items-center justify-center px-4 py-2.5 bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer"
+  >
+    Ver Modelos en Pantalla
+  </button>
+) : (
+  <a
+    href={catalog.fileUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center justify-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition-colors"
+  >
+    Ver / Descargar Catálogo
+  </a>
+)}
         {catalog.certificateUrl ? (
           <a
             href={catalog.certificateUrl}
@@ -101,6 +112,7 @@ function CatalogCard({ catalog }: { catalog: OfficialCatalog }) {
 function CatalogoPage() {
   const { linea } = Route.useSearch();
   const [activeFilter, setActiveFilter] = useState<CatalogFilter>(linea ?? "todas");
+  const [selectedCatalogId, setSelectedCatalogId] = useState<string | null>(null);
 
   useEffect(() => {
     if (linea) setActiveFilter(linea);
@@ -110,7 +122,11 @@ function CatalogoPage() {
     () => officialCatalogs.filter((catalog) => matchesFilter(catalog, activeFilter)),
     [activeFilter],
   );
-
+  
+  if (selectedCatalogId === "cat-ferrazzano-43") {
+  return <Catalog43Detail onBack={() => setSelectedCatalogId(null)} />;
+}
+  
   return (
     <div>
       <section className="brand-watermark-section border-b border-border bg-background px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
