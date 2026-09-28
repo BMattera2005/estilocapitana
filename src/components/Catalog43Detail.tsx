@@ -41,7 +41,7 @@ export function Catalog43Detail({ onBack }: Catalog43DetailProps) {
             className="-ml-3 mb-5 text-primary hover:bg-accent hover:text-accent-foreground"
           >
             <ArrowLeft aria-hidden="true" />
-            Volver a la Shop
+            Volver a los Catálogos
           </Button>
 
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
