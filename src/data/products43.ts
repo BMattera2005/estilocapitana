@@ -20,7 +20,7 @@ export interface CeramicProduct {
   image: string; // Ruta a public/products/43x43/
 }
 
-export const packingStandard43 = {
+export const packingStandard43: CeramicProduct["packaging"] = {
   piecesPerBox: 12,
   sqmPerBox: 2.25,
   kgPerBox: 32,
