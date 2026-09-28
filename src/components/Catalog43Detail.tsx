@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
-import { products43x43, CeramicProduct } from '../data/products43';
-import { buildStockWhatsAppUrl } from '@/lib/contact-links'; // O tu helper de WhatsApp
+import { ArrowLeft, Download, MessageCircle, Search } from "lucide-react";
+import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/config/site";
+import { products43x43, type CeramicProduct } from "@/data/products43";
 
 interface Catalog43DetailProps {
   onBack: () => void;
 }
 
-export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
-  const [selectedFinish, setSelectedFinish] = useState<string>('Todos');
-  const [search, setSearch] = useState<string>('');
+export function Catalog43Detail({ onBack }: Catalog43DetailProps) {
+  const [selectedFinish, setSelectedFinish] = useState("Todos");
+  const [search, setSearch] = useState("");
 
-  const finishes = ['Todos', 'Brillante', 'Satinado', 'Mate con Granilla', 'Colonial'];
+  const finishes = ["Todos", "Brillante", "Satinado", "Mate con Granilla", "Colonial"];
 
   const filteredProducts = products43x43.filter((prod) => {
-    const matchesFinish = selectedFinish === 'Todos' || prod.finish === selectedFinish;
+    const matchesFinish = selectedFinish === "Todos" || prod.finish === selectedFinish;
     const matchesSearch = prod.name.toLowerCase().includes(search.toLowerCase()) ||
                           prod.line.toLowerCase().includes(search.toLowerCase()) ||
                           prod.designType.toLowerCase().includes(search.toLowerCase());
@@ -22,145 +25,148 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
 
   const handleWhatsAppQuote = (product: CeramicProduct) => {
     const message = `Hola Estilo Capitana, me interesa cotizar el piso cerámico ${product.name} (Formato ${product.format}, Acabado ${product.finish}). Quisiera consultar disponibilidad y precio por m².`;
-    const url = `https://wa.me/5493512675960?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
+    const url = `https://wa.me/${siteConfig.contact.whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Barra superior de navegación */}
-      <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
-        <div>
-          <button 
+    <div className="bg-surface px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+      <section className="mx-auto max-w-7xl overflow-hidden rounded-lg border border-border bg-background shadow-industrial">
+        <header className="brand-watermark-section px-5 py-6 sm:px-8 sm:py-8">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
             onClick={onBack}
-            className="text-sm font-semibold text-sky-600 hover:text-sky-700 flex items-center gap-1 mb-2"
+            className="-ml-3 mb-5 text-primary hover:bg-accent hover:text-accent-foreground"
           >
-            ← Volver a todos los catálogos
-          </button>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 uppercase tracking-wide">
-              Industria Argentina
-            </span>
-            <span className="text-xs font-bold text-sky-600 uppercase tracking-wide">
-              Pisos Cerámicos
-            </span>
+            <ArrowLeft aria-hidden="true" />
+            Volver a la Shop
+          </Button>
+
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-full bg-accent px-3 py-1 text-xs font-normal text-accent-foreground">
+                  Industria Argentina
+                </span>
+                <span className="text-xs font-semibold uppercase text-primary">Shop · Pisos Cerámicos</span>
+              </div>
+              <h1 className="mt-3 text-3xl font-bold leading-tight text-foreground sm:text-4xl">
+                Ferrazzano 43×43 cm
+              </h1>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+                Cerámica Salteña · 2,25 m² por caja · 12 piezas · 32 kg · Pallet de 48 cajas
+              </p>
+            </div>
+
+            <Button asChild variant="industrial" className="shrink-0">
+              <a href="/catalogos/ferrazzano_43x43.pdf" target="_blank" rel="noopener noreferrer">
+                <Download aria-hidden="true" />
+                Ver / descargar catálogo
+              </a>
+            </Button>
           </div>
-          <h1 className="text-3xl font-extrabold text-neutral-900 mt-1">
-            Ferrazzano — Formato 43×43 cm
-          </h1>
-          <p className="text-neutral-500 text-sm mt-1">
-            Cerámica Salteña · Rendimiento estándar: 2.25 m² por caja (12 piezas / 32 kg) · Pallet de 48 cajas (108 m²)
+        </header>
+
+        <div className="border-y border-border bg-surface px-5 py-5 sm:px-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar modelos por acabado">
+              {finishes.map((finish) => {
+                const isActive = selectedFinish === finish;
+                return (
+                  <Button
+                    key={finish}
+                    type="button"
+                    size="sm"
+                    variant={isActive ? "industrial" : "industrialOutline"}
+                    aria-pressed={isActive}
+                    onClick={() => setSelectedFinish(finish)}
+                  >
+                    {finish}
+                  </Button>
+                );
+              })}
+            </div>
+
+            <label className="relative block w-full lg:w-96">
+              <span className="sr-only">Buscar modelo o diseño</span>
+              <Search aria-hidden="true" className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="search"
+                placeholder="Buscar modelo o diseño"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                className="min-h-11 w-full rounded-md border border-input bg-background py-2 pl-10 pr-4 text-sm text-foreground shadow-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/30"
+              />
+            </label>
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground" aria-live="polite">
+            {filteredProducts.length} {filteredProducts.length === 1 ? "modelo disponible" : "modelos disponibles"}
           </p>
         </div>
 
-        <a
-          href="/catalogos/ferrazzano_43x43.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-4 py-2 border border-neutral-300 rounded-lg text-sm font-bold text-neutral-700 hover:bg-neutral-50 shadow-sm"
-        >
-          Descargar Catálogo Completo (PDF) ↓
-        </a>
-      </div>
-
-      {/* Controles de Filtro y Búsqueda */}
-      <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
-        <div className="flex flex-wrap gap-2">
-          {finishes.map((f) => (
-            <button
-              key={f}
-              onClick={() => setSelectedFinish(f)}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
-                selectedFinish === f
-                  ? 'bg-neutral-900 text-white'
-                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-              }`}
+        <div className="grid grid-cols-1 gap-6 p-5 sm:grid-cols-2 sm:p-8 lg:grid-cols-3 xl:grid-cols-4">
+          {filteredProducts.map((product) => (
+            <article
+              key={product.id}
+              className="group flex min-h-[27rem] flex-col overflow-hidden rounded-lg border border-border bg-card shadow-glass transition-all duration-200 hover:-translate-y-1 hover:border-border-strong hover:shadow-industrial"
             >
-              {f}
-            </button>
-          ))}
-        </div>
-
-        <input
-          type="text"
-          placeholder="Buscar por modelo o diseño (madera, mármol, cemento)..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border border-neutral-200 rounded-lg px-3 py-2 text-sm w-full md:w-80 focus:outline-none focus:ring-1 focus:ring-sky-500"
-        />
-      </div>
-
-      {/* Grilla de Modelos */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map((p) => (
-          <div
-            key={p.id}
-            className="border border-neutral-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow"
-          >
-            <div>
-              {/* Contenedor de Imagen con Fallback */}
-              <div className="w-full h-48 bg-neutral-100 relative overflow-hidden flex items-center justify-center">
+              <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-surface-elevated">
+                <div className="p-6 text-center">
+                  <span className="mb-2 block text-xs font-semibold uppercase text-muted-foreground">
+                    {product.designType}
+                  </span>
+                  <span className="text-base font-semibold text-foreground">{product.name}</span>
+                </div>
                 <img
-                  src={p.image}
-                  alt={p.name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // Si no encuentra la foto, muestra un placeholder prolijo
-                    e.currentTarget.style.display = 'none';
+                  src={product.image}
+                  alt={`Modelo ${product.name}`}
+                  className="absolute inset-0 size-full object-cover transition-transform duration-200 motion-safe:group-hover:scale-[1.02]"
+                  onError={(event) => {
+                    event.currentTarget.style.display = "none";
                   }}
                 />
-                <div className="text-center p-4">
-                  <span className="text-xs uppercase tracking-widest text-neutral-400 font-bold block mb-1">
-                    {p.designType}
-                  </span>
-                  <span className="text-base font-bold text-neutral-700">
-                    {p.name}
-                  </span>
-                </div>
-
-                <span className="absolute top-2 right-2 bg-neutral-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded">
-                  {p.finish}
+                <span className="absolute right-3 top-3 rounded-full bg-overlay px-2.5 py-1 text-[10px] font-semibold text-primary-foreground">
+                  {product.finish}
                 </span>
               </div>
 
-              {/* Ficha Técnica */}
-              <div className="p-4">
-                <div className="text-[11px] font-semibold text-neutral-500 uppercase">
-                  {p.line} · {p.colorOrDesign}
-                </div>
-                <h3 className="text-lg font-bold text-neutral-900 mb-2">
-                  {p.name}
-                </h3>
+              <div className="flex flex-1 flex-col p-5">
+                <p className="text-[11px] font-normal uppercase text-primary">
+                  {product.line} · {product.colorOrDesign}
+                </p>
+                <h2 className="mt-2 text-lg font-semibold text-foreground">{product.name}</h2>
 
-                <div className="space-y-1 text-xs text-neutral-600 border-t border-neutral-100 pt-2">
-                  <div className="flex justify-between">
-                    <span>Tránsito / Resistencia:</span>
-                    <span className="font-semibold text-neutral-800">{p.traffic.split(' ')[0]}</span>
+                <dl className="mt-4 space-y-2 border-t border-border pt-4 text-xs text-muted-foreground">
+                  <div className="flex justify-between gap-3">
+                    <dt>Tránsito / Resistencia</dt>
+                    <dd className="text-right font-semibold text-foreground">{product.traffic}</dd>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Caras / Trama:</span>
-                    <span className="font-semibold text-neutral-800">{p.faces} caras</span>
+                  <div className="flex justify-between gap-3">
+                    <dt>Caras / Trama</dt>
+                    <dd className="text-right font-semibold text-foreground">{product.faces}</dd>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Empaque por caja:</span>
-                    <span className="font-semibold text-neutral-800">2.25 m² (32 kg)</span>
+                  <div className="flex justify-between gap-3">
+                    <dt>Empaque por caja</dt>
+                    <dd className="text-right font-semibold text-foreground">2,25 m² · 32 kg</dd>
                   </div>
-                </div>
+                </dl>
+
+                <Button
+                  type="button"
+                  variant="industrial"
+                  className="mt-auto w-full whitespace-normal pt-4 text-xs"
+                  onClick={() => handleWhatsAppQuote(product)}
+                >
+                  <MessageCircle aria-hidden="true" />
+                  Solicitar cotización por WhatsApp
+                </Button>
               </div>
-            </div>
-
-            {/* Botón WhatsApp Lead */}
-            <div className="p-4 pt-0">
-              <button
-                onClick={() => handleWhatsAppQuote(p)}
-                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors"
-              >
-                <span>Solicitar Cotización por WhatsApp</span>
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
   );
-};
+}

@@ -14,3 +14,5 @@
 - [x] Unificar la comunicación como líneas de productos y quitar puntos finales de los títulos.
 - [x] Precargar consultas de stock en todos los enlaces de correo y WhatsApp.
 - [x] Completar Respaldo industrial con las unidades representadas.
+- [x] Perfeccionar la interfaz Shop del catálogo Ferrazzano 43×43.
+- [x] Restaurar el degradado de marca en los botones principales del catálogo y la Shop.
