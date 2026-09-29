@@ -6,7 +6,7 @@ import { Catalog43Detail } from "../components/Catalog43Detail";
 import { Catalog36Detail } from "../components/Catalog36Detail";
 import { CatalogFullBodyDetail } from "../components/CatalogFullBodyDetail";
 import { CatalogLaminasDetail } from "../components/CatalogLaminasDetail";
-//import { CatalogHabitatPorcelanatoDetail } from "../components/CatalogHabitatPorcelanatoDetail";
+import { CatalogHabitatPorcelanatoDetail } from "../components/CatalogHabitatPorcelanatoDetail";
 
 import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
@@ -78,7 +78,7 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
         {catalog.id === "cat-ferrazzano-43" ||
          catalog.id === "cat-ferrazzano-36" ||
          catalog.id === "cat-habitat-full-body" ||
-         catalog.id === "cat-habitat-laminas"
+         catalog.id === "cat-habitat-laminas" ||
          catalog.id === "cat-habitat-porcelanato"? (
           <button
             type="button"
@@ -151,9 +151,9 @@ function CatalogoPage() {
   return <CatalogLaminasDetail onBack={() => setSelectedCatalogId(null)} />;
 }
 
- // if (selectedCatalogId === "cat-habitat-porcelanato") {
-  //return <CatalogHabitatPorcelanatoDetail onBack={() => setSelectedCatalogId(null)} />;
-//}
+  if (selectedCatalogId === "cat-habitat-porcelanato") {
+  return <CatalogHabitatPorcelanatoDetail onBack={() => setSelectedCatalogId(null)} />;
+}
 
   return (
     <div>
