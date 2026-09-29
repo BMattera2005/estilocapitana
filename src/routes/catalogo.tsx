@@ -14,12 +14,10 @@ import { officialCatalogs, type OfficialCatalog } from "@/data/catalogs";
 import { buildWhatsAppUrl } from "@/lib/quote-message";
 import { normalizeText } from "@/lib/text";
 
-/** Convierte una línea en slug de URL: "Línea Porcelanatos" -> "linea-porcelanatos". */
 function slugifyLinea(value: string) {
   return normalizeText(value).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
-// Los filtros se derivan de los datos: cualquier filterGroup nuevo aparece solo.
 const lineFilters = Array.from(new Set(officialCatalogs.map((catalog) => catalog.filterGroup))).map(
   (group) => ({ id: slugifyLinea(group), label: group }),
 );
@@ -59,6 +57,13 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
 
   const primaryActionClass = "inline-flex min-h-11 w-full items-center justify-center rounded-md bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:brightness-105 motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer";
 
+  const hasInteractiveDetail =
+    catalog.id === "cat-ferrazzano-43" ||
+    catalog.id === "cat-ferrazzano-36" ||
+    catalog.id === "cat-habitat-full-body" ||
+    catalog.id === "cat-habitat-laminas" ||
+    catalog.id === "cat-habitat-porcelanato";
+
   return (
     <article className="flex min-h-[27rem] flex-col rounded-lg border border-border bg-card p-6 shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial">
       <div className="flex items-start justify-between gap-4">
@@ -75,11 +80,7 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
       <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
 
       <div className="mt-auto grid gap-2 pt-7">
-        {catalog.id === "cat-ferrazzano-43" ||
-         catalog.id === "cat-ferrazzano-36" ||
-         catalog.id === "cat-habitat-full-body" ||
-         catalog.id === "cat-habitat-laminas" ||
-         catalog.id === "cat-habitat-porcelanato"? (
+        {hasInteractiveDetail ? (
           <button
             type="button"
             onClick={onSelect}
@@ -144,16 +145,16 @@ function CatalogoPage() {
   }
 
   if (selectedCatalogId === "cat-habitat-full-body") {
-  return <CatalogFullBodyDetail onBack={() => setSelectedCatalogId(null)} />;
-}
+    return <CatalogFullBodyDetail onBack={() => setSelectedCatalogId(null)} />;
+  }
 
   if (selectedCatalogId === "cat-habitat-laminas") {
-  return <CatalogLaminasDetail onBack={() => setSelectedCatalogId(null)} />;
-}
+    return <CatalogLaminasDetail onBack={() => setSelectedCatalogId(null)} />;
+  }
 
   if (selectedCatalogId === "cat-habitat-porcelanato") {
-  return <CatalogHabitatPorcelanatoDetail onBack={() => setSelectedCatalogId(null)} />;
-}
+    return <CatalogHabitatPorcelanatoDetail onBack={() => setSelectedCatalogId(null)} />;
+  }
 
   return (
     <div>
@@ -227,3 +228,5 @@ function CatalogoPage() {
     </div>
   );
 }
+
+export default CatalogoPage;
