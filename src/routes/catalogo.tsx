@@ -1,4 +1,5 @@
 import { Catalog43Detail } from '../components/Catalog43Detail';
+import { Catalog36Detail } from '../components/Catalog36Detail';
 
 import { createFileRoute } from "@tanstack/react-router";
 import { Award, FileText, MessageCircle } from "lucide-react";
@@ -71,20 +72,24 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
       <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
 
       <div className="mt-auto grid gap-2 pt-7">
-        {catalog.id === "cat-ferrazzano-43" ? (
-          <Button type="button" variant="industrial" onClick={onSelect}>
-            Ver modelos en pantalla
-          </Button>
-        ) : (
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={primaryActionClass}
-          >
-            Ver / descargar catálogo
-          </a>
-        )}
+        {catalog.id === "cat-ferrazzano-43" || catalog.id === "cat-ferrazzano-36" ? (
+  <button
+    type="button"
+    onClick={() => setSelectedCatalogId(catalog.id)}
+    className="inline-flex items-center justify-center px-4 py-2.5 bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer"
+  >
+    Ver Modelos en Pantalla
+  </button>
+) : (
+  <a
+    href={catalog.fileUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center justify-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition-colors"
+  >
+    Ver / Descargar Catálogo
+  </a>
+)}
         {catalog.certificateUrl ? (
           <a
             href={catalog.certificateUrl}
@@ -124,7 +129,9 @@ function CatalogoPage() {
   if (selectedCatalogId === "cat-ferrazzano-43") {
   return <Catalog43Detail onBack={() => setSelectedCatalogId(null)} />;
 }
-  
+  if (selectedCatalogId === "cat-ferrazzano-36") {
+  return <Catalog36Detail onBack={() => setSelectedCatalogId(null)} />;
+}
   return (
     <div>
       <section className="brand-watermark-section border-b border-border bg-background px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
