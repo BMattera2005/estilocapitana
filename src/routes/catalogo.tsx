@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Award, FileText, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
+import { CatalogLaminasDetail } from '@/components/CatalogLaminasDetail';
 import { CatalogFullBodyDetail } from '@/components/CatalogFullBodyDetail';
 import { Catalog43Detail } from "@/components/Catalog43Detail";
 import { Catalog36Detail } from "@/components/Catalog36Detail";
@@ -72,7 +73,10 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
       <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
 
       <div className="mt-auto grid gap-2 pt-7">
-        {catalog.id === "cat-ferrazzano-43" || catalog.id === "cat-ferrazzano-36" || catalog.id === "cat-habitat-full-body"? (
+        {catalog.id === "cat-ferrazzano-43" ||
+         catalog.id === "cat-ferrazzano-36" ||
+         catalog.id === "cat-habitat-full-body" ||
+         catalog.id === "cat-habitat-laminas" ? (
           <button
             type="button"
             onClick={onSelect}
@@ -138,6 +142,10 @@ function CatalogoPage() {
 
   if (selectedCatalogId === "cat-habitat-full-body") {
   return <CatalogFullBodyDetail onBack={() => setSelectedCatalogId(null)} />;
+}
+
+  if (selectedCatalogId === "cat-habitat-laminas") {
+  return <CatalogLaminasDetail onBack={() => setSelectedCatalogId(null)} />;
 }
 
   return (
