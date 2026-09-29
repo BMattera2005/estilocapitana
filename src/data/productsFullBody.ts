@@ -15,60 +15,6 @@ export interface FullBodyItem {
 }
 
 export const productsFullBody: FullBodyItem[] = [
-  // --- PEARL WHITE ---
-  {
-    id: "hab-fb-pearl-white-2400-glossy",
-    name: "Pearl White 800×2400 Glossy",
-    series: "Plain Colour Series",
-    format: "800x2400 mm",
-    thickness: "15 mm",
-    body: "Full Body",
-    finish: "Glossy",
-    sqm: 1.92,
-    weightKg: 67,
-    recommendedUses: "Mesadas de cocina, islas, solados de alto tránsito.",
-    image: "/products/fullbody/pearl_white.jpg",
-  },
-  {
-    id: "hab-fb-pearl-white-2400-matt",
-    name: "Pearl White 800×2400 Matt",
-    series: "Plain Colour Series",
-    format: "800x2400 mm",
-    thickness: "15 mm",
-    body: "Full Body",
-    finish: "Matt",
-    sqm: 1.92,
-    weightKg: 67,
-    recommendedUses: "Mesadas de cocina, islas, áreas húmedas antideslizantes.",
-    image: "/products/fullbody/pearl_white.jpg",
-  },
-  {
-    id: "hab-fb-pearl-white-3000-glossy",
-    name: "Pearl White 800×3000 Glossy",
-    series: "Plain Colour Series",
-    format: "800x3000 mm",
-    thickness: "15 mm",
-    body: "Full Body",
-    finish: "Glossy",
-    sqm: 2.40,
-    weightKg: 84,
-    recommendedUses: "Mesadas de gran porte sin uniones intermedias.",
-    image: "/products/fullbody/pearl_white.jpg",
-  },
-  {
-    id: "hab-fb-pearl-white-3000-matt",
-    name: "Pearl White 800×3000 Matt",
-    series: "Plain Colour Series",
-    format: "800x3000 mm",
-    thickness: "15 mm",
-    body: "Full Body",
-    finish: "Matt",
-    sqm: 2.40,
-    weightKg: 84,
-    recommendedUses: "Grandes islas de cocina y barras continuas.",
-    image: "/products/fullbody/pearl_white.jpg",
-  },
-
   // --- BROWN FLAKES ---
   {
     id: "hab-fb-brown-flakes-2400-glossy",

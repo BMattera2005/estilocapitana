@@ -16,3 +16,6 @@
 - [x] Completar Respaldo industrial con las unidades representadas.
 - [x] Perfeccionar la interfaz Shop del catálogo Ferrazzano 43×43.
 - [x] Restaurar el degradado de marca en los botones principales del catálogo y la Shop.
+- [x] Activar la vista Shop interactiva del catálogo Habitat Porcelanato Esmaltado.
+- [x] Eliminar el producto de prueba Pearl White del catálogo Full Body.
+- [x] Reparar la hidratación del cliente alineando @tanstack/react-router 1.170.18 con react-start 1.168.32.
