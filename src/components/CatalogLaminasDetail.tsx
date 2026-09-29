@@ -176,10 +176,10 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
                     <span>Rendimiento:</span>
                     <span className="font-semibold text-slate-800">{p.sqm} m² / placa</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Peso aprox.:</span>
-                    <span className="font-semibold text-slate-800">~{p.weightKg} kg</span>
-                  </div>
+                   <div className="flex justify-between">
+                      <span>Peso placa:</span>
+                      <span className="font-semibold text-slate-800">68 kg</span>
+                    </div>
                   <div className="text-[11px] text-slate-500 pt-1 border-t border-slate-50">
                     Uso: {p.recommendedSpaces}
                   </div>
