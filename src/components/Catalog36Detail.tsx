@@ -1,6 +1,5 @@
-// src/components/Catalog36Detail.tsx
 import React, { useState } from 'react';
-import { products36x36, CeramicProduct36 } from '../data/products36';
+import { products36x36, type CeramicProduct36 } from '@/data/products36';
 
 interface Catalog36DetailProps {
   onBack: () => void;
