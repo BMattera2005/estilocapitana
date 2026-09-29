@@ -48,9 +48,12 @@ export const Route = createFileRoute("/catalogo")({
 });
 
 function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect?: () => void }) {
+  const href = catalogHref(catalog);
   const whatsappUrl = buildWhatsAppUrl(
     `Hola estilo.capitana, quisiera consultar stock y cotización de la línea ${catalog.title}.`,
   );
+
+  const primaryActionClass = "inline-flex min-h-11 w-full items-center justify-center rounded-md bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:brightness-105 motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer";
 
   return (
     <article className="flex min-h-[27rem] flex-col rounded-lg border border-border bg-card p-6 shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial">
@@ -72,16 +75,16 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
           <button
             type="button"
             onClick={onSelect}
-            className="inline-flex items-center justify-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer"
+            className={primaryActionClass}
           >
             Ver modelos en pantalla
           </button>
         ) : (
           <a
-            href={catalogHref(catalog)}
+            href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition-colors"
+            className={primaryActionClass}
           >
             Ver / descargar catálogo
           </a>
