@@ -21,8 +21,8 @@ export interface HabitatPorcelanatoItem {
 export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
   // --- 600x1200 mm (2 piezas · 1.44 m² · 30 kg/caja · Pallet de 60 cajas: 86.40 m² / 1.800 kg) ---
   {
-    id: "hab-porc-carrara-luxe-glossy",
-    name: "Carrara Luxe Glossy",
+    id: "hab-porc-carrara-snow-glossy",
+    name: "Carrara Snow ",
     series: "Alaska Brilliance",
     format: "600x1200 mm",
     thickness: "9 mm",
@@ -39,7 +39,7 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
   },
   {
     id: "hab-porc-olister-bianco-glossy",
-    name: "Olister Bianco Glossy",
+    name: "Olister Bianco ",
     series: "GVT Polished Collection",
     format: "600x1200 mm",
     thickness: "9 mm",
@@ -54,26 +54,10 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
     description: "Porcelanato esmaltado pulido de base blanca y vetas sutiles continuas.",
     image: "/products/porcelanato/olister_bianco.jpg",
   },
-  {
-    id: "hab-porc-argenta-grey-glossy",
-    name: "Argenta Grey Glossy",
-    series: "Natural Stone Series",
-    format: "600x1200 mm",
-    thickness: "9 mm",
-    finish: "Glossy",
-    faces: "Random 4 caras",
-    sqmPerBox: 1.44,
-    piecesPerBox: 2,
-    weightBoxKg: 30,
-    boxesPerPallet: 60,
-    sqmPerPallet: 86.40,
-    weightPalletKg: 1800,
-    description: "Revestimiento símil piedra natural pulida con reflejo de espejo.",
-    image: "/products/porcelanato/argenta_grey_glossy.jpg",
-  },
-  {
+
+    {
     id: "hab-porc-argenta-grey-velvet",
-    name: "Argenta Grey Velvet",
+    name: "Argenta Grey ",
     series: "Natural Stone Series",
     format: "600x1200 mm",
     thickness: "9 mm",
@@ -89,9 +73,9 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
     image: "/products/porcelanato/argenta_grey_velvet.jpg",
   },
   {
-    id: "hab-porc-casa-light-glossy",
-    name: "Casa Light Glossy",
-    series: "Urban Neutral",
+    id: "hab-porc-argenta-grey-glossy",
+    name: "Argenta Grey ",
+    series: "Natural Stone Series",
     format: "600x1200 mm",
     thickness: "9 mm",
     finish: "Glossy",
@@ -102,14 +86,14 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
     boxesPerPallet: 60,
     sqmPerPallet: 86.40,
     weightPalletKg: 1800,
-    description: "Porcelanato pulido reflectivo de tonalidad marfil neutra.",
-    image: "/products/porcelanato/casa_light.jpg",
+    description: "Revestimiento símil piedra natural pulida con reflejo de espejo.",
+    image: "/products/porcelanato/argenta_grey_glossy.jpg",
   },
 
   // --- 1200x1200 mm (2 piezas · 2.88 m² · 60 kg/caja · Pallet de 32 cajas: 92.16 m² / 1.920 kg) ---
   {
     id: "hab-porc-sand-light-rustic",
-    name: "Sand Light Rustic",
+    name: "Sand Light ",
     series: "Large Format Rustic",
     format: "1200x1200 mm",
     thickness: "9 mm",
@@ -126,7 +110,7 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
   },
   {
     id: "hab-porc-unico-beige-rustic",
-    name: "Unico Beige Rustic",
+    name: "Unico Beige ",
     series: "Unico Mineral Series",
     format: "1200x1200 mm",
     thickness: "9 mm",
@@ -143,7 +127,7 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
   },
   {
     id: "hab-porc-unico-grey-rustic",
-    name: "Unico Grey Rustic",
+    name: "Unico Grey ",
     series: "Unico Mineral Series",
     format: "1200x1200 mm",
     thickness: "9 mm",
