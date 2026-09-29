@@ -2,11 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Award, FileText, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import { CatalogHabitatPorcelanatoDetail } from '@/components/CatalogHabitatPorcelanatoDetail';
-import { CatalogLaminasDetail } from '@/components/CatalogLaminasDetail';
-import { CatalogFullBodyDetail } from '@/components/CatalogFullBodyDetail';
-import { Catalog43Detail } from "@/components/Catalog43Detail";
-import { Catalog36Detail } from "@/components/Catalog36Detail";
+import { Catalog43Detail } from "../components/Catalog43Detail";
+import { Catalog36Detail } from "../components/Catalog36Detail";
+import { CatalogFullBodyDetail } from "../components/CatalogFullBodyDetail";
+import { CatalogLaminasDetail } from "../components/CatalogLaminasDetail";
+import { CatalogHabitatPorcelanatoDetail } from "../components/CatalogHabitatPorcelanatoDetail";
 
 import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
