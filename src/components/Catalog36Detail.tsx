@@ -1,5 +1,7 @@
+// src/components/Catalog36Detail.tsx
 import React, { useState } from 'react';
-import { products36x36, type CeramicProduct36 } from '@/data/products36';
+import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
+import { products36x36, CeramicProduct36 } from '../data/products36';
 
 interface Catalog36DetailProps {
   onBack: () => void;
@@ -21,85 +23,103 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
   });
 
   const handleWhatsAppQuote = (product: CeramicProduct36) => {
-    const phone = "5493512675960";
-    const message = `Hola Estilo Capitana, me interesa cotizar el piso cerámico ${product.name} (Formato ${product.format}, Acabado ${product.finish}). Quisiera consultar disponibilidad y precio por m².`;
+    const phone = "5491161208162";
+    const message = `Hola estilo.capitana, me interesa cotizar el piso cerámico ${product.name} (Formato ${product.format}, Acabado ${product.finish}). Quisiera consultar disponibilidad y precio por m².`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Botón Volver y Cabecera */}
-      <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
+      {/* Botón Volver */}
+      <button 
+        onClick={onBack}
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
+      >
+        <ArrowLeft className="w-3.5 h-3.5" />
+        Volver a los Catálogos
+      </button>
+
+      {/* Cabecera y Botón Ver/Descargar Catálogo */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
         <div>
-          <button 
-            onClick={onBack}
-            className="text-sm font-semibold text-sky-600 hover:text-sky-700 flex items-center gap-1 mb-2 cursor-pointer"
-          >
-            ← Volver a todos los catálogos
-          </button>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 uppercase tracking-wide">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
               Industria Argentina
             </span>
-            <span className="text-xs font-bold text-sky-600 uppercase tracking-wide">
-              Pisos Cerámicos
+            <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
+              SHOP · PISOS CERÁMICOS
             </span>
           </div>
-          <h1 className="text-3xl font-extrabold text-neutral-900 mt-1">
-            Ferrazzano — Formato 36×36 cm
+
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Ferrazzano 36×36 cm
           </h1>
-          <p className="text-neutral-500 text-sm mt-1">
-            Cerámica Salteña · Esmaltados: 2.33 m² (18 pzs / 33.9 kg) · Coloniales: 2.20 m² (17 pzs / 33.9 kg) · Pallet de 36 cajas
+
+          <p className="text-sm text-slate-500 mt-2 font-normal">
+            Cerámica Salteña · Esmaltados: 2,33 m² (18 pzs / 33.9 kg) · Coloniales: 2,20 m² (17 pzs / 33.9 kg) · Pallet de 36 cajas
           </p>
         </div>
 
+        {/* Botón Descargar con el color/gradiente exacto de la página */}
         <a
           href="/catalogos/ferrazzano_36x36.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="px-4 py-2 border border-neutral-300 rounded-lg text-sm font-bold text-neutral-700 hover:bg-neutral-50 shadow-sm"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-emerald-600 hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
         >
-          Descargar Catálogo Completo (PDF) ↓
+          <Download className="w-4 h-4" />
+          Ver / descargar catálogo
         </a>
       </div>
 
       {/* Filtros por Acabado y Buscador */}
-      <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 mb-3">
         <div className="flex flex-wrap gap-2">
-          {finishes.map((f) => (
-            <button
-              key={f}
-              onClick={() => setSelectedFinish(f)}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition-colors cursor-pointer ${
-                selectedFinish === f
-                  ? 'bg-neutral-900 text-white'
-                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-              }`}
-            >
-              {f}
-            </button>
-          ))}
+          {finishes.map((f) => {
+            const isSelected = selectedFinish === f;
+            return (
+              <button
+                key={f}
+                type="button"
+                onClick={() => setSelectedFinish(f)}
+                className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-150 cursor-pointer ${
+                  isSelected
+                    ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-sm'
+                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                }`}
+              >
+                {f}
+              </button>
+            );
+          })}
         </div>
 
-        <input
-          type="text"
-          placeholder="Buscar modelo (burano, calacatta, animaná)..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border border-neutral-300 rounded-lg px-3 py-2 text-sm w-full md:w-80 focus:outline-none focus:ring-1 focus:ring-sky-500"
-        />
+        <div className="relative w-full md:w-80">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <input
+            type="text"
+            placeholder="Buscar modelo o diseño"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+          />
+        </div>
       </div>
+
+      <p className="text-xs text-slate-500 mb-8 font-normal">
+        {filteredProducts.length} {filteredProducts.length === 1 ? 'modelo disponible' : 'modelos disponibles'}
+      </p>
 
       {/* Grilla de Modelos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((p) => (
           <div
             key={p.id}
-            className="border border-neutral-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow"
+            className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all duration-200"
           >
             <div>
-              {/* Contenedor de Imagen con Fallback */}
-              <div className="w-full h-48 bg-neutral-100 relative overflow-hidden flex items-center justify-center">
+              {/* Imagen con Fallback */}
+              <div className="w-full h-48 bg-slate-100 relative overflow-hidden flex items-center justify-center">
                 <img
                   src={p.image}
                   alt={p.name}
@@ -109,40 +129,40 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
                   }}
                 />
                 <div className="text-center p-4">
-                  <span className="text-xs uppercase tracking-widest text-neutral-400 font-bold block mb-1">
+                  <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold block mb-1">
                     {p.designType}
                   </span>
-                  <span className="text-base font-bold text-neutral-700">
+                  <span className="text-base font-bold text-slate-700">
                     {p.name}
                   </span>
                 </div>
 
-                <span className="absolute top-2 right-2 bg-neutral-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                <span className="absolute top-2.5 right-2.5 bg-slate-600/90 text-white text-[10px] font-semibold px-2 py-0.5 rounded">
                   {p.finish}
                 </span>
               </div>
 
               {/* Ficha Técnica */}
               <div className="p-4">
-                <div className="text-[11px] font-semibold text-neutral-500 uppercase">
+                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">
                   {p.line} · {p.colorOrDesign}
                 </div>
-                <h3 className="text-lg font-bold text-neutral-900 mb-2">
+                <h3 className="text-lg font-bold text-slate-900 mb-3">
                   {p.name}
                 </h3>
 
-                <div className="space-y-1 text-xs text-neutral-600 border-t border-neutral-100 pt-2">
+                <div className="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-2.5">
                   <div className="flex justify-between">
                     <span>Tránsito / Uso:</span>
-                    <span className="font-semibold text-neutral-800">{p.traffic.split(' ')[0]}</span>
+                    <span className="font-semibold text-slate-800">{p.traffic.split(' ')[0]}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Superficie:</span>
-                    <span className="font-semibold text-neutral-800">{p.surface}</span>
+                    <span className="font-semibold text-slate-800">{p.surface}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Empaque por caja:</span>
-                    <span className="font-semibold text-neutral-800">{p.packaging.sqmPerBox} m² ({p.packaging.piecesPerBox} pzs)</span>
+                    <span className="font-semibold text-slate-800">{p.packaging.sqmPerBox} m² ({p.packaging.piecesPerBox} pzs)</span>
                   </div>
                   {p.specialFeature && (
                     <div className="text-[11px] text-amber-700 font-medium pt-1">
@@ -153,13 +173,15 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
               </div>
             </div>
 
-            {/* Botón WhatsApp de Cotización */}
+            {/* Botón WhatsApp con el gradiente y el ícono de la captura */}
             <div className="p-4 pt-0">
               <button
+                type="button"
                 onClick={() => handleWhatsAppQuote(p)}
-                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
               >
-                Solicitar Cotización por WhatsApp
+                <MessageCircle className="w-4 h-4 text-white shrink-0" />
+                <span>Solicitar cotización por WhatsApp</span>
               </button>
             </div>
           </div>
