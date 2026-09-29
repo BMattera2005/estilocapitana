@@ -55,14 +55,17 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
     `Hola estilo.capitana, quisiera consultar stock y cotización de la línea ${catalog.title}.`,
   );
 
-  const primaryActionClass = "inline-flex min-h-11 w-full items-center justify-center rounded-md bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:brightness-105 motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer";
+  const primaryActionClass =
+    "inline-flex min-h-11 w-full items-center justify-center rounded-md bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:brightness-105 motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer";
 
-  const hasInteractiveDetail =
-    catalog.id === "cat-ferrazzano-43" ||
-    catalog.id === "cat-ferrazzano-36" ||
-    catalog.id === "cat-habitat-full-body" ||
-    catalog.id === "cat-habitat-laminas" ||
-    catalog.id === "cat-habitat-porcelanato";
+  // Incluye todos los IDs con vista de modelos en pantalla
+  const hasInteractiveDetail = [
+    "cat-ferrazzano-43",
+    "cat-ferrazzano-36",
+    "cat-habitat-full-body",
+    "cat-habitat-laminas",
+    "cat-habitat-porcelanato",
+  ].includes(catalog.id);
 
   return (
     <article className="flex min-h-[27rem] flex-col rounded-lg border border-border bg-card p-6 shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial">
