@@ -1,10 +1,9 @@
-import { Catalog43Detail } from '../components/Catalog43Detail';
-import { Catalog36Detail } from '../components/Catalog36Detail';
-
 import { createFileRoute } from "@tanstack/react-router";
 import { Award, FileText, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
+import { Catalog43Detail } from "@/components/Catalog43Detail";
+import { Catalog36Detail } from "@/components/Catalog36Detail";
 import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
 import { officialCatalogs, type OfficialCatalog } from "@/data/catalogs";
@@ -49,12 +48,9 @@ export const Route = createFileRoute("/catalogo")({
 });
 
 function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect?: () => void }) {
-  const href = catalogHref(catalog);
   const whatsappUrl = buildWhatsAppUrl(
     `Hola estilo.capitana, quisiera consultar stock y cotización de la línea ${catalog.title}.`,
   );
-
-  const primaryActionClass = "inline-flex min-h-11 w-full items-center justify-center rounded-md bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:brightness-105 motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
   return (
     <article className="flex min-h-[27rem] flex-col rounded-lg border border-border bg-card p-6 shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial">
@@ -73,23 +69,24 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
 
       <div className="mt-auto grid gap-2 pt-7">
         {catalog.id === "cat-ferrazzano-43" || catalog.id === "cat-ferrazzano-36" ? (
-  <button
-    type="button"
-    onClick={() => setSelectedCatalogId(catalog.id)}
-    className="inline-flex items-center justify-center px-4 py-2.5 bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer"
-  >
-    Ver Modelos en Pantalla
-  </button>
-) : (
-  <a
-    href={catalog.fileUrl}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex items-center justify-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition-colors"
-  >
-    Ver / Descargar Catálogo
-  </a>
-)}
+          <button
+            type="button"
+            onClick={onSelect}
+            className="inline-flex items-center justify-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer"
+          >
+            Ver modelos en pantalla
+          </button>
+        ) : (
+          <a
+            href={catalogHref(catalog)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition-colors"
+          >
+            Ver / descargar catálogo
+          </a>
+        )}
+
         {catalog.certificateUrl ? (
           <a
             href={catalog.certificateUrl}
@@ -101,6 +98,7 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
             Ver Certificado Adjunto
           </a>
         ) : null}
+
         <Button asChild variant="industrialOutline">
           <a href={whatsappUrl ?? `https://wa.me/5491161208162`} target="_blank" rel="noopener noreferrer">
             <MessageCircle aria-hidden="true" />
@@ -125,13 +123,15 @@ function CatalogoPage() {
     () => officialCatalogs.filter((catalog) => matchesFilter(catalog, activeFilter)),
     [activeFilter],
   );
-  
+
   if (selectedCatalogId === "cat-ferrazzano-43") {
-  return <Catalog43Detail onBack={() => setSelectedCatalogId(null)} />;
-}
+    return <Catalog43Detail onBack={() => setSelectedCatalogId(null)} />;
+  }
+
   if (selectedCatalogId === "cat-ferrazzano-36") {
-  return <Catalog36Detail onBack={() => setSelectedCatalogId(null)} />;
-}
+    return <Catalog36Detail onBack={() => setSelectedCatalogId(null)} />;
+  }
+
   return (
     <div>
       <section className="brand-watermark-section border-b border-border bg-background px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
@@ -154,9 +154,11 @@ function CatalogoPage() {
               type="button"
               size="sm"
               variant="ghost"
-              className={activeFilter === "todas"
-                ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
-                : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"}
+              className={
+                activeFilter === "todas"
+                  ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
+                  : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"
+              }
               aria-pressed={activeFilter === "todas"}
               onClick={() => setActiveFilter("todas")}
             >
@@ -170,9 +172,11 @@ function CatalogoPage() {
                   type="button"
                   size="sm"
                   variant="ghost"
-                  className={isActive
-                    ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
-                    : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"}
+                  className={
+                    isActive
+                      ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
+                      : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"
+                  }
                   aria-pressed={isActive}
                   onClick={() => setActiveFilter(filter.id)}
                 >
@@ -187,11 +191,13 @@ function CatalogoPage() {
           </p>
 
           <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {visibleCatalogs.map((catalog) =><CatalogCard 
-            key={catalog.id} 
-            catalog={catalog} 
-            onSelect={() => setSelectedCatalogId(catalog.id)} 
-            />)}
+            {visibleCatalogs.map((catalog) => (
+              <CatalogCard
+                key={catalog.id}
+                catalog={catalog}
+                onSelect={() => setSelectedCatalogId(catalog.id)}
+              />
+            ))}
           </div>
         </div>
       </section>
