@@ -1,35 +1,38 @@
 // src/components/CatalogFullBodyDetail.tsx
 import React, { useState } from 'react';
 import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
-import { productsFullBody, FullBodyProduct } from '../data/productsFullBody';
+import { productsFullBody, FullBodyItem } from '../data/productsFullBody';
 
 interface CatalogFullBodyDetailProps {
   onBack: () => void;
 }
 
 export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ onBack }) => {
+  const [selectedFormat, setSelectedFormat] = useState<string>('Todos');
   const [selectedFinish, setSelectedFinish] = useState<string>('Todos');
   const [search, setSearch] = useState<string>('');
 
+  const formats = ['Todos', '800x2400 mm', '800x3000 mm'];
   const finishes = ['Todos', 'Glossy', 'Matt'];
 
-  const filteredProducts = productsFullBody.filter((prod) => {
-    const matchesFinish = selectedFinish === 'Todos' || prod.finishes.includes(selectedFinish);
+  const filteredProducts = productsFullBody.filter((item) => {
+    const matchesFormat = selectedFormat === 'Todos' || item.format === selectedFormat;
+    const matchesFinish = selectedFinish === 'Todos' || item.finish === selectedFinish;
     const matchesSearch =
-      prod.name.toLowerCase().includes(search.toLowerCase()) ||
-      prod.series.toLowerCase().includes(search.toLowerCase());
-    return matchesFinish && matchesSearch;
+      item.name.toLowerCase().includes(search.toLowerCase()) ||
+      item.series.toLowerCase().includes(search.toLowerCase());
+    return matchesFormat && matchesFinish && matchesSearch;
   });
 
-  const handleWhatsAppQuote = (product: FullBodyProduct) => {
+  const handleWhatsAppQuote = (item: FullBodyItem) => {
     const phone = "5491161208162";
-    const message = `Hola estilo.capitana, me interesa cotizar placas de Sintered Stone ${product.name} (Espesor 15mm, Acabados: ${product.finishes.join('/')}). Quisiera consultar disponibilidad y medidas.`;
+    const message = `Hola estilo.capitana, me interesa cotizar la placa ${item.name} (Formato: ${item.format}, Acabado: ${item.finish}, Espesor: ${item.thickness}). Quisiera consultar disponibilidad y cotización de lote.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Botón Volver */}
+      {/* Volver */}
       <button 
         onClick={onBack}
         className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
@@ -55,7 +58,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
           </h1>
 
           <p className="text-sm text-slate-500 mt-2 font-normal">
-            Sintered Stone 15 mm de espesor · Formatos 800×2400 mm (1.92 m² / 67 kg) y 800×3000 mm (2.40 m² / 84 kg)
+            Sintered Stone 15 mm de espesor · Presentación por placa entera · 1 pieza por embalaje
           </p>
         </div>
 
@@ -71,33 +74,51 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
         </a>
       </div>
 
-      {/* Filtros por Acabado y Buscador */}
+      {/* Filtros Combinados y Buscador */}
       <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 mb-3">
-        <div className="flex flex-wrap gap-2">
-          {finishes.map((f) => {
-            const isSelected = selectedFinish === f;
-            return (
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Selector de Medida */}
+          <div className="flex gap-1 bg-slate-100 p-1 rounded-lg">
+            {formats.map((f) => (
               <button
                 key={f}
                 type="button"
-                onClick={() => setSelectedFinish(f)}
-                className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-150 cursor-pointer ${
-                  isSelected
-                    ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-sm'
-                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                onClick={() => setSelectedFormat(f)}
+                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer ${
+                  selectedFormat === f
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 {f}
               </button>
-            );
-          })}
+            ))}
+          </div>
+
+          {/* Selector de Acabado */}
+          <div className="flex gap-1 bg-slate-100 p-1 rounded-lg">
+            {finishes.map((fn) => (
+              <button
+                key={fn}
+                type="button"
+                onClick={() => setSelectedFinish(fn)}
+                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer ${
+                  selectedFinish === fn
+                    ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                {fn}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
-            placeholder="Buscar por modelo o serie..."
+            placeholder="Buscar modelo o serie..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
@@ -106,10 +127,10 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
       </div>
 
       <p className="text-xs text-slate-500 mb-8 font-normal">
-        {filteredProducts.length} {filteredProducts.length === 1 ? 'modelo disponible' : 'modelos disponibles'}
+        {filteredProducts.length} {filteredProducts.length === 1 ? 'artículo disponible' : 'artículos disponibles'}
       </p>
 
-      {/* Grilla de Placas */}
+      {/* Grilla de Artículos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((p) => (
           <div
@@ -131,15 +152,16 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
                     {p.series}
                   </span>
                   <span className="text-base font-bold text-slate-700">
-                    {p.name}
+                    {p.name.replace(/ 800x.*/, '')}
                   </span>
                 </div>
 
                 <span className="absolute top-2.5 right-2.5 bg-slate-600/90 text-white text-[10px] font-semibold px-2 py-0.5 rounded">
-                  {p.thickness} · {p.body}
+                  {p.finish}
                 </span>
               </div>
 
+              {/* Ficha técnica clara de UN solo formato y terminación */}
               <div className="p-4">
                 <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">
                   {p.series}
@@ -154,18 +176,20 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
                     <span className="font-semibold text-slate-800">{p.thickness}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Formatos:</span>
-                    <span className="font-semibold text-slate-800">{p.formats.join(' / ')}</span>
+                    <span>Formato:</span>
+                    <span className="font-semibold text-slate-800">{p.format}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Terminaciones:</span>
-                    <span className="font-semibold text-slate-800">{p.finishes.join(', ')}</span>
+                    <span>Terminación:</span>
+                    <span className="font-semibold text-slate-800">{p.finish}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Rendimiento placa:</span>
+                    <span className="font-semibold text-slate-800">{p.sqm} m²</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Peso placa:</span>
-                    <span className="font-semibold text-slate-800">
-                      {p.packaging.format2400.kgPerPiece} kg {p.packaging.format3000 ? `/ ${p.packaging.format3000.kgPerPiece} kg` : ''}
-                    </span>
+                    <span className="font-semibold text-slate-800">{p.weightKg} kg</span>
                   </div>
                 </div>
               </div>
