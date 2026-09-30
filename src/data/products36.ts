@@ -296,5 +296,4 @@ export const products36x36: CeramicProduct36[] = [
     packaging: packingColoniales36,
     image: "/products/36x36/classico_curado_a_fuego_lisa.jpg"
   }
-  }
 ];
