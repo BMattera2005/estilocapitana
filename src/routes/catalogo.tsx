@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Award, FileText, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
+import { CatalogViguetasDetail } from "../components/CatalogViguetasDetail";
 import { Catalog43Detail } from "../components/Catalog43Detail";
 import { Catalog36Detail } from "../components/Catalog36Detail";
 import { CatalogFullBodyDetail } from "../components/CatalogFullBodyDetail";
@@ -65,6 +66,7 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
     "cat-habitat-full-body",
     "cat-habitat-laminas",
     "cat-habitat-porcelanato",
+    "cat-viguetas",
   ].includes(catalog.id);
 
   return (
@@ -158,6 +160,10 @@ function CatalogoPage() {
   if (selectedCatalogId === "cat-habitat-porcelanato") {
     return <CatalogHabitatPorcelanatoDetail onBack={() => setSelectedCatalogId(null)} />;
   }
+
+  if (selectedCatalogId === "cat-viguetas") {
+  return <CatalogViguetasDetail onBack={() => setSelectedCatalogId(null)} />;
+}
 
   return (
     <div>
