@@ -270,7 +270,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Mármol",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/tolombom_gris.jpg"
+    image: "/products/43x43/tolombon_gris.jpg"
   },
   {
     id: "fer-43-urundel-beige",
