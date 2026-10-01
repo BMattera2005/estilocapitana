@@ -1,172 +1,192 @@
-import { ArrowLeft, Download, MessageCircle, Search } from "lucide-react";
-import { useState } from "react";
-
-import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
-import { products43x43, type CeramicProduct } from "@/data/products43";
+// src/components/Catalog43Detail.tsx
+import React, { useState } from 'react';
+import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
+import { products43x43, CeramicProduct } from '../data/products43';
 
 interface Catalog43DetailProps {
   onBack: () => void;
 }
 
-export function Catalog43Detail({ onBack }: Catalog43DetailProps) {
-  const [selectedFinish, setSelectedFinish] = useState("Todos");
-  const [search, setSearch] = useState("");
+export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
+  const [selectedFinish, setSelectedFinish] = useState<string>('Todos');
+  const [search, setSearch] = useState<string>('');
 
-  const finishes = ["Todos", "Brillante", "Satinado", "Mate con Granilla", "Colonial"];
+  const finishes = ['Todos', 'Brillante', 'Satinado', 'Mate con Granilla', 'Colonial'];
 
   const filteredProducts = products43x43.filter((prod) => {
-    const matchesFinish = selectedFinish === "Todos" || prod.finish === selectedFinish;
-    const matchesSearch = prod.name.toLowerCase().includes(search.toLowerCase()) ||
-                          prod.line.toLowerCase().includes(search.toLowerCase()) ||
-                          prod.designType.toLowerCase().includes(search.toLowerCase());
+    const matchesFinish = selectedFinish === 'Todos' || prod.finish === selectedFinish;
+    const matchesSearch =
+      prod.name.toLowerCase().includes(search.toLowerCase()) ||
+      prod.line.toLowerCase().includes(search.toLowerCase()) ||
+      prod.designType.toLowerCase().includes(search.toLowerCase());
     return matchesFinish && matchesSearch;
   });
 
   const handleWhatsAppQuote = (product: CeramicProduct) => {
-    const message = `Hola Estilo Capitana, me interesa cotizar el piso cerámico ${product.name} (Formato ${product.format}, Acabado ${product.finish}). Quisiera consultar disponibilidad y precio por m².`;
-    const url = `https://wa.me/${siteConfig.contact.whatsappNumber}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+    const phone = "5491161208162";
+    const message = `Hola estilo.capitana, me interesa cotizar el piso cerámico ${product.name} (Formato ${product.format}, Acabado ${product.finish}). Quisiera consultar disponibilidad y precio por m².`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
-    <div className="bg-surface px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-      <section className="mx-auto max-w-7xl overflow-hidden rounded-lg border border-border bg-background shadow-industrial">
-        <header className="brand-watermark-section px-5 py-6 sm:px-8 sm:py-8">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={onBack}
-            className="-ml-3 mb-5 text-primary hover:bg-accent hover:text-accent-foreground"
-          >
-            <ArrowLeft aria-hidden="true" />
-            Volver a los Catálogos
-          </Button>
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Botón Volver */}
+      <button 
+        onClick={onBack}
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
+      >
+        <ArrowLeft className="w-3.5 h-3.5" />
+        Volver a los Catálogos
+      </button>
 
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-accent px-3 py-1 text-xs font-normal text-accent-foreground">
-                  Industria Argentina
-                </span>
-                <span className="text-xs font-semibold uppercase text-primary">Shop · Pisos Cerámicos</span>
-              </div>
-              <h1 className="mt-3 text-3xl font-bold leading-tight text-foreground sm:text-4xl">
-                Ferrazzano 43×43 cm
-              </h1>
-              <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-                Cerámica Salteña · 2,25 m² por caja · 12 piezas · 32 kg · Pallet de 48 cajas
-              </p>
-            </div>
-
-            <Button asChild variant="industrial" className="shrink-0">
-              <a href="/catalogos/ferrazzano_43x43.pdf" target="_blank" rel="noopener noreferrer">
-                <Download aria-hidden="true" />
-                Ver / descargar catálogo
-              </a>
-            </Button>
+      {/* Cabecera y Botón Descargar Catálogo */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+              Industria Argentina
+            </span>
+            <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
+              SHOP · PISOS CERÁMICOS
+            </span>
           </div>
-        </header>
 
-        <div className="border-y border-border bg-surface px-5 py-5 sm:px-8">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar modelos por acabado">
-              {finishes.map((finish) => {
-                const isActive = selectedFinish === finish;
-                return (
-                  <Button
-                    key={finish}
-                    type="button"
-                    size="sm"
-                    variant={isActive ? "industrial" : "industrialOutline"}
-                    aria-pressed={isActive}
-                    onClick={() => setSelectedFinish(finish)}
-                  >
-                    {finish}
-                  </Button>
-                );
-              })}
-            </div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Ferrazzano 43×43 cm
+          </h1>
 
-            <label className="relative block w-full lg:w-96">
-              <span className="sr-only">Buscar modelo o diseño</span>
-              <Search aria-hidden="true" className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="search"
-                placeholder="Buscar modelo o diseño"
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                className="min-h-11 w-full rounded-md border border-input bg-background py-2 pl-10 pr-4 text-sm text-foreground shadow-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/30"
-              />
-            </label>
-          </div>
-          <p className="mt-4 text-xs text-muted-foreground" aria-live="polite">
-            {filteredProducts.length} {filteredProducts.length === 1 ? "modelo disponible" : "modelos disponibles"}
+          <p className="text-sm text-slate-500 mt-2 font-normal">
+            Cerámica Salteña · Rendimiento estándar: 2,25 m² por caja (12 piezas / 32 kg) · Pallet de 48 cajas (108 m²)
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 p-5 sm:grid-cols-2 sm:p-8 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredProducts.map((product) => (
-            <article
-              key={product.id}
-              className="group flex min-h-[27rem] flex-col overflow-hidden rounded-lg border border-border bg-card shadow-glass transition-all duration-200 hover:-translate-y-1 hover:border-border-strong hover:shadow-industrial"
-            >
-              <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-surface-elevated">
-                <div className="p-6 text-center">
-                  <span className="mb-2 block text-xs font-semibold uppercase text-muted-foreground">
-                    {product.designType}
-                  </span>
-                  <span className="text-base font-semibold text-foreground">{product.name}</span>
-                </div>
+        {/* Botón Descargar Catálogo Oficial */}
+        <a
+          href="/catalogos/ferrazzano_43x43.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-emerald-600 hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
+        >
+          <Download className="w-4 h-4" />
+          Ver / descargar catálogo
+        </a>
+      </div>
+
+      {/* Filtros por Acabado y Buscador */}
+      <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 mb-3">
+        <div className="flex flex-wrap gap-2">
+          {finishes.map((f) => {
+            const isSelected = selectedFinish === f;
+            return (
+              <button
+                key={f}
+                type="button"
+                onClick={() => setSelectedFinish(f)}
+                className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-150 cursor-pointer ${
+                  isSelected
+                    ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-sm'
+                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                }`}
+              >
+                {f}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="relative w-full md:w-80">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <input
+            type="text"
+            placeholder="Buscar modelo o diseño (madera, mármol, piedras)..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+          />
+        </div>
+      </div>
+
+      <p className="text-xs text-slate-500 mb-8 font-normal">
+        {filteredProducts.length} {filteredProducts.length === 1 ? 'modelo disponible' : 'modelos disponibles'}
+      </p>
+
+      {/* Grilla de Modelos */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredProducts.map((p) => (
+          <div
+            key={p.id}
+            className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all duration-200"
+          >
+            <div>
+              {/* Imagen con Fallback */}
+              <div className="w-full h-48 bg-slate-100 relative overflow-hidden flex items-center justify-center">
                 <img
-                  src={product.image}
-                  alt={`Modelo ${product.name}`}
-                  className="absolute inset-0 size-full object-cover transition-transform duration-200 motion-safe:group-hover:scale-[1.02]"
-                  onError={(event) => {
-                    event.currentTarget.style.display = "none";
+                  src={p.image}
+                  alt={p.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
                   }}
                 />
-                <span className="absolute right-3 top-3 rounded-full bg-overlay px-2.5 py-1 text-[10px] font-semibold text-primary-foreground">
-                  {product.finish}
+                <div className="text-center p-4">
+                  <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold block mb-1">
+                    {p.designType}
+                  </span>
+                  <span className="text-base font-bold text-slate-700">
+                    {p.name}
+                  </span>
+                </div>
+
+                <span className="absolute top-2.5 right-2.5 bg-slate-600/90 text-white text-[10px] font-semibold px-2 py-0.5 rounded">
+                  {p.finish}
                 </span>
               </div>
 
-              <div className="flex flex-1 flex-col p-5">
-                <p className="text-[11px] font-normal uppercase text-primary">
-                  {product.line} · {product.colorOrDesign}
-                </p>
-                <h2 className="mt-2 text-lg font-semibold text-foreground">{product.name}</h2>
+              {/* Ficha Técnica */}
+              <div className="p-4">
+                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">
+                  {p.line} · {p.colorOrDesign}
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-3">
+                  {p.name}
+                </h3>
 
-                <dl className="mt-4 space-y-2 border-t border-border pt-4 text-xs text-muted-foreground">
-                  <div className="flex justify-between gap-3">
-                    <dt>Tránsito / Resistencia</dt>
-                    <dd className="text-right font-semibold text-foreground">{product.traffic}</dd>
+                <div className="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-2.5">
+                  <div className="flex justify-between">
+                    <span>Tránsito / Resistencia:</span>
+                    <span className="font-semibold text-slate-800">{p.traffic.split(' ')[0]}</span>
                   </div>
-                  <div className="flex justify-between gap-3">
-                    <dt>Caras / Trama</dt>
-                    <dd className="text-right font-semibold text-foreground">{product.faces}</dd>
+                  <div className="flex justify-between">
+                    <span>Caras / Trama:</span>
+                    <span className="font-semibold text-slate-800">{p.faces} caras</span>
                   </div>
-                  <div className="flex justify-between gap-3">
-                    <dt>Empaque por caja</dt>
-                    <dd className="text-right font-semibold text-foreground">2,25 m² · 32 kg</dd>
+                  <div className="flex justify-between">
+                    <span>Empaque por caja:</span>
+                    <span className="font-semibold text-slate-800">2,25 m² (12 pzs · 32 kg)</span>
                   </div>
-                </dl>
-
-                <Button
-                  type="button"
-                  variant="industrial"
-                  className="mt-auto w-full whitespace-normal pt-4 text-xs"
-                  onClick={() => handleWhatsAppQuote(product)}
-                >
-                  <MessageCircle aria-hidden="true" />
-                  Solicitar cotización por WhatsApp
-                </Button>
+                  {p.shadeVariation && (
+                    <div className="text-[11px] text-teal-700 font-medium pt-0.5">
+                      Variación tonal: {p.shadeVariation}
+                    </div>
+                  )}
+                </div>
               </div>
-            </article>
-          ))}
-        </div>
-      </section>
+            </div>
+
+            {/* Botón WhatsApp de Cotización */}
+            <div className="p-4 pt-0">
+              <button
+                type="button"
+                onClick={() => handleWhatsAppQuote(p)}
+                className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
+              >
+                <MessageCircle className="w-4 h-4 text-white shrink-0" />
+                <span>Solicitar cotización por WhatsApp</span>
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
+};
