@@ -6,7 +6,7 @@ export interface HabitatPorcelanatoItem {
   series: string;
   format: "600x1200 mm" | "1200x1200 mm";
   thickness: "9 mm";
-  finish: "Glossy" | "Velvet" | "Rustic";
+  finish: "Glossy" | "Velvet" | "Rustic" | "Glossy | Velvet";
   faces: string;
   sqmPerBox: number;
   piecesPerBox: number;
