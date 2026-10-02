@@ -91,3 +91,7 @@ export const productsFullBody: FullBodyProductItem[] = [
     image: "/products/fullbody/saga_white.jpg",
   },
 ];
+
+// Alias usados por la vista de detalle.
+export type FullBodyProductUnified = FullBodyProductItem;
+export const productsFullBodyUnified = productsFullBody;
