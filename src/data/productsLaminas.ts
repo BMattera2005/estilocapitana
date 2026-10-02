@@ -82,13 +82,13 @@ export const productsLaminas: LaminaProductItem[] = [
   {
     id: "lam-07",
     code: "1227DG33",
-    name: "Carrara Gold",
+    name: "Carrara",
     finish: "Digital glaze",
     faces: "3 Faces - Infinite grain",
     format: "1200x2700 mm",
     thickness: "9 mm",
     sqmPerSlab: 3.24,
-    image: "/products/sinteredstone/carrara_gold.jpg",
+    image: "/products/sinteredstone/carrara.jpg",
   },
   {
     id: "lam-08",
