@@ -1,18 +1,18 @@
 // src/data/productsFullBody.ts
 
 export interface FullBodyVariant {
-  format: string;
-  finishes: string[];
+  format: "800x2400 mm" | "800x3000 mm";
+  finishes: ("Glossy" | "Matt")[];
   sqm: number;
   weightKg: number;
 }
 
-export interface FullBodyProductUnified {
+export interface FullBodyProductItem {
   id: string;
   name: string;
   series: string;
-  thickness: string;
-  body: string;
+  thickness: "15 mm";
+  body: "Full Body";
   variants: FullBodyVariant[];
   allFormats: string[];
   allFinishes: string[];
@@ -20,7 +20,7 @@ export interface FullBodyProductUnified {
   image: string;
 }
 
-export const productsFullBodyUnified: FullBodyProductUnified[] = [
+export const productsFullBody: FullBodyProductItem[] = [
   {
     id: "hab-fb-brown-flakes",
     name: "Brown Flakes",
@@ -37,7 +37,7 @@ export const productsFullBodyUnified: FullBodyProductUnified[] = [
     ],
     allFormats: ["800x2400 mm"],
     allFinishes: ["Glossy"],
-    recommendedUses: "Mesadas, barras e islas de cocina con alta resistencia superficial.",
+    recommendedUses: "Mesadas, barras e islas de cocina con alta resistencia superficial al calor y rayado.",
     image: "/products/fullbody/brown_flakes.jpg",
   },
   {
@@ -62,7 +62,7 @@ export const productsFullBodyUnified: FullBodyProductUnified[] = [
     ],
     allFormats: ["800x2400 mm", "800x3000 mm"],
     allFinishes: ["Glossy", "Matt"],
-    recommendedUses: "Encimeras de alta prestación, barras comerciales y mobiliario técnico.",
+    recommendedUses: "Encimeras de alta prestación, barras comerciales y mobiliario técnico sin porosidad.",
     image: "/products/fullbody/black_salt_pepper.jpg",
   },
   {
@@ -87,7 +87,7 @@ export const productsFullBodyUnified: FullBodyProductUnified[] = [
     ],
     allFormats: ["800x2400 mm", "800x3000 mm"],
     allFinishes: ["Glossy", "Matt"],
-    recommendedUses: "Mesadas residenciales de vanguardia, frentes e islas continuas sin porosidad.",
+    recommendedUses: "Mesadas residenciales de vanguardia, frentes e islas continuas higiénicas de masa homogénea.",
     image: "/products/fullbody/saga_white.jpg",
   },
 ];
