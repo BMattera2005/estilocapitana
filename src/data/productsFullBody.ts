@@ -1,8 +1,8 @@
 // src/data/productsFullBody.ts
 
 export interface FullBodyVariant {
-  format: "800x2400 mm" | "800x3000 mm";
-  finishes: ("Glossy" | "Matt")[];
+  format: string;
+  finishes: string[];
   sqm: number;
   weightKg: number;
 }
@@ -11,8 +11,8 @@ export interface FullBodyProductUnified {
   id: string;
   name: string;
   series: string;
-  thickness: "15 mm";
-  body: "Full Body";
+  thickness: string;
+  body: string;
   variants: FullBodyVariant[];
   allFormats: string[];
   allFinishes: string[];
