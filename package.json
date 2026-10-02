@@ -44,7 +44,6 @@
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.3.0",
     "input-otp": "^1.2.4",
-    "jiti": "^2.4.2",
     "lucide-react": "^0.462.0",
     "next-themes": "^0.4.3",
     "react": "^18.3.1",
@@ -72,5 +71,8 @@
     "tailwindcss": "3.4.11",
     "typescript": "^5.5.3",
     "vite": "^5.4.2"
+  },
+  "overrides": {
+    "tailwindcss": "3.4.11"
   }
 }
