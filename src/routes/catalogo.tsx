@@ -8,6 +8,7 @@ import { Catalog43Detail } from "../components/Catalog43Detail";
 import { Catalog36Detail } from "../components/Catalog36Detail";
 import { CatalogFullBodyDetail } from "../components/CatalogFullBodyDetail";
 import { CatalogLaminasDetail } from "../components/CatalogLaminasDetail";
+import { CatalogHabitat60x120Detail } from "../components/CatalogHabitat60x120Detail";
 import { CatalogHabitatPorcelanatoDetail } from "../components/CatalogHabitatPorcelanatoDetail";
 
 import { Button } from "@/components/ui/button";
@@ -61,14 +62,13 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
     "inline-flex min-h-11 w-full items-center justify-center rounded-md bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:brightness-105 motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer";
 
   // Incluye todos los IDs con vista de modelos en pantalla
-  const hasInteractiveDetail = [
-    "cat-ferrazzano-43",
-    "cat-ferrazzano-36",
-    "cat-habitat-full-body",
-    "cat-habitat-laminas",
-    "cat-habitat-porcelanato",
-    "cat-viguetas",
-    "cat-eps",
+  const isInteractive = [
+  "cat-habitat-full-body",
+  "cat-habitat-laminas",
+  "cat-habitat-porcelanato",
+  "cat-habitat-60x120", 
+  "cat-ferrazzano-36",
+  "cat-ferrazzano-43",
   ].includes(catalog.id);
 
   return (
@@ -162,6 +162,10 @@ function CatalogoPage() {
   if (selectedCatalogId === "cat-habitat-porcelanato") {
     return <CatalogHabitatPorcelanatoDetail onBack={() => setSelectedCatalogId(null)} />;
   }
+
+  if (selectedCatalogId === "cat-habitat-60x120") {
+  return <CatalogHabitat60x120Detail onBack={() => setSelectedCatalogId(null)} />;
+}
 
   if (selectedCatalogId === "cat-viguetas") {
   return <CatalogViguetasDetail onBack={() => setSelectedCatalogId(null)} />;
