@@ -21,7 +21,7 @@ function slugifyLinea(value: string) {
   return normalizeText(value).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
-const lineFilters = Array.from(new Set(officialCatalogs.map((catalog) => catalog.filterGroup))).map(
+const lineFilters = Array.from(new Set(officialCatalogs.map((catalog) => catalog.filterGroup).filter(Boolean))).map(
   (group) => ({ id: slugifyLinea(group), label: group }),
 );
 
@@ -35,7 +35,7 @@ function catalogHref(catalog: OfficialCatalog) {
 
 function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
   if (filter === "todas") return true;
-  return slugifyLinea(catalog.filterGroup) === filter;
+  return slugifyLinea(catalog.filterGroup ?? "") === filter;
 }
 
 export const Route = createFileRoute("/catalogo")({
