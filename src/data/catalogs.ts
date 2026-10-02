@@ -38,6 +38,14 @@ export const officialCatalogs: OfficialCatalog[] = [
     fileUrl: "/catalogos/coleccion_habitat_MA.pdf",
   },
   {
+    id: "cat-habitat-60x120",
+    origin: "Novedad Importada",
+    category: "Porcelanatos",
+    title: "Habitat - Luxury Stone 60x120",
+    description: "Placas porcelánicas rectificadas 600x1200x9 mm inspiradas en piedras y mármoles naturales de alta gama.",
+    fileUrl: "/catalogos/coleccion_habitat_60x120.pdf",
+  },
+  {
     id: "cat-ferrazzano-36",
     origin: "Industria Argentina",
     category: "Pisos Cerámicos",
