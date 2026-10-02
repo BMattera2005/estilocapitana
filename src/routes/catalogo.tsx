@@ -21,7 +21,7 @@ function slugifyLinea(value: string) {
   return normalizeText(value).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
-const lineFilters = Array.from(new Set(officialCatalogs.map((catalog) => catalog.filterGroup))).map(
+const lineFilters = Array.from(new Set(officialCatalogs.map((catalog) => catalog.filterGroup).filter(Boolean))).map(
   (group) => ({ id: slugifyLinea(group), label: group }),
 );
 
@@ -35,7 +35,7 @@ function catalogHref(catalog: OfficialCatalog) {
 
 function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
   if (filter === "todas") return true;
-  return slugifyLinea(catalog.filterGroup) === filter;
+  return slugifyLinea(catalog.filterGroup ?? "") === filter;
 }
 
 export const Route = createFileRoute("/catalogo")({
@@ -87,7 +87,7 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
       <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
 
       <div className="mt-auto grid gap-2 pt-7">
-        {hasInteractiveDetail ? (
+        {isInteractive ? (
           <button
             type="button"
             onClick={onSelect}
