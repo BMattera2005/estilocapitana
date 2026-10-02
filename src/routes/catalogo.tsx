@@ -87,7 +87,7 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
       <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
 
       <div className="mt-auto grid gap-2 pt-7">
-        {hasInteractiveDetail ? (
+        {isInteractive ? (
           <button
             type="button"
             onClick={onSelect}
