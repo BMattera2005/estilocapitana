@@ -9,16 +9,16 @@ interface CatalogFullBodyDetailProps {
 
 // Subcomponente individual para manejar el estado de medida/terminación por tarjeta
 const ProductCard: React.FC<{ product: FullBodyProductUnified }> = ({ product }) => {
-  const [selectedFormat, setSelectedFormat] = useState<string>(product.variants[0].format);
-  const activeVariant = product.variants.find((v) => v.format === selectedFormat) || product.variants[0];
-  const [selectedFinish, setSelectedFinish] = useState<string>(activeVariant.finishes[0]);
+  const [selectedFormat, setSelectedFormat] = useState<string>(product.variants[0]!.format);
+  const activeVariant = product.variants.find((v) => v.format === selectedFormat) || product.variants[0]!;
+  const [selectedFinish, setSelectedFinish] = useState<string>(activeVariant.finishes[0]!);
 
   // Si cambia el formato y el acabado no está en la nueva variante, actualizamos al primero
   const handleFormatChange = (fmt: "800x2400 mm" | "800x3000 mm") => {
     setSelectedFormat(fmt);
     const targetVar = product.variants.find((v) => v.format === fmt);
     if (targetVar && !targetVar.finishes.includes(selectedFinish as any)) {
-      setSelectedFinish(targetVar.finishes[0]);
+      setSelectedFinish(targetVar.finishes[0]!);
     }
   };
 
