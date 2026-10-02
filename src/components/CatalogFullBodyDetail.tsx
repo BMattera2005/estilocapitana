@@ -228,7 +228,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
               {/* Botón de Cotización */}
               <div className="p-5 pt-0">
                 <a
-                  href={whatsappUrl}
+                  href={whatsappUrl ?? undefined}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold text-sm rounded-lg transition-all shadow-sm cursor-pointer"
