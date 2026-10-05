@@ -61,7 +61,7 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
   },
   {
     id: "hab-porc-argentina-grey",
-    name: "Argentina Grey",
+    name: "Argenta Grey",
     series: "Natural Stone Series",
     format: "600x1200 mm",
     thickness: "9 mm",
@@ -75,7 +75,7 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
     sqmPerPallet: 86.40,
     weightPalletKg: 1800,
     description: "Revestimiento símil piedra natural disponible en acabado Glossy o acabado Velvet sedoso.",
-    image: "/products/habitatIndia/argentina_grey.jpg",
+    image: "/products/habitatIndia/argenta_grey.jpg",
   },
 
   // --- 1200x1200 mm ---
