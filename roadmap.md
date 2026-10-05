@@ -19,3 +19,4 @@
 - [x] Activar la vista Shop interactiva del catálogo Habitat Porcelanato Esmaltado.
 - [x] Eliminar el producto de prueba Pearl White del catálogo Full Body.
 - [x] Reparar la hidratación del cliente alineando @tanstack/react-router 1.170.18 con react-start 1.168.32.
+- [x] Estandarizar las cabeceras y acciones de las vistas de detalle de catálogo.
