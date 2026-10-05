@@ -1,7 +1,8 @@
 // src/components/Catalog36Detail.tsx
 import React, { useState } from 'react';
-import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
+import { MessageCircle, Search } from 'lucide-react';
 import { products36x36, CeramicProduct36 } from '../data/products36';
+import { CatalogDetailHeader } from './catalog/CatalogDetailHeader';
 
 interface Catalog36DetailProps {
   onBack: () => void;
@@ -30,47 +31,14 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Botón Volver */}
-      <button 
-        onClick={onBack}
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Volver a los Catálogos
-      </button>
-
-      {/* Cabecera y Botón Ver/Descargar Catálogo */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
-              Industria Argentina
-            </span>
-            <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
-              SHOP · PISOS CERÁMICOS
-            </span>
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Ferrazzano 36×36 cm
-          </h1>
-
-          <p className="text-sm text-slate-500 mt-2 font-normal">
-            Cerámica Salteña · Esmaltados: 2,33 m² (18 pzs / 33.9 kg) · Coloniales: 2,20 m² (17 pzs / 33.9 kg) · Pallet de 36 cajas
-          </p>
-        </div>
-
-        {/* Botón Descargar con el color/gradiente exacto de la página */}
-        <a
-          href="/catalogos/ferrazzano_36x36.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-emerald-600 hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
-        >
-          <Download className="w-4 h-4" />
-          Ver / descargar catálogo
-        </a>
-      </div>
+      <CatalogDetailHeader
+        origin="Industria Argentina"
+        category="Pisos Cerámicos"
+        title="Ferrazzano — Formato 36×36 cm"
+        description="Cerámica Salteña · Esmaltados: 2,33 m² (18 pzs / 33.9 kg) · Coloniales: 2,20 m² (17 pzs / 33.9 kg) · Pallet de 36 cajas"
+        downloadUrl="/catalogos/ferrazzano_36x36.pdf"
+        onBack={onBack}
+      />
 
       {/* Filtros por Acabado y Buscador */}
       <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 mb-3">
@@ -178,9 +146,9 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
               <button
                 type="button"
                 onClick={() => handleWhatsAppQuote(p)}
-                className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-primary-foreground bg-brand-gradient hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
               >
-                <MessageCircle className="w-4 h-4 text-white shrink-0" />
+                <MessageCircle className="w-4 h-4 shrink-0" />
                 <span>Solicitar cotización por WhatsApp</span>
               </button>
             </div>

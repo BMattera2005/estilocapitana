@@ -1,8 +1,9 @@
 // src/components/CatalogFullBodyDetail.tsx
 import React, { useState } from "react";
-import { ArrowLeft, MessageCircle, FileText } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { productsFullBody } from "../data/productsFullBody";
 import { buildWhatsAppUrl } from "../lib/quote-message";
+import { CatalogDetailHeader } from "./catalog/CatalogDetailHeader";
 
 interface CatalogFullBodyDetailProps {
   onBack: () => void;
@@ -46,37 +47,14 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      {/* Barra de Navegación Superior */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <button
-          onClick={onBack}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Volver a Catálogos
-        </button>
-
-        <a
-          href="/catalogos/habitat_ma_full_body.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 text-white rounded-lg text-sm font-semibold hover:opacity-95 transition-opacity shadow-sm"
-        >
-          <FileText className="w-4 h-4" />
-          Descargar PDF Oficial (15 mm)
-        </a>
-      </div>
-
-      {/* Título de la Sección */}
-      <div className="mb-8">
-        <span className="text-xs font-bold uppercase tracking-wider text-sky-600">Sintered Stone Full Body</span>
-        <h1 className="text-3xl font-extrabold text-slate-900 mt-1 font-['Montserrat']">
-          Colección Mesadas & Placas 15 mm
-        </h1>
-        <p className="text-slate-600 mt-2 max-w-3xl text-sm leading-relaxed">
-          Placas sinterizadas de masa homogénea (Full Body) especialmente diseñadas para mesadas de cocina, islas y aplicaciones de alta exigencia superficial.
-        </p>
-      </div>
+      <CatalogDetailHeader
+        origin="Novedad Importada"
+        category="Sintered Stone"
+        title="Habitat — Mesadas & Placas 15 mm"
+        description="Placas sinterizadas de masa homogénea (Full Body) especialmente diseñadas para mesadas de cocina, islas y aplicaciones de alta exigencia superficial."
+        downloadUrl="/catalogos/habitat_ma_full_body.pdf"
+        onBack={onBack}
+      />
 
       {/* Filtros de Encabezado */}
       <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-wrap items-center gap-6">
@@ -231,7 +209,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
                   href={whatsappUrl ?? undefined}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold text-sm rounded-lg transition-all shadow-sm cursor-pointer"
+                   className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-gradient hover:brightness-105 text-primary-foreground font-semibold text-sm rounded-lg transition-all shadow-sm cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4" />
                   Cotizar Medida por WhatsApp

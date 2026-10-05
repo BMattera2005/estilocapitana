@@ -1,8 +1,9 @@
 // src/components/CatalogLaminasDetail.tsx
 import React, { useState } from "react";
-import { ArrowLeft, MessageCircle, FileText, Search } from "lucide-react";
+import { MessageCircle, Search } from "lucide-react";
 import { productsLaminas } from "../data/productsLaminas";
 import { buildWhatsAppUrl } from "../lib/quote-message";
+import { CatalogDetailHeader } from "./catalog/CatalogDetailHeader";
 
 interface CatalogLaminasDetailProps {
   onBack: () => void;
@@ -24,37 +25,14 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      {/* Navegación y PDF */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <button
-          onClick={onBack}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Volver a Catálogos
-        </button>
-
-        <a
-          href="/catalogos/slabs_sintered_stone.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 text-white rounded-lg text-sm font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer"
-        >
-          <FileText className="w-4 h-4" />
-          Descargar PDF Oficial Láminas
-        </a>
-      </div>
-
-      {/* Encabezado */}
-      <div className="mb-8">
-        <span className="text-xs font-bold uppercase tracking-wider text-sky-600">Slabs Sintered Stone</span>
-        <h1 className="text-3xl font-extrabold text-slate-900 mt-1 font-['Montserrat']">
-          Láminas Formato 1200×2700×9 mm
-        </h1>
-        <p className="text-slate-600 mt-2 max-w-3xl text-sm leading-relaxed">
-          Placas sinterizadas continuas de gran escala para revestimientos completos de piso a techo, mesadas y arquitectura sin juntas visibles.
-        </p>
-      </div>
+      <CatalogDetailHeader
+        origin="Novedad Importada"
+        category="Sintered Stone"
+        title="Habitat — Láminas 120×270 cm"
+        description="Placas sinterizadas continuas de gran escala para revestimientos completos de piso a techo, mesadas y arquitectura sin juntas visibles."
+        downloadUrl="/catalogos/slabs_sintered_stone.pdf"
+        onBack={onBack}
+      />
 
       {/* Filtros dinámicos y Buscador */}
       <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-wrap items-center justify-between gap-4">
@@ -148,7 +126,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
                   href={whatsappUrl ?? undefined}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
+                  className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-brand-gradient hover:brightness-105 text-primary-foreground font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4" />
                   Cotizar por WhatsApp

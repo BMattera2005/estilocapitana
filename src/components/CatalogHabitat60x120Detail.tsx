@@ -1,8 +1,9 @@
 // src/components/CatalogHabitat60x120Detail.tsx
 import React, { useState } from "react";
-import { ArrowLeft, MessageCircle, FileText, Search } from "lucide-react";
+import { MessageCircle, Search } from "lucide-react";
 import { productsHabitat60x120 } from "../data/productsHabitat60x120";
 import { buildWhatsAppUrl } from "../lib/quote-message";
+import { CatalogDetailHeader } from "./catalog/CatalogDetailHeader";
 
 interface CatalogHabitat60x120DetailProps {
   onBack: () => void;
@@ -20,39 +21,14 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      {/* Botón Volver y Descarga de PDF */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <button
-          onClick={onBack}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Volver a Catálogos
-        </button>
-
-        <a
-          href="/catalogos/coleccion_habitat_60x120.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 text-white rounded-lg text-sm font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer"
-        >
-          <FileText className="w-4 h-4" />
-          Descargar PDF Oficial 60×120
-        </a>
-      </div>
-
-      {/* Cabecera */}
-      <div className="mb-8">
-        <span className="text-xs font-bold uppercase tracking-wider text-sky-600">
-          Porcelanatos Importados · Colección Habitat
-        </span>
-        <h1 className="text-3xl font-extrabold text-slate-900 mt-1 font-['Montserrat']">
-          Línea Luxury Stone 60×120 cm
-        </h1>
-        <p className="text-slate-600 mt-2 max-w-3xl text-sm leading-relaxed">
-          Placas porcelánicas rectificadas de 9 mm de espesor en formato 600×1200 mm con diseño pétreo y marmolado continuo para arquitectura residencial y comercial.
-        </p>
-      </div>
+      <CatalogDetailHeader
+        origin="Novedad Importada"
+        category="Porcelanato"
+        title="Habitat — Luxury Stone 60×120 cm"
+        description="Placas porcelánicas rectificadas de 9 mm de espesor en formato 600×1200 mm con diseño pétreo y marmolado continuo para arquitectura residencial y comercial."
+        downloadUrl="/catalogos/coleccion_habitat_60x120.pdf"
+        onBack={onBack}
+      />
 
       {/* Buscador */}
       <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
@@ -133,7 +109,7 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
                   href={whatsappUrl ?? undefined}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
+                   className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-brand-gradient hover:brightness-105 text-primary-foreground font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4" />
                   Cotizar por WhatsApp

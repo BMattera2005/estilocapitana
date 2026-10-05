@@ -1,7 +1,9 @@
 // src/components/CatalogViguetasDetail.tsx
 import React, { useState } from "react";
-import { ArrowLeft, Download, MessageCircle, ShieldCheck, CheckCircle2 } from "lucide-react";
+import { MessageCircle, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { productsViguetas, productsBovedillasEPS } from "../data/productsViguetas";
+import { Button } from "./ui/button";
+import { CatalogDetailHeader } from "./catalog/CatalogDetailHeader";
 
 interface CatalogViguetasDetailProps {
   onBack: () => void;
@@ -22,59 +24,22 @@ export function CatalogViguetasDetail({ onBack }: CatalogViguetasDetailProps) {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Botón Volver */}
-      <button
-        type="button"
-        onClick={onBack}
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        <span>Volver a los Catálogos</span>
-      </button>
-
-      {/* Cabecera y Botón Descargar */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
-              Industria Argentina
-            </span>
-            <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
-              VIGUETAS PRETENSADAS & ESTRUCTURAS
-            </span>
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Vigueta Perfecta — Cerámica Salteña & EPS Famapol
-          </h1>
-
-          <p className="text-sm text-slate-500 mt-2 font-normal max-w-3xl">
-            Sistema de forjados y entrepisos con viguetas pretensadas de hormigón STONOVER y bovedillas de Poliestireno Expandido (EPS) Famapol. Reducción de peso propio de hasta un 45% y alta aislación termoacústica.
-          </p>
-        </div>
-
-        {/* Botones de Cabecera */}
-        <div className="flex flex-col sm:flex-row md:flex-col gap-2 shrink-0 w-full md:w-auto">
-          <a
-            href="/catalogos/viguetas.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-emerald-600 hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
-          >
-            <Download className="w-4 h-4" />
-            <span>Ver / descargar catálogo</span>
-          </a>
-          <a
-            href="/catalogos/certificado_viguetas.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 transition-colors"
-          >
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>Ver Certificado Adjunto</span>
-          </a>
-        </div>
-      </div>
+      <CatalogDetailHeader
+        origin="Industria Argentina"
+        category="Viguetas Pretensadas & Estructuras"
+        title="Vigueta Perfecta — Sistemas de Entrepisos"
+        description="Sistema de forjados y entrepisos con viguetas pretensadas de hormigón STONOVER y bovedillas de Poliestireno Expandido (EPS) Famapol. Reducción de peso propio de hasta un 45% y alta aislación termoacústica."
+        downloadUrl="/catalogos/viguetas.pdf"
+        onBack={onBack}
+        secondaryAction={
+          <Button asChild variant="industrialOutline" size="sm">
+            <a href="/catalogos/certificado_viguetas.pdf" target="_blank" rel="noopener noreferrer">
+              <ShieldCheck />
+              Ver Certificado Adjunto
+            </a>
+          </Button>
+        }
+      />
 
       {/* Pestañas de Filtro */}
       <div className="flex gap-2 mb-8">
@@ -148,9 +113,9 @@ export function CatalogViguetasDetail({ onBack }: CatalogViguetasDetailProps) {
                 href={buildViguetaWhatsAppUrl(vig.name, vig.series, vig.lengthRange)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-primary-foreground bg-brand-gradient hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
               >
-                <MessageCircle className="w-4 h-4 text-white shrink-0" />
+                <MessageCircle className="w-4 h-4 shrink-0" />
                 <span>Solicitar cotización por WhatsApp</span>
               </a>
             </article>
@@ -200,9 +165,9 @@ export function CatalogViguetasDetail({ onBack }: CatalogViguetasDetailProps) {
                 href={buildBovedillaWhatsAppUrl(bov.name, bov.heightCm, bov.axisSpacingCm)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-primary-foreground bg-brand-gradient hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
               >
-                <MessageCircle className="w-4 h-4 text-white shrink-0" />
+                <MessageCircle className="w-4 h-4 shrink-0" />
                 <span>Solicitar cotización por WhatsApp</span>
               </a>
             </article>
