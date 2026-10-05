@@ -33,7 +33,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
 });
   const handleWhatsAppQuote = (item: HabitatPorcelanatoItem) => {
     const phone = "5491161208162";
-    const message = `Hola estilo.capitana, me interesa cotizar el porcelanato ${item.name} (Formato: ${item.format}, Acabado: ${item.finish}). Quisiera consultar disponibilidad por pallet.`;
+    const message = `Hola estilo.capitana, me interesa cotizar el porcelanato ${item.name} (Formato: ${item.format}, Acabado: ${item.finishText}). Quisiera consultar disponibilidad por pallet.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -132,7 +132,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
                 </div>
 
                 <span className="absolute top-2.5 right-2.5 bg-slate-600/90 text-white text-[10px] font-semibold px-2 py-0.5 rounded">
-                  {p.finish}
+                  {p.finishText}
                 </span>
               </div>
 
