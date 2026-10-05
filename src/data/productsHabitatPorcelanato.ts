@@ -60,7 +60,7 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
     image: "/products/habitatIndia/olister_bianco.jpg",
   },
   {
-    id: "hab-porc-argentina-grey",
+    id: "hab-porc-argenta-grey",
     name: "Argenta Grey",
     series: "Natural Stone Series",
     format: "600x1200 mm",
