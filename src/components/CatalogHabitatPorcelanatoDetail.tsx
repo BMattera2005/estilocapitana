@@ -15,15 +15,21 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
   const formats = ['Todos', '600x1200 mm', '1200x1200 mm'];
   const finishes = ['Todos', 'Glossy', 'Velvet', 'Rustic'];
 
-  const filteredProducts = productsHabitatPorcelanato.filter((item) => {
-    const matchesFormat = selectedFormat === 'Todos' || item.format === selectedFormat;
-    const matchesFinish = selectedFinish === 'Todos' || item.finish === selectedFinish;
-    const matchesSearch =
-      item.name.toLowerCase().includes(search.toLowerCase()) ||
-      item.series.toLowerCase().includes(search.toLowerCase());
-    return matchesFormat && matchesFinish && matchesSearch;
-  });
+  const filteredProducts = productsHabitatPorcelanato.filter((prod) => {
+  // Coincidencia de formato
+  const matchesFormat = selectedFormat === "Todos" || prod.format === selectedFormat;
 
+  // Coincidencia de acabado (revisa si el array contiene el acabado o si es "Todos")
+  const matchesFinish =
+    selectedFinish === "Todos" || prod.finishes.includes(selectedFinish as any);
+
+  // Coincidencia de búsqueda
+  const matchesSearch =
+    prod.name.toLowerCase().includes(search.toLowerCase()) ||
+    prod.series.toLowerCase().includes(search.toLowerCase());
+
+  return matchesFormat && matchesFinish && matchesSearch;
+});
   const handleWhatsAppQuote = (item: HabitatPorcelanatoItem) => {
     const phone = "5491161208162";
     const message = `Hola estilo.capitana, me interesa cotizar el porcelanato ${item.name} (Formato: ${item.format}, Acabado: ${item.finish}). Quisiera consultar disponibilidad por pallet.`;
