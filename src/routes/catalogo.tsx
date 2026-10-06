@@ -138,10 +138,13 @@ function CatalogoPage() {
     if (linea) setActiveFilter(linea);
   }, [linea]);
 
-  const visibleCatalogs = useMemo(
-    () => officialCatalogs.filter((catalog) => matchesFilter(catalog, activeFilter)),
-    [activeFilter],
-  );
+const visibleCatalogs = useMemo(
+  () =>
+    officialCatalogs
+      .filter((catalog) => catalog.isVisible !== false) // Oculta automáticamente los que tengan isVisible: false[cite: 2, 8]
+      .filter((catalog) => matchesFilter(catalog, activeFilter)),
+  [activeFilter],
+);
 
   if (selectedCatalogId === "cat-ferrazzano-43") {
     return <Catalog43Detail onBack={() => setSelectedCatalogId(null)} />;
