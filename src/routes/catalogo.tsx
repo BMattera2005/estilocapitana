@@ -21,9 +21,14 @@ function slugifyLinea(value: string) {
   return normalizeText(value).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
-const lineFilters = Array.from(new Set(officialCatalogs.map((catalog) => catalog.filterGroup).filter(Boolean))).map(
-  (group) => ({ id: slugifyLinea(group), label: group }),
-);
+const lineFilters = Array.from(
+  new Set(
+    officialCatalogs
+      .filter((catalog) => catalog.isVisible !== false)
+      .map((catalog) => catalog.filterGroup)
+      .filter(Boolean),
+  ),
+).map((group) => ({ id: slugifyLinea(group), label: group }));
 
 type CatalogFilter = "todas" | (string & {});
 
@@ -141,7 +146,7 @@ function CatalogoPage() {
 const visibleCatalogs = useMemo(
   () =>
     officialCatalogs
-      .filter((catalog) => catalog.isVisible !== false) // Oculta automáticamente los que tengan isVisible: false[cite: 2, 8]
+      .filter((catalog) => catalog.isVisible !== false) // Oculta automáticamente los que tengan isVisible: false
       .filter((catalog) => matchesFilter(catalog, activeFilter)),
   [activeFilter],
 );
