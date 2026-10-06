@@ -41,7 +41,6 @@ export const products43x43: CeramicProduct[] = [
     colorOrDesign: "Natural",
     format: "43x43 cm",
     finish: "Brillante",
-    isVisible: false,
     traffic: "PEI 3 Tránsito Medio",
     designType: "Madera",
     faces: 4,
