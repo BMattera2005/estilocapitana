@@ -6,6 +6,11 @@ import { siteConfig } from "@/config/site";
 import { routeMeta } from "@/config/seo";
 import { officialCatalogs } from "@/data/catalogs";
 
+// Mismo criterio que /catalogo: solo cuentan los catálogos visibles (isVisible !== false).
+const visibleCatalogCount = officialCatalogs.filter(
+  (catalog) => catalog.isVisible !== false,
+).length;
+
 const productFamilies = [
   { filter: "sintered-stone", title: "Sintered Stone", detail: "Full Body y Láminas 120x270 para arquitectura de alta gama con máxima resistencia.", icon: Layers3 },
   { filter: "porcelanato", title: "Porcelanato", detail: "Porcelanatos esmaltados en acabados Glossy, Carving y Velvet de alta rotación.", icon: PanelsTopLeft },
@@ -46,7 +51,7 @@ function Index() {
             </div>
           </div>
           <div className="mt-12 grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-3">
-            <div className="bg-card p-5"><strong className="block text-3xl font-bold text-foreground">{officialCatalogs.length}</strong><span className="mt-1 block text-sm font-normal text-muted-foreground">catálogos comerciales</span></div>
+            <div className="bg-card p-5"><strong className="block text-3xl font-bold text-foreground">{visibleCatalogCount}</strong><span className="mt-1 block text-sm font-normal text-muted-foreground">catálogos comerciales</span></div>
             <div className="bg-card p-5"><strong className="block text-lg font-semibold text-foreground">Selección especializada</strong><span className="mt-1 block text-sm font-normal text-muted-foreground">materiales para arquitectura</span></div>
             <div className="bg-card p-5"><strong className="block text-lg font-semibold text-foreground">Atención B2B</strong><span className="mt-1 block text-sm font-normal text-muted-foreground">stock y cotización directa</span></div>
           </div>
