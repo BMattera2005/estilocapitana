@@ -7,7 +7,7 @@ export interface OfficialCatalog {
   description: string;
   fileUrl: string;
   certificateUrl?: string;
-  isVisible?: boolean, //para legir que catalogos mostrar
+  isVisible?: boolean; //para legir que catalogos mostrar
 }
 
 export const officialCatalogs: OfficialCatalog[] = [
