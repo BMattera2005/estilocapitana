@@ -46,8 +46,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Madera",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/algarrobo.jpg",
-    isVisible: true
+    image: "/products/43x43/algarrobo.jpg"
   },
   {
     id: "fer-43-cachi-arena",
@@ -60,8 +59,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Mármol",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/cachi_arena.jpg",
-    isVisible: true
+    image: "/products/43x43/cachi_arena.jpg"
   },
   {
     id: "fer-43-cachi-gris",
@@ -74,8 +72,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Mármol",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/cachi_gris.jpg",
-    isVisible: true
+    image: "/products/43x43/cachi_gris.jpg"
   },
   {
     id: "fer-43-calacatta-blanco",
@@ -89,8 +86,7 @@ export const products43x43: CeramicProduct[] = [
     faces: 4,
     shadeVariation: "V2 Ligera Variación",
     packaging: packingStandard43,
-    image: "/products/43x43/calacatta_blanco.jpg",
-    isVisible: true
+    image: "/products/43x43/calacatta_blanco.jpg"
   },
   {
     id: "fer-43-calacatta-dorado",
@@ -104,8 +100,7 @@ export const products43x43: CeramicProduct[] = [
     faces: 4,
     shadeVariation: "V2 Ligera Variación",
     packaging: packingStandard43,
-    image: "/products/43x43/calacatta_dorado.jpg",
-    isVisible: true
+    image: "/products/43x43/calacatta_dorado.jpg"
   },
   {
     id: "fer-43-capri-blanco",
@@ -118,8 +113,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Venecitas",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/capri_blanco.jpg",
-    isVisible: true
+    image: "/products/43x43/capri_blanco.jpg"
   },
   {
     id: "fer-43-capri-blu",
@@ -132,8 +126,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Venecitas",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/capri_blu.jpg",
-    isVisible: true
+    image: "/products/43x43/capri_blu.jpg"
   },
   {
     id: "fer-43-capri-mix",
@@ -146,8 +139,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Venecitas",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/capri_mix.jpg",
-    isVisible: true
+    image: "/products/43x43/capri_mix.jpg"
   },
   {
     id: "fer-43-cebil",
@@ -160,8 +152,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Madera",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/cebil_natural.jpg",
-    isVisible: true
+    image: "/products/43x43/cebil_natural.jpg"
   },
   {
     id: "fer-43-chani-blanco",
@@ -174,8 +165,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/chani_blanco.jpg",
-    isVisible: true
+    image: "/products/43x43/chani_blanco.jpg"
   },
   {
     id: "fer-43-chani-negro",
@@ -188,8 +178,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/chani_negro.jpg",
-    isVisible: true
+    image: "/products/43x43/chani_negro.jpg"
   },
   {
     id: "fer-43-esteco",
@@ -203,8 +192,7 @@ export const products43x43: CeramicProduct[] = [
     faces: 4,
     shadeVariation: "Destonalizado V2",
     packaging: packingStandard43,
-    image: "/products/43x43/esteco_onix.jpg",
-    isVisible: true
+    image: "/products/43x43/esteco_onix.jpg"
   },
   {
     id: "fer-43-molle",
@@ -217,8 +205,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Madera",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/molle_natural.jpg",
-    isVisible: true
+    image: "/products/43x43/molle_natural.jpg"
   },
   {
     id: "fer-43-rosario-azul",
@@ -232,8 +219,7 @@ export const products43x43: CeramicProduct[] = [
     faces: 4,
     shadeVariation: "Destonalizado V2",
     packaging: packingStandard43,
-    image: "/products/43x43/rosario_azul.jpg",
-    isVisible: true
+    image: "/products/43x43/rosario_azul.jpg"
   },
   {
     id: "fer-43-rosario-verde",
@@ -247,8 +233,7 @@ export const products43x43: CeramicProduct[] = [
     faces: 4,
     shadeVariation: "Destonalizado V2",
     packaging: packingStandard43,
-    image: "/products/43x43/rosario_verde.jpg",
-    isVisible: true
+    image: "/products/43x43/rosario_verde.jpg"
   },
   {
     id: "fer-43-san-luis",
@@ -261,8 +246,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Mármol",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/san_luis_beige.jpg",
-    isVisible: true
+    image: "/products/43x43/san_luis_beige.jpg"
   },
   {
     id: "fer-43-sauce-gris",
@@ -275,8 +259,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Madera",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/sauce_gris.jpg",
-    isVisible: true
+    image: "/products/43x43/sauce_gris.jpg"
   },
   {
     id: "fer-43-tolombon-gris",
@@ -289,8 +272,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Mármol",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/tolombon_gris.jpg",
-    isVisible: true
+    image: "/products/43x43/tolombon_gris.jpg"
   },
   {
     id: "fer-43-urundel-beige",
@@ -303,8 +285,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Madera",
     faces: 2,
     packaging: packingStandard43,
-    image: "/products/43x43/urundel_beige.jpg",
-    isVisible: true
+    image: "/products/43x43/urundel_beige.jpg"
   },
   {
     id: "fer-43-urundel-nativo",
@@ -317,8 +298,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Madera",
     faces: 2,
     packaging: packingStandard43,
-    image: "/products/43x43/urundel_nativo.jpg",
-    isVisible: true
+    image: "/products/43x43/urundel_nativo.jpg"
   },
 
   // --- 2. SATINADOS (PEI 4 - Tránsito Alto) ---
@@ -333,8 +313,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/bali_azul.jpg",
-    isVisible: true
+    image: "/products/43x43/bali_azul.jpg"
   },
   {
     id: "fer-43-bali-piedra",
@@ -347,8 +326,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/bali_piedra.jpg",
-    isVisible: true
+    image: "/products/43x43/bali_piedra.jpg"
   },
   {
     id: "fer-43-bali-verde",
@@ -361,8 +339,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/bali_verde.jpg",
-    isVisible: true
+    image: "/products/43x43/bali_verde.jpg"
   },
   {
     id: "fer-43-los-toldos-azul",
@@ -375,8 +352,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Calcáreo",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/los_toldos_azul.jpg",
-    isVisible: true
+    image: "/products/43x43/los_toldos_azul.jpg"
   },
   {
     id: "fer-43-los-toldos-beige",
@@ -389,8 +365,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Calcáreo",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/los_toldos_beige.jpg",
-    isVisible: true
+    image: "/products/43x43/los_toldos_beige.jpg"
   },
   {
     id: "fer-43-nazareno-color",
@@ -403,8 +378,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Calcáreo",
     faces: 3,
     packaging: packingStandard43,
-    image: "/products/43x43/nazareno_color.jpg",
-    isVisible: true
+    image: "/products/43x43/nazareno_color.jpg"
   },
   {
     id: "fer-43-nazareno-gris",
@@ -417,8 +391,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Calcáreo",
     faces: 3,
     packaging: packingStandard43,
-    image: "/products/43x43/nazareno_gris.jpg",
-    isVisible: true
+    image: "/products/43x43/nazareno_gris.jpg"
   },
   {
     id: "fer-43-nogal-gris",
@@ -431,8 +404,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Madera",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/nogal_gris.jpg",
-    isVisible: true
+    image: "/products/43x43/nogal_gris.jpg"
   },
   {
     id: "fer-43-nogal-marron",
@@ -445,8 +417,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Madera",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/nogal_marron.jpg",
-    isVisible: true
+    image: "/products/43x43/nogal_marron.jpg"
   },
   {
     id: "fer-43-nogal-vintage",
@@ -459,8 +430,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Madera",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/nogal_vintage.jpg",
-    isVisible: true
+    image: "/products/43x43/nogal_vintage.jpg"
   },
   {
     id: "fer-43-san-antonio-arena",
@@ -474,8 +444,7 @@ export const products43x43: CeramicProduct[] = [
     faces: 4,
     shadeVariation: "Destonalizado V2",
     packaging: packingStandard43,
-    image: "/products/43x43/san_antonio_arena.jpg",
-    isVisible: true
+    image: "/products/43x43/san_antonio_arena.jpg"
   },
   {
     id: "fer-43-virreinal",
@@ -488,8 +457,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Calcáreo",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/virreinal_color.jpg",
-    isVisible: true
+    image: "/products/43x43/virreinal_color.jpg"
   },
   {
     id: "fer-43-zenta-arena",
@@ -503,8 +471,7 @@ export const products43x43: CeramicProduct[] = [
     faces: 6,
     shadeVariation: "Destonalizado V2",
     packaging: packingStandard43,
-    image: "/products/43x43/zenta_arena.jpg",
-    isVisible: true
+    image: "/products/43x43/zenta_arena.jpg"
   },
   {
     id: "fer-43-zenta-beige",
@@ -518,8 +485,7 @@ export const products43x43: CeramicProduct[] = [
     faces: 6,
     shadeVariation: "Destonalizado V2",
     packaging: packingStandard43,
-    image: "/products/43x43/zenta_beige.jpg",
-    isVisible: true
+    image: "/products/43x43/zenta_beige.jpg"
   },
   {
     id: "fer-43-zenta-cemento",
@@ -533,8 +499,7 @@ export const products43x43: CeramicProduct[] = [
     faces: 6,
     shadeVariation: "Destonalizado V2",
     packaging: packingStandard43,
-    image: "/products/43x43/zenta_cemento.jpg",
-    isVisible: true
+    image: "/products/43x43/zenta_cemento.jpg"
   },
   {
     id: "fer-43-zenta-gris",
@@ -548,8 +513,7 @@ export const products43x43: CeramicProduct[] = [
     faces: 6,
     shadeVariation: "Destonalizado V2",
     packaging: packingStandard43,
-    image: "/products/43x43/zenta_gris.jpg",
-    isVisible: true
+    image: "/products/43x43/zenta_gris.jpg"
   },
   {
     id: "fer-43-zenta-marfil",
@@ -563,8 +527,7 @@ export const products43x43: CeramicProduct[] = [
     faces: 6,
     shadeVariation: "Destonalizado V2",
     packaging: packingStandard43,
-    image: "/products/43x43/zenta_marfil.jpg",
-    isVisible: true
+    image: "/products/43x43/zenta_marfil.jpg"
   },
 
   // --- 3. MATE CON GRANILLA (PEI 5 - Tránsito Muy Alto) ---
@@ -579,8 +542,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/abra_gris.jpg",
-    isVisible: true
+    image: "/products/43x43/abra_gris.jpg"
   },
   {
     id: "fer-43-abra-tiza",
@@ -593,8 +555,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/abra_tiza.jpg",
-    isVisible: true
+    image: "/products/43x43/abra_tiza.jpg"
   },
   {
     id: "fer-43-candelaria-beige",
@@ -607,8 +568,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/candelaria_beige.jpg",
-    isVisible: true
+    image: "/products/43x43/candelaria_beige.jpg"
   },
   {
     id: "fer-43-candelaria-oxido",
@@ -621,8 +581,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/candelaria_oxido.jpg",
-    isVisible: true
+    image: "/products/43x43/candelaria_oxido.jpg"
   },
   {
     id: "fer-43-guachipas-terra",
@@ -635,8 +594,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/guachipas_tierra.jpg",
-    isVisible: true
+    image: "/products/43x43/guachipas_tierra.jpg"
   },
   {
     id: "fer-43-molinos-gris",
@@ -649,8 +607,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/molinos_gris.jpg",
-    isVisible: true
+    image: "/products/43x43/molinos_gris.jpg"
   },
   {
     id: "fer-43-molinos-terra",
@@ -663,8 +620,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/molinos_terra.jpg",
-    isVisible: true
+    image: "/products/43x43/molinos_terra.jpg"
   },
   {
     id: "fer-43-payogasta-marron",
@@ -677,8 +633,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/payogasta_marron.jpg",
-    isVisible: true
+    image: "/products/43x43/payogasta_marron.jpg"
   },
   {
     id: "fer-43-payogasta-terra",
@@ -691,8 +646,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/payogasta_terra.jpg",
-    isVisible: true
+    image: "/products/43x43/payogasta_terra.jpg"
   },
   {
     id: "fer-43-vina-beige",
@@ -705,8 +659,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/vina_beige.jpg",
-    isVisible: true
+    image: "/products/43x43/vina_beige.jpg"
   },
   {
     id: "fer-43-vina-marron",
@@ -719,8 +672,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Piedras",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/vina_marron.jpg",
-    isVisible: true
+    image: "/products/43x43/vina_marron.jpg"
   },
 
   // --- 4. COLONIALES ---
@@ -735,8 +687,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Colonial",
     faces: "Trama Clásica",
     packaging: packingStandard43,
-    image: "/products/43x43/cotto_clasico.jpg",
-    isVisible: true
+    image: "/products/43x43/cotto_clasico.jpg"
   },
   {
     id: "fer-43-classico-curado-fuego",
@@ -749,7 +700,6 @@ export const products43x43: CeramicProduct[] = [
     designType: "Colonial",
     faces: "Capa protectora antiabsorción",
     packaging: packingStandard43,
-    image: "/products/43x43/classico_cotto_curado_a_fuego_clasico.jpg",
-    isVisible: true
+    image: "/products/43x43/classico_cotto_curado_a_fuego_clasico.jpg"
   }
 ];
