@@ -3,6 +3,8 @@
 export type PorcelanatoFinish = "Glossy" | "Velvet" | "Rustic";
 
 export interface HabitatPorcelanatoItem {
+  /** Si es false, el modelo se oculta de la web sin borrar su información. */
+  isVisible?: boolean;
   id: string;
   name: string;
   series: string;

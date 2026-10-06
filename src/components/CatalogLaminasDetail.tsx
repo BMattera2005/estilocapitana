@@ -15,7 +15,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
 
   const finishes = ["Todos", ...Array.from(new Set(productsLaminas.map((p) => p.finish)))];
 
-  const filteredProducts = productsLaminas.filter((product) => {
+  const filteredProducts = productsLaminas.filter((prod) => prod.isVisible !== false).filter((product) => {
     const matchesFinish = filterFinish === "Todos" || product.finish === filterFinish;
     const matchesSearch =
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

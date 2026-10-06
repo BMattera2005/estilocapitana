@@ -12,7 +12,7 @@ interface CatalogHabitat60x120DetailProps {
 export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProps> = ({ onBack }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const filteredProducts = productsHabitat60x120.filter((product) => {
+  const filteredProducts = productsHabitat60x120.filter((prod) => prod.isVisible !== false).filter((product) => {
     return (
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.code.toLowerCase().includes(searchQuery.toLowerCase())

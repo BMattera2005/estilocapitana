@@ -8,6 +8,8 @@ export interface FullBodyVariant {
 }
 
 export interface FullBodyProductItem {
+  /** Si es false, el modelo se oculta de la web sin borrar su información. */
+  isVisible?: boolean;
   id: string;
   name: string;
   series: string;

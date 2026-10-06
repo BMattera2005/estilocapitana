@@ -13,7 +13,7 @@ export function CatalogEpsDetail({ onBack }: CatalogEpsDetailProps) {
 
   const families = ["Todas", "Bovedillas", "Placas", "Casetones", "Bloques", "EPS Molido"];
 
-  const filteredProducts = productsEps.filter(
+  const filteredProducts = productsEps.filter((prod) => prod.isVisible !== false).filter(
     (item) => selectedFamily === "Todas" || item.family === selectedFamily
   );
 

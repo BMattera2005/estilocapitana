@@ -1,6 +1,8 @@
 // src/data/products43.ts
 
 export interface CeramicProduct {
+  /** Si es false, el modelo se oculta de la web sin borrar su información. */
+  isVisible?: boolean;
   id: string;
   name: string;
   line: string;

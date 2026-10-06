@@ -16,7 +16,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
   const formats = ['Todos', '600x1200 mm', '1200x1200 mm'];
   const finishes = ['Todos', 'Glossy', 'Velvet', 'Rustic'];
 
-  const filteredProducts = productsHabitatPorcelanato.filter((prod) => {
+  const filteredProducts = productsHabitatPorcelanato.filter((prod) => prod.isVisible !== false).filter((prod) => {
   // Coincidencia de formato
   const matchesFormat = selectedFormat === "Todos" || prod.format === selectedFormat;
 

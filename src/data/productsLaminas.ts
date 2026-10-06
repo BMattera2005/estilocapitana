@@ -1,6 +1,8 @@
 // src/data/productsLaminas.ts
 
 export interface LaminaProductItem {
+  /** Si es false, el modelo se oculta de la web sin borrar su información. */
+  isVisible?: boolean;
   id: string;
   code: string;
   name: string;

@@ -1,6 +1,8 @@
 // src/data/productsEps.ts
 
 export interface EpsProduct {
+  /** Si es false, el modelo se oculta de la web sin borrar su información. */
+  isVisible?: boolean;
   id: string;
   name: string;
   family: string;
