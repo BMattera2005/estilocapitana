@@ -57,6 +57,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/burano_gris.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-burano-marron",
@@ -70,6 +71,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/burano_marron.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-burano-oxido",
@@ -83,6 +85,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/burano_oxido.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-calacatta-blanco",
@@ -96,6 +99,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/calacatta_blanco.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-capri-mix",
@@ -122,6 +126,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/capri_blanco.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-capri-blu",
@@ -135,6 +140,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/capri_blu.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-esteco-azul",
@@ -148,6 +154,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/esteco_azul.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-esteco-beige",
@@ -161,6 +168,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/esteco_beige.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-esteco-gris",
@@ -174,6 +182,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/esteco_gris.jpg"
+    isVisible: true,
   },
 
   // --- 2. MATE (PEI 4 - Tránsito Alto - Superficie Lisa) ---
@@ -189,6 +198,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/animana_beige.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-animana-gris",
@@ -202,6 +212,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/animana_gris.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-animana-oxido",
@@ -215,6 +226,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/animana_oxido.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-animana-tiza",
@@ -228,6 +240,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/animana_tiza.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-tipa-natural",
@@ -241,6 +254,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingEsmaltados36,
     image: "/products/36x36/tipa_natural.jpg"
+    isVisible: true,
   },
 
   // --- 3. LÍNEA COLONIALES ---
@@ -256,6 +270,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Con relieve",
     packaging: packingColoniales36,
     image: "/products/36x36/calchaqui_cotto_clasico_relieve.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-calchaqui-curado-fuego",
@@ -270,6 +285,7 @@ export const products36x36: CeramicProduct36[] = [
     specialFeature: "Capa protectora antiabsorción de líquidos",
     packaging: packingColoniales36,
     image: "/products/36x36/calchaqui_curado_a_fuego_relieve.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-classico-cotto",
@@ -283,6 +299,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     packaging: packingColoniales36,
     image: "/products/36x36/classico_cotto_clasico_lisa.jpg"
+    isVisible: true,
   },
   {
     id: "fer-36-classico-curado-fuego",
@@ -297,5 +314,6 @@ export const products36x36: CeramicProduct36[] = [
     specialFeature: "Capa protectora antiabsorción de líquidos",
     packaging: packingColoniales36,
     image: "/products/36x36/classico_curado_a_fuego_lisa.jpg"
+    isVisible: true,
   }
 ];
