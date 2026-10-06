@@ -7,6 +7,7 @@ export interface OfficialCatalog {
   description: string;
   fileUrl: string;
   certificateUrl?: string;
+  isVisible?: boolean, //para legir que catalogos mostrar
 }
 
 export const officialCatalogs: OfficialCatalog[] = [
@@ -18,6 +19,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     title: "Habitat - Full Body",
     description: "Superficies de Sintered Stone Full Body de máxima resistencia para mesadas, solados y arquitectura de alta gama.",
     fileUrl: "/catalogos/habitat_ma_full_body.pdf",
+    isVisible?: true,
   },
   {
     id: "cat-habitat-laminas",
@@ -27,6 +29,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     title: "Habitat - Láminas 120x270",
     description: "Placas XL Sintered Stone en formato 120x270 cm. Mínima cantidad de juntas y continuidad visual extrema.",
     fileUrl: "/catalogos/slabs_sintered_stone.pdf",
+    isVisible?: true,
   },
   {
     id: "cat-habitat-porcelanato",
@@ -36,6 +39,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     title: "Habitat - Porcelanato Esmaltado",
     description: "Línea completa de porcelanatos esmaltados en acabados Glossy, Carving y Velvet de alta rotación.",
     fileUrl: "/catalogos/coleccion_habitat_MA.pdf",
+    isVisible?: true,
   },
   {
     id: "cat-habitat-60x120",
@@ -45,6 +49,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     title: "Habitat - Luxury Stone 60x120",
     description: "Placas porcelánicas rectificadas 600x1200x9 mm inspiradas en piedras y mármoles naturales de alta gama.",
     fileUrl: "/catalogos/coleccion_habitat_60x120.pdf",
+    isVisible?: true,
   },
   {
     id: "cat-ferrazzano-36",
@@ -54,6 +59,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     title: "Ferrazzano - Pisos 36x36cm",
     description: "Pisos cerámicos de fabricación tradicional Salteña en formato 36x36 cm, diseñados con ingeniería de pliegos.",
     fileUrl: "/catalogos/ferrazzano_36x36.pdf",
+    isVisible?: true,
   },
   {
     id: "cat-ferrazzano-43",
@@ -63,6 +69,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     title: "Ferrazzano - Pisos 43x43cm",
     description: "Línea pensada para mayor rotación de stock con excelente relación precio/formato y variedad antideslizante.",
     fileUrl: "/catalogos/ferrazzano_43x43.pdf",
+    isVisible?: true,
   },
   {
     id: "cat-viguetas",
@@ -73,6 +80,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     description: "Viguetas pretensadas de hormigón para techos y entrepisos. Tablas de cálculo y memoria estructural.",
     fileUrl: "/catalogos/viguetas.pdf",
     certificateUrl: "/catalogos/certificado_viguetas.pdf",
+    isVisible?: true,
   },
   {
     id: "cat-eps",
@@ -82,5 +90,6 @@ export const officialCatalogs: OfficialCatalog[] = [
     title: "EPS Famapol",
     description: "Bovedillas y paneles de poliestireno expandido para techos alivianados y aislación térmica superior.",
     fileUrl: "/catalogos/eps_telgopor_aislaciones.pdf",
+    isVisible?: true,
   },
 ];
