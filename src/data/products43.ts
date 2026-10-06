@@ -1,8 +1,6 @@
 // src/data/products43.ts
 
 export interface CeramicProduct {
-  /** Si es false, el modelo se oculta de la web sin borrar su información. */
-  isVisible?: boolean;
   id: string;
   name: string;
   line: string;
@@ -13,6 +11,7 @@ export interface CeramicProduct {
   designType: "Madera" | "Mármol" | "Venecitas" | "Piedras" | "Calcáreo" | "Cemento" | "Colonial";
   faces: number | string;
   shadeVariation?: string;
+  isVisible?: boolean; // Propiedad opcional (true por defecto si no se pone)
   packaging: {
     piecesPerBox: number;
     sqmPerBox: number;
@@ -233,7 +232,7 @@ export const products43x43: CeramicProduct[] = [
     faces: 4,
     shadeVariation: "Destonalizado V2",
     packaging: packingStandard43,
-    image: "/products/43x43/rosario_verde.jpg"
+    image: "/products/43x43/rosari_verde.jpg"
   },
   {
     id: "fer-43-san-luis",
@@ -272,7 +271,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Mármol",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/tolombon_gris.jpg"
+    image: "/products/43x43/tolombom_gris.jpg"
   },
   {
     id: "fer-43-urundel-beige",
