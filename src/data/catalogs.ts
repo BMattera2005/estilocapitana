@@ -19,7 +19,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     title: "Habitat - Full Body",
     description: "Superficies de Sintered Stone Full Body de máxima resistencia para mesadas, solados y arquitectura de alta gama.",
     fileUrl: "/catalogos/habitat_ma_full_body.pdf",
-    isVisible: true,
+    isVisible: false,
   },
   {
     id: "cat-habitat-laminas",
