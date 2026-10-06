@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import { MessageCircle, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { productsViguetas, productsBovedillasEPS } from "../data/productsViguetas";
+
+const visibleViguetas = productsViguetas.filter((prod) => prod.isVisible !== false);
+const visibleBovedillas = productsBovedillasEPS.filter((prod) => prod.isVisible !== false);
 import { Button } from "./ui/button";
 import { CatalogDetailHeader } from "./catalog/CatalogDetailHeader";
 
@@ -52,7 +55,7 @@ export function CatalogViguetasDetail({ onBack }: CatalogViguetasDetailProps) {
               : "bg-slate-100 text-slate-600 hover:text-slate-900"
           }`}
         >
-          Series de Viguetas ({productsViguetas.length})
+          Series de Viguetas ({visibleViguetas.length})
         </button>
         <button
           type="button"
@@ -63,14 +66,14 @@ export function CatalogViguetasDetail({ onBack }: CatalogViguetasDetailProps) {
               : "bg-slate-100 text-slate-600 hover:text-slate-900"
           }`}
         >
-          Bovedillas EPS Famapol ({productsBovedillasEPS.length})
+          Bovedillas EPS Famapol ({visibleBovedillas.length})
         </button>
       </div>
 
       {/* Grilla de Viguetas */}
       {tab === "viguetas" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {productsViguetas.map((vig) => (
+          {visibleViguetas.map((vig) => (
             <article
               key={vig.id}
               className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all duration-200 p-6"
@@ -126,7 +129,7 @@ export function CatalogViguetasDetail({ onBack }: CatalogViguetasDetailProps) {
       {/* Grilla de Bovedillas */}
       {tab === "bovedillas" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-          {productsBovedillasEPS.map((bov) => (
+          {visibleBovedillas.map((bov) => (
             <article
               key={bov.id}
               className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all duration-200 p-6"

@@ -1,6 +1,8 @@
 // src/data/productsViguetas.ts
 
 export interface ViguetaProduct {
+  /** Si es false, el modelo se oculta de la web sin borrar su información. */
+  isVisible?: boolean;
   id: string;
   name: string;
   category: "Viguetas Pretensadas";
@@ -15,6 +17,8 @@ export interface ViguetaProduct {
 }
 
 export interface BovedillaProduct {
+  /** Si es false, el modelo se oculta de la web sin borrar su información. */
+  isVisible?: boolean;
   id: string;
   name: string;
   category: "Bovedillas EPS";

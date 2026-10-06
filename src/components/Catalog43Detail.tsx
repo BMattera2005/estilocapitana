@@ -14,7 +14,7 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
 
   const finishes = ['Todos', 'Brillante', 'Satinado', 'Mate con Granilla', 'Colonial'];
 
-  const filteredProducts = products43x43.filter((prod) => {
+  const filteredProducts = products43x43.filter((prod) => prod.isVisible !== false).filter((prod) => {
     const matchesFinish = selectedFinish === 'Todos' || prod.finish === selectedFinish;
     const matchesSearch =
       prod.name.toLowerCase().includes(search.toLowerCase()) ||

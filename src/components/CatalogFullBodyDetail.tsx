@@ -39,7 +39,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
     }));
   };
 
-  const filteredProducts = productsFullBody.filter((product) => {
+  const filteredProducts = productsFullBody.filter((prod) => prod.isVisible !== false).filter((product) => {
     const matchFormat = filterFormat === "Todos" || product.allFormats.includes(filterFormat);
     const matchFinish = filterFinish === "Todos" || product.allFinishes.includes(filterFinish);
     return matchFormat && matchFinish;

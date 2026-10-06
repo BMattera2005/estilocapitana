@@ -1,6 +1,8 @@
 // src/data/productsHabitat60x120.ts
 
 export interface Habitat60x120Product {
+  /** Si es false, el modelo se oculta de la web sin borrar su información. */
+  isVisible?: boolean;
   id: string;
   code: string;
   name: string;
