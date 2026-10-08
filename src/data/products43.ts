@@ -232,7 +232,7 @@ export const products43x43: CeramicProduct[] = [
     faces: 4,
     shadeVariation: "Destonalizado V2",
     packaging: packingStandard43,
-    image: "/products/43x43/rosari_verde.jpg"
+    image: "/products/43x43/rosario_verde.jpg"
   },
   {
     id: "fer-43-san-luis",
@@ -271,7 +271,7 @@ export const products43x43: CeramicProduct[] = [
     designType: "Mármol",
     faces: 4,
     packaging: packingStandard43,
-    image: "/products/43x43/tolombom_gris.jpg"
+    image: "/products/43x43/tolombon_gris.jpg"
   },
   {
     id: "fer-43-urundel-beige",
