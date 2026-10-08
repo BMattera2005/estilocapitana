@@ -1,209 +1,94 @@
 // src/components/CatalogFullBodyDetail.tsx
-import React, { useState } from 'react';
-import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
-import { productsFullBody, FullBodyProductItem } from '../data/productsFullBody';
+import React, { useState } from "react";
+import { ArrowLeft, MessageCircle, FileText, Search } from "lucide-react";
+import { productsFullBody } from "../data/productsFullBody";
+import { buildWhatsAppUrl } from "../lib/quote-message";
 
 interface CatalogFullBodyDetailProps {
   onBack: () => void;
 }
 
-const ProductCard: React.FC<{ product: FullBodyProductItem }> = ({ product }) => {
-  const [selectedFormat, setSelectedFormat] = useState<string>(product.variants[0].format);
-  const activeVariant = product.variants.find((v) => v.format === selectedFormat) || product.variants[0];
-  const [selectedFinish, setSelectedFinish] = useState<string>(activeVariant.finishes[0]);
-
-  const handleFormatChange = (fmt: string) => {
-    setSelectedFormat(fmt);
-    const targetVar = product.variants.find((v) => v.format === fmt);
-    if (targetVar && !targetVar.finishes.includes(selectedFinish)) {
-      setSelectedFinish(targetVar.finishes[0]);
-    }
-  };
-
-  const handleWhatsAppQuote = () => {
-    const phone = "5491161208162";
-    const message = `Hola estilo.capitana, me interesa cotizar la placa Sintered Stone ${product.name} (Medida: ${selectedFormat}, Acabado: ${selectedFinish}, Espesor: ${product.thickness}). Quisiera consultar disponibilidad y precio.`;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-  };
-
-  return (
-    <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all duration-200">
-      <div>
-        <div className="w-full h-52 bg-slate-100 relative overflow-hidden flex items-center justify-center">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              (e.currentTarget as HTMLElement).style.display = 'none';
-            }}
-          />
-          <div className="text-center p-4">
-            <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold block mb-1">
-              {product.series}
-            </span>
-            <span className="text-base font-bold text-slate-700">
-              {product.name}
-            </span>
-          </div>
-
-          <span className="absolute top-2.5 right-2.5 bg-slate-900/80 text-white text-[10px] font-semibold px-2 py-0.5 rounded">
-            {product.thickness} · {product.body}
-          </span>
-        </div>
-
-        <div className="p-4">
-          <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">
-            {product.series}
-          </div>
-          <h3 className="text-lg font-bold text-slate-900 mb-2">
-            {product.name}
-          </h3>
-
-          <p className="text-xs text-slate-500 mb-4">
-            {product.recommendedUses}
-          </p>
-
-          <div className="border-t border-slate-100 pt-3 space-y-3 text-xs">
-            <div>
-              <span className="block text-slate-600 font-medium mb-1.5">Seleccionar Medida:</span>
-              <div className="flex flex-wrap gap-1.5">
-                {product.variants.map((v) => (
-                  <button
-                    key={v.format}
-                    type="button"
-                    onClick={() => handleFormatChange(v.format)}
-                    className={`px-2.5 py-1 rounded text-[11px] font-semibold transition-colors cursor-pointer ${
-                      selectedFormat === v.format
-                        ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                    }`}
-                  >
-                    {v.format.replace(' mm', '')}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <span className="block text-slate-600 font-medium mb-1.5">Acabado disponible:</span>
-              <div className="flex flex-wrap gap-1.5">
-                {activeVariant.finishes.map((f) => (
-                  <button
-                    key={f}
-                    type="button"
-                    onClick={() => setSelectedFinish(f)}
-                    className={`px-2.5 py-1 rounded text-[11px] font-semibold transition-colors cursor-pointer ${
-                      selectedFinish === f
-                        ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                    }`}
-                  >
-                    {f}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-slate-50 p-2.5 rounded-lg space-y-1 text-slate-600 text-[11px]">
-              <div className="flex justify-between">
-                <span>Rendimiento placa:</span>
-                <span className="font-semibold text-slate-800">{activeVariant.sqm} m²</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Peso por unidad:</span>
-                <span className="font-semibold text-slate-800">{activeVariant.weightKg} kg</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="p-4 pt-0">
-        <button
-          type="button"
-          onClick={handleWhatsAppQuote}
-          className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
-        >
-          <MessageCircle className="w-4 h-4 text-white shrink-0" />
-          <span>Cotizar {selectedFormat.replace(' mm', '')} por WhatsApp</span>
-        </button>
-      </div>
-    </div>
-  );
-};
-
 export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ onBack }) => {
-  const [formatFilter, setFormatFilter] = useState<string>('Todos');
-  const [finishFilter, setFinishFilter] = useState<string>('Todos');
-  const [search, setSearch] = useState<string>('');
+  const [filterFormat, setFilterFormat] = useState<string>("Todos");
+  const [filterFinish, setFilterFinish] = useState<string>("Todos");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const formats = ['Todos', '800x2400 mm', '800x3000 mm'];
-  const finishes = ['Todos', 'Glossy', 'Matt'];
+  const [selectedVariants, setSelectedVariants] = useState<Record<string, { format: string; finish: string }>>({
+    "hab-fb-brown-flakes": { format: "800x2400 mm", finish: "Glossy" },
+    "hab-fb-black-salt-pepper": { format: "800x2400 mm", finish: "Glossy" },
+    "hab-fb-saga-white": { format: "800x2400 mm", finish: "Glossy" },
+  });
 
-  const filteredProducts = productsFullBody.filter((prod) => {
-    const matchesFormat = formatFilter === 'Todos' || prod.allFormats.includes(formatFilter);
-    const matchesFinish = finishFilter === 'Todos' || prod.allFinishes.includes(finishFilter);
-    const matchesSearch =
-      prod.name.toLowerCase().includes(search.toLowerCase()) ||
-      prod.series.toLowerCase().includes(search.toLowerCase());
-    return matchesFormat && matchesFinish && matchesSearch;
+  const handleSelectFormat = (productId: string, format: string, defaultFinish: string) => {
+    setSelectedVariants((prev) => ({
+      ...prev,
+      [productId]: { format, finish: defaultFinish },
+    }));
+  };
+
+  const handleSelectFinish = (productId: string, finish: string) => {
+    setSelectedVariants((prev) => ({
+      ...prev,
+      [productId]: { ...prev[productId], finish },
+    }));
+  };
+
+  const filteredProducts = productsFullBody.filter((product) => {
+    const matchFormat = filterFormat === "Todos" || product.allFormats.includes(filterFormat);
+    const matchFinish = filterFinish === "Todos" || product.allFinishes.includes(filterFinish);
+    const matchSearch =
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.series.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchFormat && matchFinish && matchSearch;
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <button 
-        onClick={onBack}
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Volver a los Catálogos
-      </button>
-
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
-              Novedad Importada
-            </span>
-            <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
-              SHOP · SINTERED STONE FULL BODY
-            </span>
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Habitat — Mesadas & Placas 15 mm
-          </h1>
-
-          <p className="text-sm text-slate-500 mt-2 font-normal">
-            Placas Sinterizadas 15 mm · Diseños continuos para mesadas, islas y frentes · Formatos 800×2400 y 800×3000 mm
-          </p>
-        </div>
+    <div className="w-full max-w-7xl mx-auto px-4 py-8">
+      {/* Volver y PDF */}
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <button
+          onClick={onBack}
+          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Volver a Catálogos
+        </button>
 
         <a
           href="/catalogos/habitat_ma_full_body.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-emerald-600 hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 text-white rounded-lg text-sm font-semibold hover:opacity-95 transition-opacity shadow-sm"
         >
-          <Download className="w-4 h-4" />
-          Ver / descargar catálogo
+          <FileText className="w-4 h-4" />
+          Descargar PDF Oficial (15 mm)
         </a>
       </div>
 
-      {/* BARRA UNIFICADA DE FILTROS Y BUSCADOR */}
-      <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 mb-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
-            {formats.map((f) => (
+      {/* Cabecera */}
+      <div className="mb-8">
+        <span className="text-xs font-bold uppercase tracking-wider text-sky-600">Sintered Stone Full Body</span>
+        <h1 className="text-3xl font-extrabold text-slate-900 mt-1 font-['Montserrat']">
+          Habitat — Mesadas & Placas 15 mm
+        </h1>
+        <p className="text-slate-600 mt-2 max-w-3xl text-sm leading-relaxed">
+          Placas sinterizadas de masa homogénea (Full Body) especialmente diseñadas para mesadas de cocina, islas y aplicaciones de alta exigencia superficial.
+        </p>
+      </div>
+
+      {/* BARRA UNIFICADA DE FILTROS + BUSCADOR DESTACADO */}
+      <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase text-slate-500">Medida:</span>
+            {["Todos", "800x2400 mm", "800x3000 mm"].map((f) => (
               <button
                 key={f}
-                type="button"
-                onClick={() => setFormatFilter(f)}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
-                  formatFilter === f
-                    ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
+                onClick={() => setFilterFormat(f)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  filterFormat === f
+                    ? "bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-sm"
+                    : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
                 }`}
               >
                 {f}
@@ -211,44 +96,162 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
             ))}
           </div>
 
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
-            {finishes.map((fn) => (
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase text-slate-500">Terminación:</span>
+            {["Todos", "Glossy", "Matt"].map((t) => (
               <button
-                key={fn}
-                type="button"
-                onClick={() => setFinishFilter(fn)}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
-                  finishFilter === fn
-                    ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
+                key={t}
+                onClick={() => setFilterFinish(t)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  filterFinish === t
+                    ? "bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-sm"
+                    : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
                 }`}
               >
-                {fn}
+                {t}
               </button>
             ))}
           </div>
         </div>
 
-        <div className="relative w-full md:w-72">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+        {/* Buscador Prominente */}
+        <div className="relative w-full md:w-80">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-700 font-bold pointer-events-none" />
           <input
             type="text"
             placeholder="Buscar modelo o código..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 bg-white border-2 border-slate-400 rounded-lg text-xs font-semibold text-slate-900 placeholder-slate-500 focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20 shadow-xs transition-all"
           />
         </div>
       </div>
 
-      <p className="text-xs text-slate-500 mb-6 font-normal">
-        {filteredProducts.length} {filteredProducts.length === 1 ? 'modelo disponible' : 'modelos disponibles'}
-      </p>
+      {/* Grilla Limpia con Tarjetas Estables */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredProducts.map((product) => {
+          const currentSelection = selectedVariants[product.id] || {
+            format: product.allFormats[0],
+            finish: product.allFinishes[0],
+          };
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {filteredProducts.map((p) => (
-          <ProductCard key={p.id} product={p} />
-        ))}
+          const activeVariant =
+            product.variants.find((v) => v.format === currentSelection.format) || product.variants[0];
+
+          const whatsappMsg = `Hola estilo.capitana, consulto cotización de la placa Full Body ${product.name} (Medida: ${currentSelection.format}, Terminación: ${currentSelection.finish}, Espesor: 15 mm).`;
+          const whatsappUrl = buildWhatsAppUrl(whatsappMsg);
+
+          return (
+            <div
+              key={product.id}
+              className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+            >
+              <div>
+                {/* Imagen del Modelo perfectamente aislada */}
+                <div className="relative w-full h-56 bg-slate-100 overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover block"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                  <div className="absolute top-3 right-3">
+                    <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs">
+                      15 mm · Full Body
+                    </span>
+                  </div>
+                </div>
+
+                {/* Contenido Ficha */}
+                <div className="p-5">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">
+                    {product.series}
+                  </span>
+                  <h3 className="text-xl font-bold text-slate-900 font-['Montserrat'] leading-tight">
+                    {product.name}
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                    {product.recommendedUses}
+                  </p>
+
+                  {/* Selector Medida */}
+                  <div className="mt-4 pt-3 border-t border-slate-100">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+                      Seleccionar Formato
+                    </span>
+                    <div className="flex gap-2">
+                      {product.allFormats.map((fmt) => (
+                        <button
+                          key={fmt}
+                          onClick={() => {
+                            const variant = product.variants.find((v) => v.format === fmt);
+                            handleSelectFormat(product.id, fmt, variant?.finishes[0] || "Glossy");
+                          }}
+                          className={`px-2.5 py-1 rounded text-xs font-semibold border transition-all cursor-pointer ${
+                            currentSelection.format === fmt
+                              ? "bg-sky-50 border-sky-600 text-sky-700"
+                              : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                          }`}
+                        >
+                          {fmt}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Selector Acabado */}
+                  <div className="mt-3">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+                      Terminación Superficial
+                    </span>
+                    <div className="flex gap-2">
+                      {activeVariant.finishes.map((fnsh) => (
+                        <button
+                          key={fnsh}
+                          onClick={() => handleSelectFinish(product.id, fnsh)}
+                          className={`px-2.5 py-1 rounded text-xs font-semibold border transition-all cursor-pointer ${
+                            currentSelection.finish === fnsh
+                              ? "bg-slate-900 border-slate-900 text-white"
+                              : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                          }`}
+                        >
+                          {fnsh}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Rendimiento Dinámico */}
+                  <div className="mt-4 grid grid-cols-2 gap-2 bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-center">
+                    <div>
+                      <span className="text-[10px] text-slate-400 block uppercase font-bold">Rendimiento</span>
+                      <span className="text-xs font-bold text-slate-800">{activeVariant.sqm} m² / placa</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-slate-400 block uppercase font-bold">Peso pieza</span>
+                      <span className="text-xs font-bold text-slate-800">{activeVariant.weightKg} kg</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Botón Cotización */}
+              <div className="p-5 pt-0">
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold text-sm rounded-lg transition-all shadow-sm cursor-pointer"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Cotizar Medida por WhatsApp
+                </a>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
