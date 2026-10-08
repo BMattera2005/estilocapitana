@@ -42,6 +42,9 @@
   --color-surface-elevated: var(--surface-elevated);
   --color-surface-glass: var(--surface-glass);
   --color-border-strong: var(--border-strong);
+  --color-badge-emerald-bg: var(--badge-emerald-bg);
+  --color-badge-emerald-fg: var(--badge-emerald-fg);
+  --color-badge-emerald-border: var(--badge-emerald-border);
   --color-technical: var(--technical);
   --color-industrial-green: var(--industrial-green);
   --color-overlay: var(--overlay);
@@ -91,6 +94,9 @@
   --surface-elevated: oklch(0.968 0.007 247.9);
   --surface-glass: oklch(1 0 0 / 92%);
   --border-strong: oklch(0.869 0.02 252.89);
+  --badge-emerald-bg: oklch(0.979 0.021 166.11);
+  --badge-emerald-fg: oklch(0.508 0.118 165.61);
+  --badge-emerald-border: oklch(0.95 0.052 163.05);
   --technical: oklch(0.64 0.15 220);
   --industrial-green: oklch(0.596 0.145 163.23);
   --overlay: oklch(0.208 0.04 265.75 / 52%);
