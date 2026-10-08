@@ -56,6 +56,7 @@ const heroBadges = [
   { label: "Full Body 15 mm", position: "left-5 top-5 sm:left-7 sm:top-7" },
   { label: "Láminas 120×270 cm", position: "right-5 top-5 sm:right-7 sm:top-7" },
   { label: "Gran Formato 120×120 cm", position: "bottom-6 right-5 sm:bottom-8 sm:right-7" },
+  { label: "Porcelanato 60×120 cm", position: "bottom-6 left-5 sm:bottom-8 sm:left-7" },
 ] as const;
 
 export const Route = createFileRoute("/")({
