@@ -29,7 +29,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
   const handleSelectFinish = (productId: string, finish: string) => {
     setSelectedVariants((prev) => ({
       ...prev,
-      [productId]: { ...prev[productId], finish },
+      [productId]: { format: prev[productId]?.format ?? "", finish },
     }));
   };
 
@@ -136,7 +136,8 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
           };
 
           const activeVariant =
-            product.variants.find((v) => v.format === currentSelection.format) || product.variants[0];
+            product.variants.find((v) => v.format === currentSelection.format) ??
+            product.variants[0]!;
 
           const whatsappMsg = `Hola estilo.capitana, consulto cotización de la placa Full Body ${product.name} (Medida: ${currentSelection.format}, Terminación: ${currentSelection.finish}, Espesor: 15 mm).`;
           const whatsappUrl = buildWhatsAppUrl(whatsappMsg);
@@ -240,7 +241,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
               {/* Botón Cotización */}
               <div className="p-5 pt-0">
                 <a
-                  href={whatsappUrl}
+                  href={whatsappUrl ?? undefined}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold text-sm rounded-lg transition-all shadow-sm cursor-pointer"
