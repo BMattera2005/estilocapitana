@@ -23,3 +23,4 @@
 - [x] Rediseñar el Hero de Inicio en dos columnas con badge B2B, CTAs y composición visual.
 - [x] Actualizar las cinco familias de productos con sus accesos filtrados al catálogo.
 - [x] Reparar errores de tipado heredados de los cambios externos de GitHub en las vistas de detalle.
+- [x] Reparar la estructura JSX de Inicio e integrar la sección de valor agregado B2B.

@@ -1,67 +1,80 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Blocks, Grid3x3, Layers3, MessageCircle, PanelsTopLeft, ShieldCheck, UserCheck, PackageCheck, Layers } from "lucide-react";
+import {
+  ArrowRight,
+  Blocks,
+  Grid3x3,
+  Layers,
+  Layers3,
+  MessageCircle,
+  PackageCheck,
+  PanelsTopLeft,
+  ShieldCheck,
+  UserCheck,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
 import { officialCatalogs } from "@/data/catalogs";
 import { buildAdvisorWhatsAppUrl } from "@/lib/contact-links";
 
-// Componente interno seguro para evitar errores de importación/empaquetado
-function WhyUsSection() {
+export function WhyUsSection() {
   const benefits = [
     {
       icon: ShieldCheck,
       title: "Representación comercial",
-      description: "Trabajamos con fabricantes y líneas seleccionadas para ofrecer soluciones competitivas."
+      description:
+        "Trabajamos con fabricantes y líneas seleccionadas para ofrecer soluciones competitivas.",
     },
     {
       icon: UserCheck,
       title: "Atención personalizada",
-      description: "Asesoramiento comercial directo para distribuidores, arquitectos y profesionales."
+      description:
+        "Asesoramiento comercial directo para distribuidores, arquitectos y profesionales.",
     },
     {
       icon: PackageCheck,
       title: "Stock y disponibilidad",
-      description: "Consultá disponibilidad, formatos y condiciones comerciales directamente con nuestro equipo."
+      description:
+        "Consultá disponibilidad, formatos y condiciones comerciales directamente con nuestro equipo.",
     },
     {
       icon: Layers,
       title: "Soluciones para cada proyecto",
-      description: "Desde superficies premium hasta soluciones estructurales y de aislación."
-    }
+      description: "Desde superficies premium hasta soluciones estructurales y de aislación.",
+    },
   ];
 
   return (
-    <section className="py-16 bg-slate-50 border-y border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="text-xs font-bold uppercase tracking-wider text-teal-600 block mb-2">
+    <section className="border-y border-border bg-surface py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto mb-12 max-w-3xl text-center">
+          <span className="mb-2 block text-xs font-bold uppercase text-industrial-green">
             VALOR AGREGADO B2B
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-['Montserrat'] tracking-tight">
+          <h2 className="text-2xl font-extrabold text-foreground sm:text-3xl">
             ¿Por qué trabajar con Estilo Capitana?
           </h2>
-          <p className="text-sm text-slate-600 mt-3 leading-relaxed">
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             Articulamos soluciones logísticas e insumos de arquitectura conectando directo con fábrica para que adquieras con previsibilidad.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {benefits.map((item, index) => {
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {benefits.map((item) => {
             const Icon = item.icon;
             return (
               <div
-                key={index}
-                className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200 flex flex-col justify-between"
+                key={item.title}
+                className="flex flex-col justify-between rounded-lg border border-border bg-card p-6 shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial"
               >
                 <div>
-                  <div className="w-10 h-10 rounded-lg bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 mb-4">
-                    <Icon className="w-5 h-5" />
+                  <div className="mb-4 flex size-10 items-center justify-center rounded-lg border border-badge-emerald-border bg-badge-emerald-bg text-badge-emerald-fg">
+                    <Icon aria-hidden="true" className="size-5" />
                   </div>
-                  <h3 className="text-base font-bold text-slate-900 font-['Montserrat'] mb-2">
+                  <h3 className="mb-2 text-base font-bold text-foreground">
                     {item.title}
                   </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed font-normal">
+                  <p className="text-xs font-normal leading-relaxed text-muted-foreground">
                     {item.description}
                   </p>
                 </div>
@@ -173,4 +186,126 @@ function Index() {
                 <dd>
                   <strong className="block text-3xl font-bold text-foreground">{visibleCatalogCount}</strong>
                   <span className="mt-1 block text-sm font-normal text-muted-foreground">catálogos comerciales</span>
-                </
+                </dd>
+              </div>
+              <div className="bg-card p-5">
+                <dt className="sr-only">Selección de materiales</dt>
+                <dd>
+                  <strong className="block text-lg font-semibold text-foreground">
+                    Selección especializada
+                  </strong>
+                  <span className="mt-1 block text-sm font-normal text-muted-foreground">
+                    materiales para arquitectura
+                  </span>
+                </dd>
+              </div>
+              <div className="bg-card p-5">
+                <dt className="sr-only">Modalidad de atención</dt>
+                <dd>
+                  <strong className="block text-lg font-semibold text-foreground">
+                    Atención B2B
+                  </strong>
+                  <span className="mt-1 block text-sm font-normal text-muted-foreground">
+                    stock y cotización directa
+                  </span>
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
+            <div className="grid grid-cols-2 gap-4">
+              <img
+                src={heroImages.wide}
+                alt="Mesada de Sintered Stone Full Body en cocina contemporánea"
+                className="col-span-2 h-52 w-full rounded-xl border border-border object-cover shadow-industrial sm:h-64"
+                loading="eager"
+                decoding="async"
+              />
+              <img
+                src={heroImages.tallA}
+                alt="Interior con porcelanato de gran formato"
+                className="h-44 w-full rounded-xl border border-border object-cover shadow-industrial sm:h-52"
+                loading="eager"
+                decoding="async"
+              />
+              <img
+                src={heroImages.tallB}
+                alt="Superficie Sintered Stone en tono esmeralda"
+                className="h-44 w-full rounded-xl border border-border object-cover shadow-industrial sm:h-52"
+                loading="eager"
+                decoding="async"
+              />
+            </div>
+            {heroBadges.map((badge) => (
+              <span
+                key={badge.label}
+                className={`pointer-events-none absolute ${badge.position} rounded-lg border border-border bg-surface-glass px-3.5 py-2 text-xs font-bold text-foreground shadow-glass backdrop-blur-md`}
+              >
+                {badge.label}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <WhyUsSection />
+
+      <section className="brand-watermark-section bg-surface px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <p className="text-xs font-normal uppercase text-primary">Familias de productos</p>
+          <h2 className="mt-3 max-w-3xl text-3xl font-semibold text-foreground sm:text-4xl">
+            Cinco familias para proyectos y canales profesionales
+          </h2>
+          <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+            {productFamilies.map((family) => {
+              const Icon = family.icon;
+              return (
+                <Link
+                  key={family.filter}
+                  to="/catalogo"
+                  search={{ linea: family.filter }}
+                  aria-label={`Ver la familia ${family.title} en el catálogo`}
+                  className="group flex min-h-[14rem] flex-col rounded-lg border border-border bg-card p-6 shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  <span className="grid size-11 place-items-center rounded-md bg-accent text-accent-foreground">
+                    <Icon aria-hidden="true" />
+                  </span>
+                  <h3 className="mt-5 text-lg font-semibold text-foreground">{family.title}</h3>
+                  <p className="mt-3 text-sm font-normal leading-6 text-muted-foreground">
+                    {family.detail}
+                  </p>
+                  <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-primary">
+                    Ver familia
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                    />
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-border bg-background px-4 py-14 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-xs font-normal uppercase text-primary">Consulta comercial</p>
+            <h2 className="mt-3 text-3xl font-semibold text-foreground">
+              Encontrá la familia adecuada para tu proyecto o canal
+            </h2>
+          </div>
+          <Button asChild variant="industrial" size="lg">
+            <Link to="/contacto">
+              Consultar stock <ArrowRight aria-hidden="true" />
+            </Link>
+          </Button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+export default Index;
