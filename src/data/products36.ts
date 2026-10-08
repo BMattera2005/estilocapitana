@@ -254,7 +254,7 @@ export const products36x36: CeramicProduct36[] = [
     designType: "Colonial",
     surface: "Con relieve",
     packaging: packingColoniales36,
-    image: "/products/36x36/calchaqui_cotto.jpg",
+    image: "/products/36x36/calchaqui_cotto_clasico_relieve.jpg",
   },
   {
     id: "fer-36-calchaqui-curado-fuego",
@@ -268,7 +268,7 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Con relieve",
     specialFeature: "Capa protectora antiabsorción de líquidos",
     packaging: packingColoniales36,
-    image: "/products/36x36/calchaqui_curado_fuego.jpg",
+    image: "/products/36x36/calchaqui_curado_a_fuego_relieve.jpg",
   },
   {
     id: "fer-36-classico-cotto",
@@ -281,7 +281,7 @@ export const products36x36: CeramicProduct36[] = [
     designType: "Colonial",
     surface: "Lisa",
     packaging: packingColoniales36,
-    image: "/products/36x36/classico_cotto.jpg",
+    image: "/products/36x36/classico_cotto_clasico_lisa.jpg",
   },
   {
     id: "fer-36-classico-curado-fuego",
@@ -295,6 +295,6 @@ export const products36x36: CeramicProduct36[] = [
     surface: "Lisa",
     specialFeature: "Capa protectora antiabsorción de líquidos",
     packaging: packingColoniales36,
-    image: "/products/36x36/classico_curado_fuego.jpg",
+    image: "/products/36x36/classico_curado_a_fuego_lisa.jpg",
   },
 ];
