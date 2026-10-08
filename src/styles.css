@@ -45,9 +45,6 @@
   --color-badge-emerald-bg: var(--badge-emerald-bg);
   --color-badge-emerald-fg: var(--badge-emerald-fg);
   --color-badge-emerald-border: var(--badge-emerald-border);
-  --color-badge-emerald-bg: var(--badge-emerald-bg);
-  --color-badge-emerald-fg: var(--badge-emerald-fg);
-  --color-badge-emerald-border: var(--badge-emerald-border);
   --color-technical: var(--technical);
   --color-industrial-green: var(--industrial-green);
   --color-overlay: var(--overlay);
@@ -148,6 +145,9 @@
   --border-strong: oklch(0.2721 0.0303 262.71);
   --technical: oklch(0.7996 0.1463 220.71);
   --industrial-green: oklch(0.8099 0.2141 151.77);
+  --badge-emerald-bg: oklch(0.2652 0.0518 167.09);
+  --badge-emerald-fg: oklch(0.9051 0.093 164.15);
+  --badge-emerald-border: oklch(0.4443 0.0861 166.24);
   --overlay: oklch(0.1400 0.0069 269.65 / 82%);
   --muted: oklch(0.2098 0.0209 267.65);
   --muted-foreground: oklch(0.7642 0.0218 248.01);
@@ -185,6 +185,12 @@
   background-image: var(--gradient-brand);
   background-clip: text;
   color: transparent;
+}
+
+@utility badge-emerald {
+  background-color: var(--badge-emerald-bg);
+  color: var(--badge-emerald-fg);
+  border: 1px solid var(--badge-emerald-border);
 }
 
 @utility brand-watermark-section {
