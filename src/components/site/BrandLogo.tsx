@@ -16,13 +16,13 @@ export function BrandLogo() {
       />
 
       <div className="flex flex-col justify-center">
-        {/* Marca escrita tal cual: Estilo Capitana */}
+        {/* Marca principal */}
         <span className="text-lg sm:text-xl font-bold tracking-tight text-foreground leading-none font-['Montserrat']">
           Estilo Capitana
         </span>
-        {/* Subtítulo / Descriptor */}
-        <span className="text-[10px] sm:text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mt-0.5">
-          {siteConfig.descriptor || 'Agencia comercial especializada en materiales de arquitectura'}
+        {/* Subtítulo en minúsculas comenzando en mayúscula con la A de Agencia */}
+        <span className="text-[10px] sm:text-[11px] font-semibold text-muted-foreground tracking-wide mt-0.5 normal-case">
+          Agencia comercial especializada en materiales de arquitectura
         </span>
       </div>
     </div>
