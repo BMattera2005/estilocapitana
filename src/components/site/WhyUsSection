@@ -1,8 +1,6 @@
-// src/components/site/WhyUsSection.tsx
-import React from 'react';
-import { ShieldCheck, UserCheck, PackageCheck, Layers } from 'lucide-react';
+import { ShieldCheck, UserCheck, PackageCheck, Layers } from "lucide-react";
 
-export const WhyUsSection: React.FC = () => {
+export function WhyUsSection() {
   const benefits = [
     {
       icon: ShieldCheck,
@@ -29,8 +27,7 @@ export const WhyUsSection: React.FC = () => {
   return (
     <section className="py-16 bg-slate-50 border-y border-slate-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Encabezado de la Sección */}
+        {/* Encabezado */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <span className="text-xs font-bold uppercase tracking-wider text-teal-600 block mb-2">
             VALOR AGREGADO B2B
@@ -67,8 +64,9 @@ export const WhyUsSection: React.FC = () => {
             );
           })}
         </div>
-
       </div>
     </section>
   );
-};
+}
+
+export default WhyUsSection;
