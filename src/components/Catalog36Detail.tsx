@@ -1,86 +1,72 @@
 // src/components/Catalog36Detail.tsx
-import React, { useState } from 'react';
-import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
-import { products36x36, CeramicProduct36 } from '../data/products36';
+import React, { useState } from "react";
+import { ArrowLeft, MessageCircle, FileText, Search } from "lucide-react";
+import { products36x36 } from "../data/products36";
+import { buildWhatsAppUrl } from "../lib/quote-message";
 
 interface Catalog36DetailProps {
   onBack: () => void;
 }
 
 export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
-  const [selectedFinish, setSelectedFinish] = useState<string>('Todos');
-  const [search, setSearch] = useState<string>('');
+  const [selectedFinish, setSelectedFinish] = useState<string>("Todos");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const finishes = ['Todos', 'Brillante', 'Mate', 'Colonial'];
+  const finishes = ["Todos", "Brillante", "Mate", "Colonial"];
 
-  const filteredProducts = products36x36.filter((prod) => {
-    const matchesFinish = selectedFinish === 'Todos' || prod.finish === selectedFinish;
+  const filteredProducts = products36x36.filter((p) => {
+    const matchesFinish = selectedFinish === "Todos" || p.finish === selectedFinish;
     const matchesSearch =
-      prod.name.toLowerCase().includes(search.toLowerCase()) ||
-      prod.line.toLowerCase().includes(search.toLowerCase()) ||
-      prod.designType.toLowerCase().includes(search.toLowerCase());
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.line.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.colorOrDesign.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFinish && matchesSearch;
   });
 
-  const handleWhatsAppQuote = (p: CeramicProduct36) => {
-    const phone = "5491161208162";
-    const message = `Hola estilo.capitana, quisiera cotizar la cerámica Ferrazzano 36x36: ${p.name} (Línea: ${p.line}, Acabado: ${p.finish}).`;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-  };
-
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <button 
-        onClick={onBack}
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Volver a los Catálogos
-      </button>
-
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
-              Industria Argentina
-            </span>
-            <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
-              SHOP · PISOS CERÁMICOS
-            </span>
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Ferrazzano — Formato 36×36 cm
-          </h1>
-
-          <p className="text-sm text-slate-500 mt-2 font-normal">
-            Cerámica Salteña · Esmaltados: 2,33 m² (18 pzs / 33.9 kg) · Coloniales: 2,20 m² (17 pzs / 33.9 kg) · Pallet de 36 cajas
-          </p>
-        </div>
+    <div className="w-full max-w-7xl mx-auto px-4 py-8">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <button
+          onClick={onBack}
+          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Volver a Catálogos
+        </button>
 
         <a
           href="/catalogos/ferrazzano_36.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-emerald-600 hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 text-white rounded-lg text-sm font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer"
         >
-          <Download className="w-4 h-4" />
-          Ver / descargar catálogo
+          <FileText className="w-4 h-4" />
+          Descargar PDF 36×36
         </a>
       </div>
 
-      {/* BARRA UNIFICADA DE FILTROS Y BUSCADOR */}
-      <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 mb-4">
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+      <div className="mb-8">
+        <span className="text-xs font-bold uppercase tracking-wider text-sky-600">Industria Argentina</span>
+        <h1 className="text-3xl font-extrabold text-slate-900 mt-1 font-['Montserrat']">
+          Ferrazzano — Formato 36×36 cm
+        </h1>
+        <p className="text-slate-600 mt-2 max-w-3xl text-sm leading-relaxed">
+          Cerámica Salteña · Esmaltados: 2,33 m² (18 pzs / 33.9 kg) · Coloniales: 2,20 m² (17 pzs / 33.9 kg) · Pallet de 36 cajas
+        </p>
+      </div>
+
+      {/* BARRA UNIFICADA CON BUSCADOR PROMINENTE */}
+      <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs font-bold uppercase text-slate-500">Acabado:</span>
           {finishes.map((fn) => (
             <button
               key={fn}
-              type="button"
               onClick={() => setSelectedFinish(fn)}
-              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 selectedFinish === fn
-                  ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? "bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-sm"
+                  : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
               }`}
             >
               {fn}
@@ -88,81 +74,80 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
           ))}
         </div>
 
-        <div className="relative w-full md:w-72">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="relative w-full md:w-80">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-700 font-bold pointer-events-none" />
           <input
             type="text"
             placeholder="Buscar modelo o diseño..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 bg-white border-2 border-slate-400 rounded-lg text-xs font-semibold text-slate-900 placeholder-slate-500 focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20 shadow-xs transition-all"
           />
         </div>
       </div>
 
-      <p className="text-xs text-slate-500 mb-6 font-normal">
-        {filteredProducts.length} {filteredProducts.length === 1 ? 'modelo disponible' : 'modelos disponibles'}
-      </p>
-
-      {/* Grilla de productos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map((p) => (
-          <div
-            key={p.id}
-            className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-200"
-          >
-            <div>
-              <div className="w-full h-48 bg-slate-100 relative overflow-hidden flex items-center justify-center">
-                <img
-                  src={p.image}
-                  alt={p.name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLElement).style.display = 'none';
-                  }}
-                />
-                <span className="absolute top-2 right-2 bg-slate-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded">
-                  {p.finish}
-                </span>
-              </div>
+        {filteredProducts.map((p) => {
+          const whatsappMsg = `Hola estilo.capitana, quisiera cotizar la cerámica Ferrazzano 36x36: ${p.name} (Línea: ${p.line}, Acabado: ${p.finish}).`;
+          const whatsappUrl = buildWhatsAppUrl(whatsappMsg);
 
-              <div className="p-4">
-                <div className="text-[11px] font-semibold text-slate-500 uppercase">
-                  {p.line} · {p.colorOrDesign}
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">
-                  {p.name}
-                </h3>
-
-                <div className="space-y-1 text-xs text-slate-600 border-t border-slate-100 pt-2">
-                  <div className="flex justify-between">
-                    <span>Tránsito / Uso:</span>
-                    <span className="font-semibold text-slate-800">{p.traffic.split(' ')[0]}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Superficie:</span>
-                    <span className="font-semibold text-slate-800">{p.surface}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Empaque por caja:</span>
-                    <span className="font-semibold text-slate-800">{p.packaging.sqmPerBox} m² ({p.packaging.piecesPerBox} pzs)</span>
+          return (
+            <div
+              key={p.id}
+              className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+            >
+              <div>
+                <div className="relative w-full h-56 bg-slate-100 overflow-hidden">
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    className="w-full h-full object-cover block"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                  <div className="absolute top-3 right-3">
+                    <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs">
+                      {p.finish}
+                    </span>
                   </div>
                 </div>
+
+                <div className="p-4">
+                  <span className="text-[11px] font-bold text-sky-600 block mb-0.5 uppercase">
+                    {p.line} · {p.colorOrDesign}
+                  </span>
+                  <h3 className="text-lg font-bold text-slate-900 font-['Montserrat'] leading-tight">
+                    {p.name}
+                  </h3>
+
+                  <div className="mt-3 space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-medium">Tránsito / Uso:</span>
+                      <span className="font-semibold text-slate-800">{p.traffic.split(" ")[0]}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-medium">Empaque:</span>
+                      <span className="font-semibold text-slate-800">{p.packaging.sqmPerBox} m² ({p.packaging.piecesPerBox} pzs)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 pt-0">
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Cotizar por WhatsApp
+                </a>
               </div>
             </div>
-
-            <div className="p-4 pt-0">
-              <button
-                type="button"
-                onClick={() => handleWhatsAppQuote(p)}
-                className="w-full py-2.5 bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 text-white font-bold rounded-lg text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer"
-              >
-                <MessageCircle className="w-4 h-4 text-white" />
-                <span>Solicitar Cotización por WhatsApp</span>
-              </button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
