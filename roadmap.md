@@ -20,3 +20,6 @@
 - [x] Eliminar el producto de prueba Pearl White del catálogo Full Body.
 - [x] Reparar la hidratación del cliente alineando @tanstack/react-router 1.170.18 con react-start 1.168.32.
 - [x] Estandarizar las cabeceras y acciones de las vistas de detalle de catálogo.
+- [x] Rediseñar el Hero de Inicio en dos columnas con badge B2B, CTAs y composición visual.
+- [x] Actualizar las cinco familias de productos con sus accesos filtrados al catálogo.
+- [x] Reparar errores de tipado heredados de los cambios externos de GitHub en las vistas de detalle.

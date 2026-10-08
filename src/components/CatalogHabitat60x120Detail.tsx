@@ -127,7 +127,7 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
 
               <div className="p-4 pt-0">
                 <a
-                  href={whatsappUrl}
+                  href={whatsappUrl ?? undefined}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
