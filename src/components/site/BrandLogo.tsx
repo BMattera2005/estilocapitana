@@ -16,8 +16,8 @@ export function BrandLogo() {
       />
 
       <div className="flex flex-col justify-center">
-        {/* Marca en Mayúsculas, Negrita Fuerte y Sin Punto */}
-        <span className="text-lg sm:text-xl font-black tracking-tight text-foreground uppercase leading-none font-['Montserrat']">
+        {/* Marca escrita tal cual: Estilo Capitana */}
+        <span className="text-lg sm:text-xl font-bold tracking-tight text-foreground leading-none font-['Montserrat']">
           Estilo Capitana
         </span>
         {/* Subtítulo / Descriptor */}
