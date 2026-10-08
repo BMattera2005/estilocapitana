@@ -1,6 +1,7 @@
-import { ShieldCheck, UserCheck, PackageCheck, Layers } from "lucide-react";
+import React from 'react';
+import { ShieldCheck, UserCheck, PackageCheck, Layers } from 'lucide-react';
 
-export function WhyUsSection() {
+export const WhyUsSection: React.FC = () => {
   const benefits = [
     {
       icon: ShieldCheck,
@@ -69,6 +70,4 @@ export function WhyUsSection() {
       </div>
     </section>
   );
-}
-
-export default WhyUsSection;
+};
