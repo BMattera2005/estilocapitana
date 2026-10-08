@@ -6,6 +6,7 @@ import { siteConfig } from "@/config/site";
 import { routeMeta } from "@/config/seo";
 import { officialCatalogs } from "@/data/catalogs";
 import { buildAdvisorWhatsAppUrl } from "@/lib/contact-links";
+import { WhyUsSection } from "@/components/site/WhyUsSection";
 
 // Mismo criterio que /catalogo: solo cuentan los catálogos visibles (isVisible !== false).
 const visibleCatalogCount = officialCatalogs.filter(
@@ -45,7 +46,7 @@ const productFamilies = [
   },
 ] as const;
 
-// Composición visual del Hero: fotos reales del catálogo (sin imágenes remotas).
+// Composición visual del Hero: fotos reales del catálogo.
 const heroImages = {
   wide: "/products/sinteredstone/carrara.jpg",
   tallA: "/products/habitat60x120/yta66w12.jpg",
@@ -60,11 +61,13 @@ const heroBadges = [
 ] as const;
 
 export const Route = createFileRoute("/")({
-  head: () => routeMeta({
-    title: "estilo.capitana — Agencia comercial de materiales de arquitectura",
-    description: "Representación comercial B2B de superficies Sintered Stone, porcelanatos Habitat, cerámicos Ferrazzano, viguetas pretensadas y EPS Telgopor.",
-    path: "/",
-  }),
+  head: () =>
+    routeMeta({
+      title: "Estilo Capitana — Agencia comercial de materiales de arquitectura",
+      description:
+        "Representación comercial B2B de superficies Sintered Stone, porcelanatos Habitat, cerámicos Ferrazzano, viguetas pretensadas y EPS Telgopor.",
+      path: "/",
+    }),
   component: Index,
 });
 
@@ -73,6 +76,7 @@ function Index() {
 
   return (
     <div>
+      {/* HERO PRINCIPAL SPLIT-SCREEN */}
       <section className="brand-watermark-section border-b border-border bg-background px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
         <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-14">
           <div className="max-w-2xl">
@@ -87,11 +91,14 @@ function Index() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild variant="industrial" size="lg">
-                <Link to="/catalogo">Explorar catálogos<ArrowRight aria-hidden="true" /></Link>
+                <Link to="/catalogo">
+                  Explorar catálogos <ArrowRight aria-hidden="true" />
+                </Link>
               </Button>
               <Button asChild variant="industrialOutline" size="lg">
                 <a href={advisorWhatsAppUrl} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle aria-hidden="true" />Hablar con un asesor
+                  <MessageCircle aria-hidden="true" />
+                  Hablar con un asesor
                 </a>
               </Button>
             </div>
@@ -156,6 +163,10 @@ function Index() {
         </div>
       </section>
 
+      {/* SECCIÓN POR QUÉ TRABAJAR CON NOSOTROS */}
+      <WhyUsSection />
+
+      {/* FAMILIAS DE PRODUCTOS */}
       <section className="brand-watermark-section bg-surface px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-normal uppercase text-primary">Familias de productos</p>
@@ -173,26 +184,9 @@ function Index() {
                   aria-label={`Ver la familia ${family.title} en el catálogo`}
                   className="group flex min-h-[14rem] flex-col rounded-lg border border-border bg-card p-6 shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
-                  <span className="grid size-11 place-items-center rounded-md bg-accent text-accent-foreground"><Icon aria-hidden="true" /></span>
+                  <span className="grid size-11 place-items-center rounded-md bg-accent text-accent-foreground">
+                    <Icon aria-hidden="true" />
+                  </span>
                   <h3 className="mt-5 text-lg font-semibold text-foreground">{family.title}</h3>
                   <p className="mt-3 text-sm font-normal leading-6 text-muted-foreground">{family.detail}</p>
-                  <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-primary">
-                    Ver familia
-                    <ArrowRight aria-hidden="true" className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-y border-border bg-background px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
-          <div><p className="text-xs font-normal uppercase text-primary">Consulta comercial</p><h2 className="mt-3 text-3xl font-semibold text-foreground">Encontrá la familia adecuada para tu proyecto o canal</h2></div>
-          <Button asChild variant="industrial" size="lg"><Link to="/contacto">Consultar stock<ArrowRight aria-hidden="true" /></Link></Button>
-        </div>
-      </section>
-    </div>
-  );
-}
+                  <span className="mt-auto inline-flex items-center gap-
