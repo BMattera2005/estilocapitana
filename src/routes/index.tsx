@@ -189,4 +189,38 @@ function Index() {
                   </span>
                   <h3 className="mt-5 text-lg font-semibold text-foreground">{family.title}</h3>
                   <p className="mt-3 text-sm font-normal leading-6 text-muted-foreground">{family.detail}</p>
-                  <span className="mt-auto inline-flex items-center gap-
+                  <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-primary">
+                    Ver familia
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                    />
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* CONSULTA COMERCIAL FOOTER BANNER */}
+      <section className="border-y border-border bg-background px-4 py-14 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-xs font-normal uppercase text-primary">Consulta comercial</p>
+            <h2 className="mt-3 text-3xl font-semibold text-foreground">
+              Encontrá la familia adecuada para tu proyecto o canal
+            </h2>
+          </div>
+          <Button asChild variant="industrial" size="lg">
+            <Link to="/contacto">
+              Consultar stock <ArrowRight aria-hidden="true" />
+            </Link>
+          </Button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+export default Index;
