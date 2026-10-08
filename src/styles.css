@@ -45,6 +45,9 @@
   --color-badge-emerald-bg: var(--badge-emerald-bg);
   --color-badge-emerald-fg: var(--badge-emerald-fg);
   --color-badge-emerald-border: var(--badge-emerald-border);
+  --color-badge-emerald-bg: var(--badge-emerald-bg);
+  --color-badge-emerald-fg: var(--badge-emerald-fg);
+  --color-badge-emerald-border: var(--badge-emerald-border);
   --color-technical: var(--technical);
   --color-industrial-green: var(--industrial-green);
   --color-overlay: var(--overlay);
