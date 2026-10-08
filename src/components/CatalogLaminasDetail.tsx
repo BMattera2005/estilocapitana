@@ -1,9 +1,8 @@
 // src/components/CatalogLaminasDetail.tsx
 import React, { useState } from "react";
-import { MessageCircle, Search } from "lucide-react";
+import { ArrowLeft, MessageCircle, FileText, Search } from "lucide-react";
 import { productsLaminas } from "../data/productsLaminas";
 import { buildWhatsAppUrl } from "../lib/quote-message";
-import { CatalogDetailHeader } from "./catalog/CatalogDetailHeader";
 
 interface CatalogLaminasDetailProps {
   onBack: () => void;
@@ -15,7 +14,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
 
   const finishes = ["Todos", ...Array.from(new Set(productsLaminas.map((p) => p.finish)))];
 
-  const filteredProducts = productsLaminas.filter((prod) => prod.isVisible !== false).filter((product) => {
+  const filteredProducts = productsLaminas.filter((product) => {
     const matchesFinish = filterFinish === "Todos" || product.finish === filterFinish;
     const matchesSearch =
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -25,17 +24,38 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      <CatalogDetailHeader
-        origin="Novedad Importada"
-        category="Sintered Stone"
-        title="Habitat — Láminas 120×270 cm"
-        description="Placas sinterizadas continuas de gran escala para revestimientos completos de piso a techo, mesadas y arquitectura sin juntas visibles."
-        downloadUrl="/catalogos/slabs_sintered_stone.pdf"
-        onBack={onBack}
-      />
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <button
+          onClick={onBack}
+          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Volver a Catálogos
+        </button>
 
-      {/* Filtros dinámicos y Buscador */}
-      <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-wrap items-center justify-between gap-4">
+        <a
+          href="/catalogos/slabs_sintered_stone.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 text-white rounded-lg text-sm font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer"
+        >
+          <FileText className="w-4 h-4" />
+          Descargar PDF Oficial Láminas
+        </a>
+      </div>
+
+      <div className="mb-8">
+        <span className="text-xs font-bold uppercase tracking-wider text-sky-600">Slabs Sintered Stone</span>
+        <h1 className="text-3xl font-extrabold text-slate-900 mt-1 font-['Montserrat']">
+          Habitat — Láminas 120×270 cm
+        </h1>
+        <p className="text-slate-600 mt-2 max-w-3xl text-sm leading-relaxed">
+          Placas sinterizadas continuas de gran escala para revestimientos completos de piso a techo, mesadas y arquitectura sin juntas visibles.
+        </p>
+      </div>
+
+      {/* BARRA UNIFICADA CON BUSCADOR PROMINENTE */}
+      <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-xs font-bold uppercase text-slate-500">Terminación:</span>
           {finishes.map((finish) => (
@@ -44,7 +64,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
               onClick={() => setFilterFinish(finish)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 filterFinish === finish
-                  ? "bg-slate-900 text-white shadow-sm"
+                  ? "bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-sm"
                   : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
               }`}
             >
@@ -53,19 +73,18 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
           ))}
         </div>
 
-        <div className="relative w-full sm:w-64">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+        <div className="relative w-full md:w-80">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-700 font-bold pointer-events-none" />
           <input
             type="text"
             placeholder="Buscar modelo o código..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-sky-500 text-slate-800 placeholder-slate-400"
+            className="w-full pl-10 pr-4 py-2.5 bg-white border-2 border-slate-400 rounded-lg text-xs font-semibold text-slate-900 placeholder-slate-500 focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20 shadow-xs transition-all"
           />
         </div>
       </div>
 
-      {/* Grilla Limpia 100% libre de texto lateral cortado */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((product) => {
           const whatsappMsg = `Hola estilo.capitana, consulto cotización por la Lámina ${product.name} (Código: ${product.code}, Medida: ${product.format}, Espesor: ${product.thickness}, Acabado: ${product.finish}).`;
@@ -77,7 +96,6 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
               className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
             >
               <div>
-                {/* Contenedor estricto de imagen: ocupa el 100% y corta cualquier desborde */}
                 <div className="relative w-full h-72 bg-slate-100 overflow-hidden">
                   <img
                     src={product.image}
@@ -94,7 +112,6 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
                   </div>
                 </div>
 
-                {/* Info en el cuerpo: el nombre y serie se muestran completos y abajo */}
                 <div className="p-4">
                   <span className="text-[11px] font-bold text-sky-600 block mb-0.5">
                     {product.code}
@@ -120,13 +137,12 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
                 </div>
               </div>
 
-              {/* Botón WhatsApp con degradado oficial */}
               <div className="p-4 pt-0">
                 <a
-                  href={whatsappUrl ?? undefined}
+                  href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-brand-gradient hover:brightness-105 text-primary-foreground font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
+                  className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4" />
                   Cotizar por WhatsApp
