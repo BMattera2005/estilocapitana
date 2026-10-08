@@ -1,67 +1,72 @@
 // src/components/CatalogHabitatPorcelanatoDetail.tsx
-import React, { useState } from 'react';
-import { MessageCircle, Search } from 'lucide-react';
-import { productsHabitatPorcelanato, HabitatPorcelanatoItem } from '../data/productsHabitatPorcelanato';
-import { CatalogDetailHeader } from './catalog/CatalogDetailHeader';
+import React, { useState } from "react";
+import { ArrowLeft, MessageCircle, FileText, Search } from "lucide-react";
+import { productsHabitatPorcelanato } from "../data/productsHabitatPorcelanato";
+import { buildWhatsAppUrl } from "../lib/quote-message";
 
 interface CatalogHabitatPorcelanatoDetailProps {
   onBack: () => void;
 }
 
 export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanatoDetailProps> = ({ onBack }) => {
-  const [selectedFormat, setSelectedFormat] = useState<string>('Todos');
-  const [selectedFinish, setSelectedFinish] = useState<string>('Todos');
-  const [search, setSearch] = useState<string>('');
+  const [filterFormat, setFilterFormat] = useState<string>("Todos");
+  const [filterFinish, setFilterFinish] = useState<string>("Todos");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const formats = ['Todos', '600x1200 mm', '1200x1200 mm'];
-  const finishes = ['Todos', 'Glossy', 'Velvet', 'Rustic'];
-
-  const filteredProducts = productsHabitatPorcelanato.filter((prod) => prod.isVisible !== false).filter((prod) => {
-  // Coincidencia de formato
-  const matchesFormat = selectedFormat === "Todos" || prod.format === selectedFormat;
-
-  // Coincidencia de acabado (revisa si el array contiene el acabado o si es "Todos")
-  const matchesFinish =
-    selectedFinish === "Todos" || prod.finishes.includes(selectedFinish as any);
-
-  // Coincidencia de búsqueda
-  const matchesSearch =
-    prod.name.toLowerCase().includes(search.toLowerCase()) ||
-    prod.series.toLowerCase().includes(search.toLowerCase());
-
-  return matchesFormat && matchesFinish && matchesSearch;
-});
-  const handleWhatsAppQuote = (item: HabitatPorcelanatoItem) => {
-    const phone = "5491161208162";
-    const message = `Hola estilo.capitana, me interesa cotizar el porcelanato ${item.name} (Formato: ${item.format}, Acabado: ${item.finishText}). Quisiera consultar disponibilidad por pallet.`;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-  };
+  const filteredProducts = productsHabitatPorcelanato.filter((product) => {
+    const matchesFormat = filterFormat === "Todos" || product.format === filterFormat;
+    const matchesFinish = filterFinish === "Todos" || product.finish === filterFinish;
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.series.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesFormat && matchesFinish && matchesSearch;
+  });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <CatalogDetailHeader
-        origin="Novedad Importada"
-        category="Porcelanato Esmaltado"
-        title="Habitat — Porcelanato Esmaltado"
-        description="Colección Habitat MA · Formatos 60×120 cm (1.44 m² / 30 kg) y 120×120 cm (2.88 m² / 60 kg) · Venta mayorista por pallet"
-        downloadUrl="/catalogos/coleccion_habitat_MA.pdf"
-        onBack={onBack}
-      />
+    <div className="w-full max-w-7xl mx-auto px-4 py-8">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <button
+          onClick={onBack}
+          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Volver a Catálogos
+        </button>
 
-      {/* Filtros Combinados y Buscador */}
-      <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 mb-3">
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Formatos */}
-          <div className="flex gap-1 bg-slate-100 p-1 rounded-lg">
-            {formats.map((f) => (
+        <a
+          href="/catalogos/habitat_porcelanato.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 text-white rounded-lg text-sm font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer"
+        >
+          <FileText className="w-4 h-4" />
+          Descargar PDF Porcelanatos
+        </a>
+      </div>
+
+      <div className="mb-8">
+        <span className="text-xs font-bold uppercase tracking-wider text-sky-600">Porcelanato Esmaltado</span>
+        <h1 className="text-3xl font-extrabold text-slate-900 mt-1 font-['Montserrat']">
+          Habitat — Porcelanato Esmaltado
+        </h1>
+        <p className="text-slate-600 mt-2 max-w-3xl text-sm leading-relaxed">
+          Colección Habitat MA · Formatos 60×120 cm (1.44 m² / 30 kg) y 120×120 cm (2.88 m² / 60 kg) · Venta mayorista por pallet
+        </p>
+      </div>
+
+      {/* BARRA UNIFICADA */}
+      <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase text-slate-500">Medida:</span>
+            {["Todos", "600x1200 mm", "1200x1200 mm"].map((f) => (
               <button
                 key={f}
-                type="button"
-                onClick={() => setSelectedFormat(f)}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer ${
-                  selectedFormat === f
-                    ? 'bg-white text-slate-900 shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
+                onClick={() => setFilterFormat(f)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  filterFormat === f
+                    ? "bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-sm"
+                    : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
                 }`}
               >
                 {f}
@@ -69,116 +74,98 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
             ))}
           </div>
 
-          {/* Acabados */}
-          <div className="flex gap-1 bg-slate-100 p-1 rounded-lg">
-            {finishes.map((fn) => (
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase text-slate-500">Terminación:</span>
+            {["Todos", "Glossy", "Velvet", "Rustic"].map((t) => (
               <button
-                key={fn}
-                type="button"
-                onClick={() => setSelectedFinish(fn)}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer ${
-                  selectedFinish === fn
-                    ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900'
+                key={t}
+                onClick={() => setFilterFinish(t)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  filterFinish === t
+                    ? "bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-sm"
+                    : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
                 }`}
               >
-                {fn}
+                {t}
               </button>
             ))}
           </div>
         </div>
 
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-700 font-bold pointer-events-none" />
           <input
             type="text"
             placeholder="Buscar modelo o serie..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 bg-white border-2 border-slate-400 rounded-lg text-xs font-semibold text-slate-900 placeholder-slate-500 focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20 shadow-xs transition-all"
           />
         </div>
       </div>
 
-      <p className="text-xs text-slate-500 mb-8 font-normal">
-        {filteredProducts.length} {filteredProducts.length === 1 ? 'modelo disponible' : 'modelos disponibles'}
-      </p>
-
-      {/* Grilla de Modelos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map((p) => (
-          <div
-            key={p.id}
-            className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all duration-200"
-          >
-            <div>
-              {/* Imagen con Fallback */}
-              <div className="w-full h-48 bg-slate-100 relative overflow-hidden flex items-center justify-center">
-                <img
-                  src={p.image}
-                  alt={p.name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-                <div className="text-center p-4">
-                  <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold block mb-1">
-                    {p.series}
-                  </span>
-                  <span className="text-base font-bold text-slate-700">
-                    {p.name}
-                  </span>
+        {filteredProducts.map((product) => {
+          const whatsappMsg = `Hola estilo.capitana, consulto cotización por el Porcelanato ${product.name} (Serie: ${product.series}, Medida: ${product.format}, Acabado: ${product.finish}).`;
+          const whatsappUrl = buildWhatsAppUrl(whatsappMsg);
+
+          return (
+            <div
+              key={product.id}
+              className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+            >
+              <div>
+                <div className="relative w-full h-64 bg-slate-100 overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover block"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                  <div className="absolute top-3 right-3">
+                    <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs">
+                      {product.finish}
+                    </span>
+                  </div>
                 </div>
 
-                <span className="absolute top-2.5 right-2.5 bg-slate-600/90 text-white text-[10px] font-semibold px-2 py-0.5 rounded">
-                  {p.finishText}
-                </span>
-              </div>
+                <div className="p-4">
+                  <span className="text-[11px] font-bold text-sky-600 block mb-0.5">
+                    {product.series}
+                  </span>
+                  <h3 className="text-lg font-bold text-slate-900 font-['Montserrat'] leading-tight">
+                    {product.name}
+                  </h3>
 
-              {/* Ficha Técnica */}
-              <div className="p-4">
-                <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">
-                  {p.series} · {p.faces}
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-3">
-                  {p.name}
-                </h3>
-
-                <div className="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-2.5">
-                  <div className="flex justify-between">
-                    <span>Espesor:</span>
-                    <span className="font-semibold text-slate-800">{p.thickness}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Formato:</span>
-                    <span className="font-semibold text-slate-800">{p.format}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Caja:</span>
-                    <span className="font-semibold text-slate-800">{p.sqmPerBox} m² ({p.piecesPerBox} pzs · {p.weightBoxKg} kg)</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Pallet:</span>
-                    <span className="font-semibold text-slate-800">{p.boxesPerPallet} cajas ({p.sqmPerPallet} m² · {p.weightPalletKg} kg)</span>
+                  <div className="mt-3 space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-medium">Formato:</span>
+                      <span className="font-semibold text-slate-800">{product.format}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-medium">Rendimiento:</span>
+                      <span className="font-semibold text-slate-800">{product.sqmPerBox} m² / caja ({product.weightPerBox} kg)</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Botón WhatsApp */}
-            <div className="p-4 pt-0">
-              <button
-                type="button"
-                onClick={() => handleWhatsAppQuote(p)}
-                className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-primary-foreground bg-brand-gradient hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
-              >
-                <MessageCircle className="w-4 h-4 shrink-0" />
-                <span>Solicitar cotización por WhatsApp</span>
-              </button>
+              <div className="p-4 pt-0">
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Cotizar por WhatsApp
+                </a>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
