@@ -9,8 +9,12 @@ interface CatalogHabitat60x120DetailProps {
 
 export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProps> = ({ onBack }) => {
   const [search, setSearch] = useState<string>('');
+  const [selectedTexture, setSelectedTexture] = useState<string>('Todos');
+  const textures = ['Todos', 'Glossy', 'Matt'];
 
   const filteredProducts = productsHabitat60x120.filter((item) => {
+    if (item.isVisible === false) return false;
+    if (selectedTexture !== 'Todos' && item.finish !== selectedTexture) return false;
     return (
       item.name.toLowerCase().includes(search.toLowerCase()) ||
       item.code.toLowerCase().includes(search.toLowerCase()) ||
@@ -68,8 +72,26 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
         </a>
       </div>
 
-      {/* BARRA DE BUSCADOR */}
-      <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-end">
+      {/* BARRA DE FILTROS Y BUSCADOR */}
+      <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs font-bold uppercase text-slate-500">Textura:</span>
+          {textures.map((fn) => (
+            <button
+              key={fn}
+              type="button"
+              onClick={() => setSelectedTexture(fn)}
+              aria-pressed={selectedTexture === fn}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                selectedTexture === fn
+                  ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm'
+                  : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
+              }`}
+            >
+              {fn}
+            </button>
+          ))}
+        </div>
         <div className="relative w-full md:w-80">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-700 font-bold pointer-events-none" />
           <input
