@@ -60,7 +60,7 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
               </p>
             </div>
 
-            {/* BOTÓN DESCARGAR CATÁLOGO PDF */}
+            {/* BOTÓN DESCARGAR CATÁLOGO PDF CON EL COLOR EXACTO DE LA SEGUNDA FOTO */}
             <a
               href="/catalogos/coleccion_habitat_MA.pdf"
               target="_blank"
@@ -72,7 +72,7 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
             </a>
           </div>
 
-          {/* BARRA DE FILTROS Y BÚSQUEDA TÉCNICA */}
+          {/* BARRA DE FILTROS CON EL CIAN CORPORATIVO */}
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border bg-card p-4 shadow-sm overflow-hidden">
             <div className="flex flex-wrap items-center gap-3 text-xs font-bold text-slate-700">
               <span className="text-slate-400 font-semibold uppercase">MEDIDA:</span>
@@ -83,7 +83,7 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
                   onClick={() => setSelectedFormat(fmt)}
                   className={`rounded-md px-3 py-1.5 transition-colors cursor-pointer ${
                     selectedFormat === fmt
-                      ? "bg-cyan-600 text-white font-bold"
+                      ? "bg-[#00a8cc] text-white font-bold"
                       : "bg-surface hover:bg-slate-100 text-slate-600"
                   }`}
                 >
@@ -99,7 +99,7 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
                   onClick={() => setSelectedTexture(tex)}
                   className={`rounded-md px-3 py-1.5 transition-colors cursor-pointer ${
                     selectedTexture === tex
-                      ? "bg-cyan-600 text-white font-bold"
+                      ? "bg-[#00a8cc] text-white font-bold"
                       : "bg-surface hover:bg-slate-100 text-slate-600"
                   }`}
                 >
