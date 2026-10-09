@@ -274,7 +274,19 @@ function Index() {
                     src={family.image}
                     alt={family.title}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    onError={(e) => {
+                      const img = e.currentTarget;
+                      const fallback = img.nextElementSibling as HTMLElement | null;
+                      img.style.display = "none";
+                      if (fallback) fallback.classList.remove("hidden");
+                    }}
                   />
+                  <div
+                    aria-hidden="true"
+                    className="hidden absolute inset-0 items-center justify-center bg-gradient-to-br from-[#0e2a33] to-[#14532d] text-white"
+                  >
+                    <Blocks className="size-10 opacity-80" />
+                  </div>
                 </div>
                 <div className="p-5 flex flex-col flex-1 justify-between">
                   <div>
