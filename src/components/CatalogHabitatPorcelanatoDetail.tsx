@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, MessageCircle, Search } from "lucide-react";
+import { ArrowLeft, Download, MessageCircle, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { productsHabitatPorcelanato } from "@/data/productsHabitatPorcelanato";
 import { buildWhatsAppUrl } from "@/lib/quote-message";
@@ -29,18 +29,20 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
 
   return (
     <div className="bg-surface min-h-screen">
-      {/* CABECERA UNIFICADA DE MARCA */}
+      {/* CABECERA ALINEADA */}
       <section className="brand-watermark-section border-b border-border bg-background px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl overflow-hidden">
+          {/* BOTÓN VOLVER */}
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors cursor-pointer mb-6"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors cursor-pointer mb-6"
           >
             <ArrowLeft className="size-4" /> Volver a las Colecciones
           </button>
 
-          <div className="flex flex-wrap items-center justify-between gap-4">
+          {/* TÍTULO Y BOTÓN DE DESCARGAR CATÁLOGO EN LA CABECERA */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-2">
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <span className="rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 px-2.5 py-0.5 text-[11px] font-medium">
@@ -57,6 +59,17 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
                 Colección Habitat MA · Formato 120×120 cm (2.88 m² / 60 kg) · Venta mayorista por pallet
               </p>
             </div>
+
+            {/* BOTÓN DESCARGAR CATÁLOGO PDF */}
+            <a
+              href="/catalogos/coleccion_habitat_MA.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-emerald-600 hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer shrink-0"
+            >
+              <Download className="w-4 h-4" />
+              <span>Ver / Descargar Catálogo</span>
+            </a>
           </div>
 
           {/* BARRA DE FILTROS Y BÚSQUEDA TÉCNICA */}
@@ -109,7 +122,7 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
         </div>
       </section>
 
-      {/* GRILLA DE PRODUCTOS BLINDADA CONTRA DESBORDES */}
+      {/* GRILLA DE PRODUCTOS */}
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <p className="text-xs font-normal text-slate-500 mb-6">
           {filteredProducts.length} {filteredProducts.length === 1 ? "modelo disponible" : "modelos disponibles"}
@@ -168,14 +181,16 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
                     </dl>
                   </div>
 
-                  {/* BOTÓN WHATSAPP CORPORATIVO */}
+                  {/* BOTÓN WHATSAPP CORPORATIVO DEGRADADO CIAN-VERDE */}
                   <div className="mt-6">
-                    <Button asChild variant="industrial" className="w-full">
-                      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                        <MessageCircle aria-hidden="true" />
-                        Cotizar por WhatsApp
-                      </a>
-                    </Button>
+                    <button
+                      type="button"
+                      onClick={() => window.open(whatsappUrl, "_blank")}
+                      className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
+                    >
+                      <MessageCircle className="w-4 h-4 text-white shrink-0" />
+                      <span>Solicitar cotización por WhatsApp</span>
+                    </button>
                   </div>
                 </div>
               </article>
