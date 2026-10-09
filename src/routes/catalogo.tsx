@@ -1,3 +1,4 @@
+// src/routes/catalogo.tsx
 import { createFileRoute } from "@tanstack/react-router";
 import { Award, FileText, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -17,6 +18,7 @@ import { officialCatalogs, type OfficialCatalog } from "@/data/catalogs";
 import { buildWhatsAppUrl } from "@/lib/quote-message";
 import { normalizeText } from "@/lib/text";
 
+/** Convierte una línea en slug de URL: "Línea Porcelanatos" -> "linea-porcelanatos". */
 function slugifyLinea(value: string) {
   return normalizeText(value).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
@@ -28,7 +30,7 @@ const lineFilters = Array.from(
       .map((catalog) => catalog.filterGroup)
       .filter(Boolean),
   ),
-).map((group) => ({ id: slugifyLinea(group), label: group }));
+).map((group) => ({ id: slugifyLinea(group as string), label: group as string }));
 
 type CatalogFilter = "todas" | (string & {});
 
@@ -50,8 +52,8 @@ export const Route = createFileRoute("/catalogo")({
   },
   head: () =>
     routeMeta({
-      title: "Catálogos de materiales — estilo.capitana",
-      description: "Consultá las líneas de Sintered Stone, Porcelanato, Pisos Cerámicos, Viguetas Pretensadas y Telgopor de Construcción representadas por estilo.capitana.",
+      title: "Catálogos de materiales — Estilo Capitana",
+      description: "Consultá las líneas de Sintered Stone, Porcelanato, Pisos Cerámicos, Viguetas Pretensadas y Telgopor de Construcción representadas por Estilo Capitana.",
       path: "/catalogo",
     }),
   component: CatalogoPage,
@@ -60,20 +62,22 @@ export const Route = createFileRoute("/catalogo")({
 function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect?: () => void }) {
   const href = catalogHref(catalog);
   const whatsappUrl = buildWhatsAppUrl(
-    `Hola estilo.capitana, quisiera consultar stock y cotización de la línea ${catalog.title}.`,
+    `Hola Estilo Capitana, quisiera consultar stock y cotización de la línea ${catalog.title}.`,
   );
 
   const primaryActionClass =
     "inline-flex min-h-11 w-full items-center justify-center rounded-md bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:brightness-105 motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer";
 
-  // Incluye todos los IDs con vista de modelos en pantalla
+  // Incluye TODOS los 8 catálogos oficiales para habilitar la vista interactiva en pantalla
   const isInteractive = [
-  "cat-habitat-full-body",
-  "cat-habitat-laminas",
-  "cat-habitat-porcelanato",
-  "cat-habitat-60x120", 
-  "cat-ferrazzano-36",
-  "cat-ferrazzano-43",
+    "cat-habitat-full-body",
+    "cat-habitat-laminas",
+    "cat-habitat-porcelanato",
+    "cat-habitat-60x120",
+    "cat-ferrazzano-36",
+    "cat-ferrazzano-43",
+    "cat-viguetas",
+    "cat-eps",
   ].includes(catalog.id);
 
   return (
@@ -143,14 +147,15 @@ function CatalogoPage() {
     if (linea) setActiveFilter(linea);
   }, [linea]);
 
-const visibleCatalogs = useMemo(
-  () =>
-    officialCatalogs
-      .filter((catalog) => catalog.isVisible !== false) // Oculta automáticamente los que tengan isVisible: false
-      .filter((catalog) => matchesFilter(catalog, activeFilter)),
-  [activeFilter],
-);
+  const visibleCatalogs = useMemo(
+    () =>
+      officialCatalogs
+        .filter((catalog) => catalog.isVisible !== false)
+        .filter((catalog) => matchesFilter(catalog, activeFilter)),
+    [activeFilter],
+  );
 
+  // Mapeo completo de las 8 vistas de detalle
   if (selectedCatalogId === "cat-ferrazzano-43") {
     return <Catalog43Detail onBack={() => setSelectedCatalogId(null)} />;
   }
@@ -172,17 +177,17 @@ const visibleCatalogs = useMemo(
   }
 
   if (selectedCatalogId === "cat-habitat-60x120") {
-  return <CatalogHabitat60x120Detail onBack={() => setSelectedCatalogId(null)} />;
-}
+    return <CatalogHabitat60x120Detail onBack={() => setSelectedCatalogId(null)} />;
+  }
 
   if (selectedCatalogId === "cat-viguetas") {
-  return <CatalogViguetasDetail onBack={() => setSelectedCatalogId(null)} />;
-}
+    return <CatalogViguetasDetail onBack={() => setSelectedCatalogId(null)} />;
+  }
 
-if (selectedCatalogId === "cat-eps") {
-  return <CatalogEpsDetail onBack={() => setSelectedCatalogId(null)} />;
-}
-  
+  if (selectedCatalogId === "cat-eps") {
+    return <CatalogEpsDetail onBack={() => setSelectedCatalogId(null)} />;
+  }
+
   return (
     <div>
       <section className="brand-watermark-section border-b border-border bg-background px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
