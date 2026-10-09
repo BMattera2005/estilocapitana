@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
 import { productsLaminas, LaminaProductItem } from '../data/productsLaminas';
+import { ZoomableImage } from '@/components/catalog/ZoomableImage';
+
+/** Agrupa el acabado de fábrica de cada lámina en una textura comercial. */
+function getLaminaTexture(finish: string | undefined): string {
+  const f = (finish ?? '').toLowerCase();
+  if (f.includes('glossy')) return 'Glossy';
+  if (f.includes('polish') || f.includes('granules')) return 'Satinada';
+  if (f.includes('glaze')) return 'Brillante';
+  return 'Mate';
+}
 
 interface CatalogLaminasDetailProps {
   onBack: () => void;
@@ -10,10 +20,10 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
   const [selectedFinish, setSelectedFinish] = useState<string>('Todos');
   const [search, setSearch] = useState<string>('');
 
-  const finishes = ['Todos', 'Glossy', 'Digital glaze'];
+  const finishes = ['Todos', 'Mate', 'Glossy', 'Brillante', 'Satinada'];
 
   const filteredProducts = productsLaminas.filter((item) => {
-    const matchesFinish = selectedFinish === 'Todos' || item.finish.toLowerCase().includes(selectedFinish.toLowerCase());
+    const matchesFinish = selectedFinish === 'Todos' || getLaminaTexture(item.finish) === selectedFinish;
     const matchesSearch =
       item.name.toLowerCase().includes(search.toLowerCase()) ||
       item.code.toLowerCase().includes(search.toLowerCase());
@@ -22,7 +32,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
 
   const handleWhatsAppQuote = (item: LaminaProductItem) => {
     const phone = "5491161208162";
-    const message = `Hola Estilo Capitana, me interesa cotizar la lámina Sintered Stone XL ${item.name} (Código: ${item.code}, Formato: 1200x2700x9 mm). Quisiera consultar disponibilidad por pallet.`;
+    const message = `Hola Estilo Capitana, me interesa cotizar la lámina Sintered Stone XL ${item.name} (Código: ${item.code}, Formato: 120x270x0,9 cm). Quisiera consultar disponibilidad por pallet.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -34,7 +44,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
         className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
-        Volver a los Catálogos
+        Volver a las Colecciones
       </button>
 
       {/* Cabecera */}
@@ -54,7 +64,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
           </h1>
 
           <p className="text-sm text-slate-500 mt-2 font-normal">
-            Placas XL de Sintered Stone (1200×2700×9 mm, 3.24 m²/pieza) para muros continuos, solados y fachadas de gran formato.
+            Placas XL de Sintered Stone (120×270×0,9 cm, 3.24 m²/pieza) para muros continuos, solados y fachadas de gran formato.
           </p>
         </div>
 
@@ -74,7 +84,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
       <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase text-slate-500">Terminación:</span>
+            <span className="text-xs font-bold uppercase text-slate-500">Textura:</span>
             {finishes.map((fn) => (
               <button
                 key={fn}
@@ -118,7 +128,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
           >
             <div>
               <div className="w-full h-80 bg-slate-100 relative overflow-hidden flex items-center justify-center">
-                <img
+                <ZoomableImage
                   src={p.image}
                   alt={p.name}
                   className="w-full h-full object-cover block"
@@ -144,7 +154,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
                 <div className="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-2.5">
                   <div className="flex justify-between">
                     <span className="text-slate-400 font-medium">Formato:</span>
-                    <span className="font-semibold text-slate-800">1200×2700 mm (9 mm)</span>
+                    <span className="font-semibold text-slate-800">120×270 cm (0,9 cm)</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400 font-medium">Superficie:</span>

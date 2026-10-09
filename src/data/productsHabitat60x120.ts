@@ -7,9 +7,9 @@ export interface Habitat60x120Product {
   code: string;
   name: string;
   series: string;
-  format: "600x1200 mm";
-  thickness: "9 mm";
-  finish: "Satinado / Mate Natural";
+  format: "60x120 cm";
+  thickness: "0,9 cm";
+  finish: "Matt";
   faces: number;
   sqmPerBox: number;
   piecesPerBox: number;
@@ -24,9 +24,9 @@ export const productsHabitat60x120: Habitat60x120Product[] = [
     code: "YTA66W12",
     name: "Habitat Stone Marfil",
     series: "Luxury Stone Slab Series",
-    format: "600x1200 mm",
-    thickness: "9 mm",
-    finish: "Satinado / Mate Natural",
+    format: "60x120 cm",
+    thickness: "0,9 cm",
+    finish: "Matt",
     faces: 6,
     sqmPerBox: 1.44,
     piecesPerBox: 2,
@@ -39,9 +39,9 @@ export const productsHabitat60x120: Habitat60x120Product[] = [
     code: "YTA66W13",
     name: "Habitat Stone Gris",
     series: "Luxury Stone Slab Series",
-    format: "600x1200 mm",
-    thickness: "9 mm",
-    finish: "Satinado / Mate Natural",
+    format: "60x120 cm",
+    thickness: "0,9 cm",
+    finish: "Matt",
     faces: 6,
     sqmPerBox: 1.44,
     piecesPerBox: 2,
@@ -54,9 +54,9 @@ export const productsHabitat60x120: Habitat60x120Product[] = [
     code: "YMT66P09",
     name: "Habitat Marmolado Crema",
     series: "Luxury Stone Slab Series",
-    format: "600x1200 mm",
-    thickness: "9 mm",
-    finish: "Satinado / Mate Natural",
+    format: "60x120 cm",
+    thickness: "0,9 cm",
+    finish: "Matt",
     faces: 6,
     sqmPerBox: 1.44,
     piecesPerBox: 2,
@@ -69,9 +69,9 @@ export const productsHabitat60x120: Habitat60x120Product[] = [
     code: "YK6500M",
     name: "Habitat Calacatta Gold",
     series: "Luxury Stone Slab Series",
-    format: "600x1200 mm",
-    thickness: "9 mm",
-    finish: "Satinado / Mate Natural",
+    format: "60x120 cm",
+    thickness: "0,9 cm",
+    finish: "Matt",
     faces: 4,
     sqmPerBox: 1.44,
     piecesPerBox: 2,

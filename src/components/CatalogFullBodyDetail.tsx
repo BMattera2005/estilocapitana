@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
 import { productsFullBody, FullBodyProductItem } from '../data/productsFullBody';
+import { ZoomableImage } from '@/components/catalog/ZoomableImage';
 
 interface CatalogFullBodyDetailProps {
   onBack: () => void;
@@ -11,7 +12,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
   const [selectedFinish, setSelectedFinish] = useState<string>('Todos');
   const [search, setSearch] = useState<string>('');
 
-  const formats = ['Todos', '800x2400 mm', '800x3000 mm'];
+  const formats = ['Todos', '80x240 cm'];
   const finishes = ['Todos', 'Glossy', 'Matt'];
 
   const filteredProducts = productsFullBody.filter((item) => {
@@ -25,7 +26,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
 
   const handleWhatsAppQuote = (item: FullBodyProductItem) => {
     const phone = "5491161208162";
-    const message = `Hola Estilo Capitana, me interesa cotizar la placa Sintered Stone Full Body ${item.name} (${item.series}, Espesor: 15 mm). Quisiera consultar disponibilidad.`;
+    const message = `Hola Estilo Capitana, me interesa cotizar la placa Sintered Stone Full Body ${item.name} (${item.series}, Espesor: 1,5 cm). Quisiera consultar disponibilidad.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -37,7 +38,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
         className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
-        Volver a los Catálogos
+        Volver a las Colecciones
       </button>
 
       {/* Cabecera */}
@@ -53,11 +54,11 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Montserrat']">
-            Habitat — Full Body 15 mm
+            Habitat — Full Body 1,5 cm
           </h1>
 
           <p className="text-sm text-slate-500 mt-2 font-normal">
-            Superficies de Sintered Stone de masa homogénea (15 mm) para mesadas de cocina, islas y mobiliario técnico.
+            Superficies de Sintered Stone de masa homogénea (1,5 cm) para mesadas de cocina, islas y mobiliario técnico.
           </p>
         </div>
 
@@ -95,7 +96,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase text-slate-500">Terminación:</span>
+            <span className="text-xs font-bold uppercase text-slate-500">Textura:</span>
             {finishes.map((fn) => (
               <button
                 key={fn}
@@ -139,7 +140,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
           >
             <div>
               <div className="w-full h-64 bg-slate-100 relative overflow-hidden flex items-center justify-center">
-                <img
+                <ZoomableImage
                   src={p.image}
                   alt={p.name}
                   className="w-full h-full object-cover block"
@@ -149,7 +150,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
                 />
                 <div className="absolute top-3 right-3">
                   <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs">
-                    15 mm Masa Homogénea
+                    1,5 cm Masa Homogénea
                   </span>
                 </div>
               </div>

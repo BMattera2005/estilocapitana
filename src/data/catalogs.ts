@@ -36,7 +36,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     origin: "Novedad Importada",
     category: "Porcelanato",
     filterGroup: "Porcelanato",
-    title: "Habitat - Porcelanato Esmaltado",
+    title: "Habitat - Luxury Stone 120x120",
     description: "Línea completa de porcelanatos esmaltados en acabados Glossy, Carving y Velvet de alta rotación.",
     fileUrl: "/catalogos/coleccion_habitat_MA.pdf",
     isVisible: true,

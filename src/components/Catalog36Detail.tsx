@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
 import { products36x36, CeramicProduct36 } from '../data/products36';
+import { ZoomableImage } from '@/components/catalog/ZoomableImage';
 
 interface Catalog36DetailProps {
   onBack: () => void;
@@ -34,7 +35,7 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
         className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
-        Volver a los Catálogos
+        Volver a las Colecciones
       </button>
 
       {/* Cabecera */}
@@ -74,7 +75,7 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
       <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase text-slate-500">Terminación:</span>
+            <span className="text-xs font-bold uppercase text-slate-500">Textura:</span>
             {finishes.map((fn) => (
               <button
                 key={fn}
@@ -118,7 +119,7 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
           >
             <div>
               <div className="w-full h-56 bg-slate-100 relative overflow-hidden flex items-center justify-center">
-                <img
+                <ZoomableImage
                   src={p.image}
                   alt={p.name}
                   className="w-full h-full object-cover block"

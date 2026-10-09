@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
 import { productsHabitat60x120, Habitat60x120Product } from '../data/productsHabitat60x120';
+import { ZoomableImage } from '@/components/catalog/ZoomableImage';
 
 interface CatalogHabitat60x120DetailProps {
   onBack: () => void;
@@ -8,8 +9,12 @@ interface CatalogHabitat60x120DetailProps {
 
 export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProps> = ({ onBack }) => {
   const [search, setSearch] = useState<string>('');
+  const [selectedTexture, setSelectedTexture] = useState<string>('Todos');
+  const textures = ['Todos', 'Glossy', 'Matt'];
 
   const filteredProducts = productsHabitat60x120.filter((item) => {
+    if (item.isVisible === false) return false;
+    if (selectedTexture !== 'Todos' && item.finish !== selectedTexture) return false;
     return (
       item.name.toLowerCase().includes(search.toLowerCase()) ||
       item.code.toLowerCase().includes(search.toLowerCase()) ||
@@ -19,7 +24,7 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
 
   const handleWhatsAppQuote = (item: Habitat60x120Product) => {
     const phone = "5491161208162";
-    const message = `Hola Estilo Capitana, me interesa cotizar el porcelanato ${item.name} (${item.code}, Formato: 600x1200x9 mm). Quisiera consultar disponibilidad por pallet.`;
+    const message = `Hola Estilo Capitana, me interesa cotizar el porcelanato ${item.name} (${item.code}, Formato: 60x120x0,9 cm). Quisiera consultar disponibilidad por pallet.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -31,7 +36,7 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
         className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
-        Volver a los Catálogos
+        Volver a las Colecciones
       </button>
 
       {/* Cabecera */}
@@ -51,7 +56,7 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
           </h1>
 
           <p className="text-sm text-slate-500 mt-2 font-normal">
-            Colección Luxury Stone Slab Series · Formato 600×1200×9 mm (1.44 m² / 30 kg por caja) · Venta mayorista por pallet
+            Colección Luxury Stone Slab Series · Formato 60×120×0,9 cm (1.44 m² / 30 kg por caja) · Venta mayorista por pallet
           </p>
         </div>
 
@@ -67,8 +72,26 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
         </a>
       </div>
 
-      {/* BARRA DE BUSCADOR */}
-      <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-end">
+      {/* BARRA DE FILTROS Y BUSCADOR */}
+      <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs font-bold uppercase text-slate-500">Textura:</span>
+          {textures.map((fn) => (
+            <button
+              key={fn}
+              type="button"
+              onClick={() => setSelectedTexture(fn)}
+              aria-pressed={selectedTexture === fn}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                selectedTexture === fn
+                  ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm'
+                  : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
+              }`}
+            >
+              {fn}
+            </button>
+          ))}
+        </div>
         <div className="relative w-full md:w-80">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-700 font-bold pointer-events-none" />
           <input
@@ -94,7 +117,7 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
           >
             <div>
               <div className="w-full h-56 bg-slate-100 relative overflow-hidden flex items-center justify-center">
-                <img
+                <ZoomableImage
                   src={p.image}
                   alt={p.name}
                   className="w-full h-full object-cover block"
@@ -120,7 +143,7 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
                 <div className="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-2.5">
                   <div className="flex justify-between">
                     <span className="text-slate-400 font-medium">Formato:</span>
-                    <span className="font-semibold text-slate-800">600×1200 mm</span>
+                    <span className="font-semibold text-slate-800">60×120 cm</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400 font-medium">Caja:</span>

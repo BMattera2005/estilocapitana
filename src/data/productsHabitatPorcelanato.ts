@@ -1,6 +1,6 @@
 // src/data/productsHabitatPorcelanato.ts
 
-export type PorcelanatoFinish = "Glossy" | "Velvet" | "Rustic";
+export type PorcelanatoFinish = "Glossy" | "Velvet" | "Matt";
 
 export interface HabitatPorcelanatoItem {
   /** Si es false, el modelo se oculta de la web sin borrar su información. */
@@ -8,8 +8,8 @@ export interface HabitatPorcelanatoItem {
   id: string;
   name: string;
   series: string;
-  format: "600x1200 mm" | "1200x1200 mm";
-  thickness: "9 mm";
+  format: "120x120 cm";
+  thickness: "0,9 cm";
   finishes: PorcelanatoFinish[]; // Soporta múltiples terminaciones
   finishText: string;            // Para mostrar en la tarjeta ("Glossy / Velvet")
   faces: string;
@@ -24,71 +24,15 @@ export interface HabitatPorcelanatoItem {
 }
 
 export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
-  // --- 600x1200 mm ---
-  {
-    id: "hab-porc-carrara-snow",
-    name: "Carrara Snow",
-    series: "Alaska Brilliance",
-    format: "600x1200 mm",
-    thickness: "9 mm",
-    finishes: ["Glossy"],
-    finishText: "Glossy",
-    faces: "Random 5 caras",
-    sqmPerBox: 1.44,
-    piecesPerBox: 2,
-    weightBoxKg: 30,
-    boxesPerPallet: 60,
-    sqmPerPallet: 86.40,
-    weightPalletKg: 1800,
-    description: "Placa porcelánica pulida brillante de alta gama con veta continua.",
-    image: "/products/habitatIndia/carrara_snow.jpg",
-  },
-  {
-    id: "hab-porc-olister-bianco",
-    name: "Olister Bianco",
-    series: "GVT Polished Collection",
-    format: "600x1200 mm",
-    thickness: "9 mm",
-    finishes: ["Glossy"],
-    finishText: "Glossy",
-    faces: "Random 4 caras",
-    sqmPerBox: 1.44,
-    piecesPerBox: 2,
-    weightBoxKg: 30,
-    boxesPerPallet: 60,
-    sqmPerPallet: 86.40,
-    weightPalletKg: 1800,
-    description: "Porcelanato esmaltado pulido de base blanca y vetas continuas sutiles.",
-    image: "/products/habitatIndia/olister_bianco.jpg",
-  },
-  {
-    id: "hab-porc-argenta-grey",
-    name: "Argenta Grey",
-    series: "Natural Stone Series",
-    format: "600x1200 mm",
-    thickness: "9 mm",
-    finishes: ["Glossy", "Velvet"], // Ahora incluye ambos acabados
-    finishText: "Glossy / Velvet",
-    faces: "Random 4 caras",
-    sqmPerBox: 1.44,
-    piecesPerBox: 2,
-    weightBoxKg: 30,
-    boxesPerPallet: 60,
-    sqmPerPallet: 86.40,
-    weightPalletKg: 1800,
-    description: "Revestimiento símil piedra natural disponible en acabado Glossy o acabado Velvet sedoso.",
-    image: "/products/habitatIndia/argenta_grey.jpg",
-  },
-
-  // --- 1200x1200 mm ---
+  // --- 120x120 cm ---
   {
     id: "hab-porc-sand-light",
     name: "Sand Light",
-    series: "Large Format Rustic",
-    format: "1200x1200 mm",
-    thickness: "9 mm",
-    finishes: ["Rustic"],
-    finishText: "Rustic",
+    series: "Large Format Matt",
+    format: "120x120 cm",
+    thickness: "0,9 cm",
+    finishes: ["Matt"],
+    finishText: "Matt",
     faces: "Random 4 caras",
     sqmPerBox: 2.88,
     piecesPerBox: 2,
@@ -103,10 +47,10 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
     id: "hab-porc-unico-beige",
     name: "Unico Beige",
     series: "Unico Mineral Series",
-    format: "1200x1200 mm",
-    thickness: "9 mm",
-    finishes: ["Rustic"],
-    finishText: "Rustic",
+    format: "120x120 cm",
+    thickness: "0,9 cm",
+    finishes: ["Matt"],
+    finishText: "Matt",
     faces: "Random 3 caras",
     sqmPerBox: 2.88,
     piecesPerBox: 2,
@@ -121,10 +65,10 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
     id: "hab-porc-unico-grey",
     name: "Unico Grey",
     series: "Unico Mineral Series",
-    format: "1200x1200 mm",
-    thickness: "9 mm",
-    finishes: ["Rustic"],
-    finishText: "Rustic",
+    format: "120x120 cm",
+    thickness: "0,9 cm",
+    finishes: ["Matt"],
+    finishText: "Matt",
     faces: "Random 3 caras",
     sqmPerBox: 2.88,
     piecesPerBox: 2,
