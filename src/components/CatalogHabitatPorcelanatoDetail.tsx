@@ -175,7 +175,6 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<Props> = ({ onBack }) => 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                   />
-                  {/* Badge unificado con la textura real (se elimina el cuadrado azul) */}
                   <div className="absolute top-3 left-3">
                     <span className="px-2.5 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider">
                       {textureLabel}
