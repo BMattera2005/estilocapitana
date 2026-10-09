@@ -222,8 +222,8 @@ function CatalogoPage() {
               variant="ghost"
               className={
                 activeFilter === "todas"
-                  ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
-                  : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"
+                  ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent cursor-pointer"
+                  : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground cursor-pointer"
               }
               aria-pressed={activeFilter === "todas"}
               onClick={() => {
@@ -243,8 +243,8 @@ function CatalogoPage() {
                   variant="ghost"
                   className={
                     isActive
-                      ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
-                      : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"
+                      ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent cursor-pointer"
+                      : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground cursor-pointer"
                   }
                   aria-pressed={isActive}
                   onClick={() => {
