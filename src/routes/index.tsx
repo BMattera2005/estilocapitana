@@ -77,7 +77,7 @@ const visibleCatalogCount = officialCatalogs.filter(
   (catalog) => catalog.isVisible !== false,
 ).length;
 
-// Mosaico superior de las 6 piezas reales de los catálogos con link directo a sus productos
+// Mosaico superior: cada tarjeta abre directamente todos los productos de ese catálogo específico
 const heroMosaicItems = [
   {
     title: "Sintered Stone Full Body 15 mm",
@@ -123,7 +123,7 @@ const heroMosaicItems = [
   },
 ] as const;
 
-// 5 Colecciones de producto para la grilla inferior
+// 5 Colecciones para la grilla inferior
 const productFamilies = [
   {
     filter: "sintered-stone",
@@ -224,7 +224,7 @@ function Index() {
             </dl>
           </div>
 
-          {/* MOSAICO DE LAS 6 IMÁGENES CON LINK DIRECTO AL CATÁLOGO ESPECÍFICO */}
+          {/* MOSAICO DE LAS 6 IMÁGENES CON RUTA DIRECTA AL CATÁLOGO SELECCIONADO */}
           <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
               {heroMosaicItems.map((item, idx) => (
