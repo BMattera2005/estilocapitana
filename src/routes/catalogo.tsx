@@ -1,4 +1,3 @@
-// src/routes/catalogo.tsx
 import { createFileRoute } from "@tanstack/react-router";
 import { Award, FileText, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -18,7 +17,6 @@ import { officialCatalogs, type OfficialCatalog } from "@/data/catalogs";
 import { buildWhatsAppUrl } from "@/lib/quote-message";
 import { normalizeText } from "@/lib/text";
 
-/** Convierte una línea en slug de URL: "Línea Porcelanatos" -> "linea-porcelanatos". */
 function slugifyLinea(value: string) {
   return normalizeText(value).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
@@ -48,11 +46,7 @@ function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
 export const Route = createFileRoute("/catalogo")({
   validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter; catalogo?: string } => {
     const linea = typeof search["linea"] === "string" ? (search["linea"] as CatalogFilter) : undefined;
-    const rawCatalogo = typeof search["catalogo"] === "string" ? search["catalogo"] : undefined;
-    const catalogo =
-      rawCatalogo && officialCatalogs.some((catalog) => catalog.id === rawCatalogo && catalog.isVisible !== false)
-        ? rawCatalogo
-        : undefined;
+    const catalogo = typeof search["catalogo"] === "string" ? search["catalogo"] : undefined;
     return {
       ...(linea && FILTER_IDS.includes(linea) ? { linea } : {}),
       ...(catalogo ? { catalogo } : {}),
@@ -60,7 +54,7 @@ export const Route = createFileRoute("/catalogo")({
   },
   head: () =>
     routeMeta({
-      title: "Catálogos de materiales — Estilo Capitana",
+      title: "Colecciones y catálogos — Estilo Capitana",
       description: "Consultá las líneas de Sintered Stone, Porcelanato, Pisos Cerámicos, Viguetas Pretensadas y Telgopor de Construcción representadas por Estilo Capitana.",
       path: "/catalogo",
     }),
@@ -76,7 +70,7 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
   const primaryActionClass =
     "inline-flex min-h-11 w-full items-center justify-center rounded-md bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:brightness-105 motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer";
 
-  // Incluye TODOS los 8 catálogos oficiales para habilitar la vista interactiva en pantalla
+  // Incluye los 8 catálogos oficiales del sitio
   const isInteractive = [
     "cat-habitat-full-body",
     "cat-habitat-laminas",
@@ -149,13 +143,12 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
 function CatalogoPage() {
   const { linea, catalogo } = Route.useSearch();
   const [activeFilter, setActiveFilter] = useState<CatalogFilter>(linea ?? "todas");
-  const [selectedCatalogId, setSelectedCatalogId] = useState<string | null>(null);
+  const [selectedCatalogId, setSelectedCatalogId] = useState<string | null>(catalogo ?? null);
 
   useEffect(() => {
     if (linea) setActiveFilter(linea);
   }, [linea]);
 
-  // Apertura directa de la vista extendida vía ?catalogo=ID_CATALOGO
   useEffect(() => {
     if (catalogo) setSelectedCatalogId(catalogo);
   }, [catalogo]);
@@ -168,7 +161,6 @@ function CatalogoPage() {
     [activeFilter],
   );
 
-  // Mapeo completo de las 8 vistas de detalle
   if (selectedCatalogId === "cat-ferrazzano-43") {
     return <Catalog43Detail onBack={() => setSelectedCatalogId(null)} />;
   }
@@ -207,7 +199,7 @@ function CatalogoPage() {
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-normal uppercase text-primary">Representación comercial B2B</p>
           <h1 className="mt-3 max-w-4xl text-4xl font-bold leading-tight text-foreground sm:text-5xl">
-            Líneas y catálogos de materiales
+            Colecciones y catálogos
           </h1>
           <p className="mt-5 max-w-3xl text-lg font-normal leading-8 text-muted-foreground">
             Explorá cada línea de productos, consultá su documentación y contactanos para disponibilidad y cotización comercial
@@ -231,7 +223,7 @@ function CatalogoPage() {
               aria-pressed={activeFilter === "todas"}
               onClick={() => setActiveFilter("todas")}
             >
-              Todas las Líneas
+              Todas las Colecciones
             </Button>
             {lineFilters.map((filter) => {
               const isActive = activeFilter === filter.id;
@@ -256,7 +248,7 @@ function CatalogoPage() {
           </div>
 
           <p className="mt-6 text-xs font-normal text-muted-foreground" aria-live="polite">
-            {visibleCatalogs.length} {visibleCatalogs.length === 1 ? "catálogo disponible" : "catálogos disponibles"}
+            {visibleCatalogs.length} {visibleCatalogs.length === 1 ? "colección disponible" : "colecciones disponibles"}
           </p>
 
           <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
