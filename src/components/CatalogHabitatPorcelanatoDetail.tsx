@@ -17,7 +17,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
 
   const filteredProducts = productsHabitatPorcelanato.filter((item) => {
     const matchesFormat = selectedFormat === 'Todos' || item.format === selectedFormat;
-    const itemFinishes = item.finishes || (item.finish ? [item.finish] : []);
+    const itemFinishes = item.finishes;
     const matchesFinish = selectedFinish === 'Todos' || itemFinishes.includes(selectedFinish as any);
     const matchesSearch =
       item.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -27,7 +27,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
 
   const handleWhatsAppQuote = (item: HabitatPorcelanatoItem) => {
     const phone = "5491161208162";
-    const finishLabel = item.finishText || (item.finishes ? item.finishes.join(' / ') : item.finish || '');
+    const finishLabel = item.finishText;
     const message = `Hola Estilo Capitana, me interesa cotizar el porcelanato ${item.name} (Formato: ${item.format}, Acabado: ${finishLabel}). Quisiera consultar disponibilidad por pallet.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
@@ -136,7 +136,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
       {/* Grilla de Modelos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((p) => {
-          const badgeText = p.finishText || (p.finishes ? p.finishes.join(' / ') : p.finish);
+          const badgeText = p.finishText;
 
           return (
             <div

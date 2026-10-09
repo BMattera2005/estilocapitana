@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
-import { products36x36, Ceramic36Product } from '../data/products36';
+import { products36x36, CeramicProduct36 } from '../data/products36';
 
 interface Catalog36DetailProps {
   onBack: () => void;
@@ -148,7 +148,7 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400 font-medium">Caja:</span>
-                    <span className="font-semibold text-slate-800">{p.sqmPerBox} m² ({p.piecesPerBox} pzs)</span>
+                    <span className="font-semibold text-slate-800">{p.packaging.sqmPerBox} m² ({p.packaging.piecesPerBox} pzs)</span>
                   </div>
                 </div>
               </div>

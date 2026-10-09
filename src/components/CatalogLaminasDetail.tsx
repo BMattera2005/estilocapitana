@@ -13,7 +13,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
   const finishes = ['Todos', 'Glossy', 'Digital glaze'];
 
   const filteredProducts = productsLaminas.filter((item) => {
-    const matchesFinish = selectedFinish === 'Todos' || item.craft.toLowerCase().includes(selectedFinish.toLowerCase());
+    const matchesFinish = selectedFinish === 'Todos' || item.finish.toLowerCase().includes(selectedFinish.toLowerCase());
     const matchesSearch =
       item.name.toLowerCase().includes(search.toLowerCase()) ||
       item.code.toLowerCase().includes(search.toLowerCase());
@@ -128,7 +128,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
                 />
                 <div className="absolute top-3 right-3">
                   <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs">
-                    {p.craft}
+                    {p.finish}
                   </span>
                 </div>
               </div>
