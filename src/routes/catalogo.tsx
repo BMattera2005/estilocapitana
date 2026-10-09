@@ -147,13 +147,18 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
 }
 
 function CatalogoPage() {
-  const { linea } = Route.useSearch();
+  const { linea, catalogo } = Route.useSearch();
   const [activeFilter, setActiveFilter] = useState<CatalogFilter>(linea ?? "todas");
   const [selectedCatalogId, setSelectedCatalogId] = useState<string | null>(null);
 
   useEffect(() => {
     if (linea) setActiveFilter(linea);
   }, [linea]);
+
+  // Apertura directa de la vista extendida vía ?catalogo=ID_CATALOGO
+  useEffect(() => {
+    if (catalogo) setSelectedCatalogId(catalogo);
+  }, [catalogo]);
 
   const visibleCatalogs = useMemo(
     () =>
