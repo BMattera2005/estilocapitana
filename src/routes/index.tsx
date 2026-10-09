@@ -267,24 +267,21 @@ function Index() {
                 aria-label={`Ver la colección ${family.title}`}
                 className="group flex flex-col rounded-xl border border-border bg-card overflow-hidden shadow-sm transition-all duration-200 hover:border-slate-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <div className="w-full h-36 bg-slate-100 overflow-hidden relative">
-                  <img
-                    src={family.image}
-                    alt={family.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    onError={(e) => {
-                      const img = e.currentTarget;
-                      const fallback = img.nextElementSibling as HTMLElement | null;
-                      img.style.display = "none";
-                      if (fallback) fallback.classList.remove("hidden");
-                    }}
-                  />
-                  <div
-                    aria-hidden="true"
-                    className="hidden absolute inset-0 items-center justify-center bg-gradient-to-br from-[#0e2a33] to-[#14532d] text-white"
-                  >
-                    <Blocks className="size-10 opacity-80" />
-                  </div>
+                <div className="w-full h-36 overflow-hidden relative">
+                  {"image" in family && family.image ? (
+                    <img
+                      src={family.image}
+                      alt={family.title}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div
+                      aria-hidden="true"
+                      className="flex h-full items-center justify-center bg-gradient-to-br from-[#0e2a33] to-[#14532d] text-white"
+                    >
+                      <Blocks className="size-10 opacity-80" />
+                    </div>
+                  )}
                 </div>
                 <div className="p-5 flex flex-col flex-1 justify-between">
                   <div>
