@@ -77,58 +77,46 @@ const visibleCatalogCount = officialCatalogs.filter(
   (catalog) => catalog.isVisible !== false,
 ).length;
 
-// Mosaico superior de las 6 piezas reales de colecciones con su link al catálogo
+// Mosaico superior de las 6 piezas reales de los catálogos con link directo a sus productos
 const heroMosaicItems = [
   {
     title: "Sintered Stone Full Body 15 mm",
-    category: "Sintered Stone",
     catalogId: "cat-habitat-full-body",
-    lineaFilter: "sintered-stone",
     image: "/products/fullbody/black_salt_pepper.jpg",
     badge: "Full Body 15 mm",
     spanClass: "col-span-2 sm:col-span-1",
   },
   {
     title: "Sintered Stone Láminas 120×270",
-    category: "Sintered Stone",
     catalogId: "cat-habitat-laminas",
-    lineaFilter: "sintered-stone",
-    image: "/products/laminas/pandora_black.jpg",
+    image: "/products/sinteredstone/pandora_black.jpg",
     badge: "Láminas 120×270 cm",
     spanClass: "col-span-2 sm:col-span-1",
   },
   {
     title: "Porcelanato Habitat 60×120 cm",
-    category: "Porcelanatos",
     catalogId: "cat-habitat-60x120",
-    lineaFilter: "porcelanato",
     image: "/products/habitat60x120/yta66w12.jpg",
     badge: "Porcelanato 60×120 cm",
     spanClass: "col-span-1",
   },
   {
     title: "Porcelanato Habitat 120×120 cm",
-    category: "Porcelanatos",
     catalogId: "cat-habitat-porcelanato",
-    lineaFilter: "porcelanato",
     image: "/products/habitatIndia/sand_light.jpg",
     badge: "Porcelanato 120×120 cm",
     spanClass: "col-span-1",
   },
   {
     title: "Pisos Cerámicos Ferrazzano 43×43 cm",
-    category: "Pisos Cerámicos",
     catalogId: "cat-ferrazzano-43",
-    lineaFilter: "pisos-ceramicos",
     image: "/products/43x43/calacatta_blanco.jpg",
     badge: "Ferrazzano 43×43 cm",
     spanClass: "col-span-1",
   },
   {
     title: "Pisos Cerámicos Ferrazzano 36×36 cm",
-    category: "Pisos Cerámicos",
     catalogId: "cat-ferrazzano-36",
-    lineaFilter: "pisos-ceramicos",
     image: "/products/36x36/burano_gris.jpg",
     badge: "Ferrazzano 36×36 cm",
     spanClass: "col-span-1",
@@ -159,13 +147,13 @@ const productFamilies = [
     filter: "viguetas-pretensadas",
     title: "Viguetas Pretensadas",
     detail: "Vigueta Perfecta Salteña para cubiertas y entrepisos de alta resistencia.",
-    image: "/products/sinteredstone/emerald_green.jpg",
+    image: "/products/viguetas/viguetas_obra.jpg",
   },
   {
     filter: "telgopor-de-construccion",
     title: "Telgopor de Construcción",
     detail: "EPS Famapol Salteña: bovedillas y paneles para techos alivianados.",
-    image: "/products/habitat60x120/yta66w13.jpg",
+    image: "/products/eps/eps_paneles.jpg",
   },
 ] as const;
 
@@ -236,14 +224,14 @@ function Index() {
             </dl>
           </div>
 
-          {/* MOSAICO DE LAS 6 IMÁGENES CON LINK DIRECTO AL CATÁLOGO */}
+          {/* MOSAICO DE LAS 6 IMÁGENES CON LINK DIRECTO AL CATÁLOGO ESPECÍFICO */}
           <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
               {heroMosaicItems.map((item, idx) => (
                 <Link
                   key={idx}
                   to="/catalogo"
-                  search={{ linea: item.lineaFilter }}
+                  search={{ catalogo: item.catalogId }}
                   className={`group relative overflow-hidden rounded-xl border border-border bg-slate-100 shadow-sm transition-all duration-200 hover:border-cyan-500 hover:shadow-md ${item.spanClass}`}
                 >
                   <img
