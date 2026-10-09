@@ -77,7 +77,65 @@ const visibleCatalogCount = officialCatalogs.filter(
   (catalog) => catalog.isVisible !== false,
 ).length;
 
-// Colecciones con fotos ÚNICAS que NO se repiten con las del Hero arriba
+// Mosaico superior de las 6 piezas reales de colecciones con su link al catálogo
+const heroMosaicItems = [
+  {
+    title: "Sintered Stone Full Body 15 mm",
+    category: "Sintered Stone",
+    catalogId: "cat-habitat-full-body",
+    lineaFilter: "sintered-stone",
+    image: "/products/fullbody/black_salt_pepper.jpg",
+    badge: "Full Body 15 mm",
+    spanClass: "col-span-2 sm:col-span-1",
+  },
+  {
+    title: "Sintered Stone Láminas 120×270",
+    category: "Sintered Stone",
+    catalogId: "cat-habitat-laminas",
+    lineaFilter: "sintered-stone",
+    image: "/products/laminas/yate_white_jade.jpg",
+    badge: "Láminas 120×270 cm",
+    spanClass: "col-span-2 sm:col-span-1",
+  },
+  {
+    title: "Porcelanato Habitat 60×120 cm",
+    category: "Porcelanatos",
+    catalogId: "cat-habitat-60x120",
+    lineaFilter: "porcelanato",
+    image: "/products/habitat60x120/yta66w12.jpg",
+    badge: "Porcelanato 60×120 cm",
+    spanClass: "col-span-1",
+  },
+  {
+    title: "Porcelanato Habitat 120×120 cm",
+    category: "Porcelanatos",
+    catalogId: "cat-habitat-porcelanato",
+    lineaFilter: "porcelanato",
+    image: "/products/habitatIndia/sand_light.jpg",
+    badge: "Porcelanato 120×120 cm",
+    spanClass: "col-span-1",
+  },
+  {
+    title: "Pisos Cerámicos Ferrazzano 43×43 cm",
+    category: "Pisos Cerámicos",
+    catalogId: "cat-ferrazzano-43",
+    lineaFilter: "pisos-ceramicos",
+    image: "/products/43x43/calacatta_blanco.jpg",
+    badge: "Ferrazzano 43×43 cm",
+    spanClass: "col-span-1",
+  },
+  {
+    title: "Pisos Cerámicos Ferrazzano 36×36 cm",
+    category: "Pisos Cerámicos",
+    catalogId: "cat-ferrazzano-36",
+    lineaFilter: "pisos-ceramicos",
+    image: "/products/36x36/burano_gris.jpg",
+    badge: "Ferrazzano 36×36 cm",
+    spanClass: "col-span-1",
+  },
+] as const;
+
+// 5 Colecciones de producto para la grilla inferior
 const productFamilies = [
   {
     filter: "sintered-stone",
@@ -95,34 +153,20 @@ const productFamilies = [
     filter: "pisos-ceramicos",
     title: "Pisos Cerámicos",
     detail: "Línea Ferrazzano Salteña en formatos 36×36 cm y 43×43 cm de alta rotación.",
-    image: "/products/43x43/calacatta_blanco.jpg",
+    image: "/products/43x43/cachi_gris.jpg",
   },
   {
     filter: "viguetas-pretensadas",
     title: "Viguetas Pretensadas",
     detail: "Vigueta Perfecta Salteña para cubiertas y entrepisos de alta resistencia.",
-    image: "/products/viguetas/viguetas_obra.jpg",
+    image: "/products/sinteredstone/emerald_green.jpg",
   },
   {
     filter: "telgopor-de-construccion",
     title: "Telgopor de Construcción",
     detail: "EPS Famapol Salteña: bovedillas y paneles para techos alivianados.",
-    image: "/products/eps/eps_paneles.jpg",
+    image: "/products/habitat60x120/yta66w13.jpg",
   },
-] as const;
-
-// Fotos exclusivas del Hero Mosaico (distintas a las de productFamilies)
-const heroImages = {
-  wideTop: "/products/fullbody/black_salt_pepper.jpg",
-  tallA: "/products/habitat60x120/yta66w12.jpg",
-  tallB: "/products/habitatIndia/sand_light.jpg",
-} as const;
-
-const heroBadges = [
-  { label: "Full Body 15 mm", position: "left-5 top-5 sm:left-7 sm:top-7" },
-  { label: "Láminas 120×270 cm", position: "right-5 top-5 sm:right-7 sm:top-7" },
-  { label: "Gran Formato 120×120 cm", position: "bottom-6 right-5 sm:bottom-8 sm:right-7" },
-  { label: "Porcelanato 60×120 cm", position: "bottom-6 left-5 sm:bottom-8 sm:left-7" },
 ] as const;
 
 export const Route = createFileRoute("/")({
@@ -192,35 +236,28 @@ function Index() {
             </dl>
           </div>
 
+          {/* MOSAICO DE LAS 6 IMÁGENES CON LINK DIRECTO AL CATÁLOGO */}
           <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
-            <div className="grid grid-cols-2 gap-4">
-              <img
-                src={heroImages.wideTop}
-                alt="Mesada Sintered Stone Full Body"
-                className="col-span-2 h-52 w-full rounded-xl border border-border object-cover shadow-industrial sm:h-64"
-                loading="eager"
-              />
-              <img
-                src={heroImages.tallA}
-                alt="Porcelanato 60x120 cm"
-                className="h-44 w-full rounded-xl border border-border object-cover shadow-industrial sm:h-52"
-                loading="eager"
-              />
-              <img
-                src={heroImages.tallB}
-                alt="Porcelanato Gran Formato 120x120 cm"
-                className="h-44 w-full rounded-xl border border-border object-cover shadow-industrial sm:h-52"
-                loading="eager"
-              />
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              {heroMosaicItems.map((item, idx) => (
+                <Link
+                  key={idx}
+                  to="/catalogo"
+                  search={{ linea: item.lineaFilter }}
+                  className={`group relative overflow-hidden rounded-xl border border-border bg-slate-100 shadow-sm transition-all duration-200 hover:border-cyan-500 hover:shadow-md ${item.spanClass}`}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="h-32 sm:h-36 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="eager"
+                  />
+                  <span className="pointer-events-none absolute bottom-2 left-2 rounded-md border border-border bg-surface-glass px-2.5 py-1 text-[11px] font-bold text-foreground shadow-glass backdrop-blur-md sm:bottom-3 sm:left-3">
+                    {item.badge}
+                  </span>
+                </Link>
+              ))}
             </div>
-            {heroBadges.map((badge) => (
-              <span
-                key={badge.label}
-                className={`pointer-events-none absolute ${badge.position} rounded-lg border border-border bg-surface-glass px-3.5 py-2 text-xs font-bold text-foreground shadow-glass backdrop-blur-md`}
-              >
-                {badge.label}
-              </span>
-            ))}
           </div>
         </div>
       </section>
