@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, MessageCircle, ShieldCheck, UserCheck, PackageCheck, Layers } from "lucide-react";
+import { ArrowRight, Blocks, MessageCircle, ShieldCheck, UserCheck, PackageCheck, Layers } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
@@ -147,13 +147,11 @@ const productFamilies = [
     filter: "viguetas-pretensadas",
     title: "Viguetas Pretensadas",
     detail: "Vigueta Perfecta Salteña para cubiertas y entrepisos de alta resistencia.",
-    image: "/products/viguetas/viguetas_obra.jpg",
   },
   {
     filter: "telgopor-de-construccion",
     title: "Telgopor de Construcción",
     detail: "EPS Famapol Salteña: bovedillas y paneles para techos alivianados.",
-    image: "/products/eps/eps_paneles.jpg",
   },
 ] as const;
 
@@ -269,12 +267,21 @@ function Index() {
                 aria-label={`Ver la colección ${family.title}`}
                 className="group flex flex-col rounded-xl border border-border bg-card overflow-hidden shadow-sm transition-all duration-200 hover:border-slate-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <div className="w-full h-36 bg-slate-100 overflow-hidden relative">
-                  <img
-                    src={family.image}
-                    alt={family.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
+                <div className="w-full h-36 overflow-hidden relative">
+                  {"image" in family && family.image ? (
+                    <img
+                      src={family.image}
+                      alt={family.title}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div
+                      aria-hidden="true"
+                      className="flex h-full items-center justify-center bg-gradient-to-br from-[#0e2a33] to-[#14532d] text-white"
+                    >
+                      <Blocks className="size-10 opacity-80" />
+                    </div>
+                  )}
                 </div>
                 <div className="p-5 flex flex-col flex-1 justify-between">
                   <div>

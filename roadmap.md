@@ -24,3 +24,7 @@
 - [x] Actualizar las cinco familias de productos con sus accesos filtrados al catálogo.
 - [x] Reparar errores de tipado heredados de los cambios externos de GitHub en las vistas de detalle.
 - [x] Reparar la estructura JSX de Inicio e integrar la sección de valor agregado B2B.
+- [x] Enlazar las 6 imágenes del mosaico del Hero directo a su colección vía ?catalogo=ID.
+- [x] Abrir la vista extendida de productos desde /catalogo?catalogo=ID.
+- [x] Renombrar la solapa "Catálogos" a "Colecciones" en el menú.
+- [x] Corregir tipado heredado (CeramicProduct36, finishText/finishes, finish) y repuestos de imagen de Viguetas y Telgopor.

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
-import { products36x36, Ceramic36Product } from '../data/products36';
+import { products36x36, CeramicProduct36 } from '../data/products36';
 
 interface Catalog36DetailProps {
   onBack: () => void;
@@ -20,7 +20,7 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
     return matchesFinish && matchesSearch;
   });
 
-  const handleWhatsAppQuote = (item: Ceramic36Product) => {
+  const handleWhatsAppQuote = (item: CeramicProduct36) => {
     const phone = "5491161208162";
     const message = `Hola Estilo Capitana, me interesa cotizar el piso cerámico Ferrazzano ${item.name} (Formato: 36x36 cm, Acabado: ${item.finish}). Quisiera consultar disponibilidad por pallet.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
@@ -148,7 +148,7 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400 font-medium">Caja:</span>
-                    <span className="font-semibold text-slate-800">{p.sqmPerBox} m² ({p.piecesPerBox} pzs)</span>
+                    <span className="font-semibold text-slate-800">{p.packaging.sqmPerBox} m² ({p.packaging.piecesPerBox} pzs)</span>
                   </div>
                 </div>
               </div>
