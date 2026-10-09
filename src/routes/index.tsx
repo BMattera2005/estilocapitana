@@ -1,318 +1,268 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, MessageCircle, ShieldCheck, UserCheck, PackageCheck, Layers } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Award, FileText, MessageCircle } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+
+import { CatalogEpsDetail } from "../components/CatalogEpsDetail";
+import { CatalogViguetasDetail } from "../components/CatalogViguetasDetail";
+import { Catalog43Detail } from "../components/Catalog43Detail";
+import { Catalog36Detail } from "../components/Catalog36Detail";
+import { CatalogFullBodyDetail } from "../components/CatalogFullBodyDetail";
+import { CatalogLaminasDetail } from "../components/CatalogLaminasDetail";
+import { CatalogHabitat60x120Detail } from "../components/CatalogHabitat60x120Detail";
+import { CatalogHabitatPorcelanatoDetail } from "../components/CatalogHabitatPorcelanatoDetail";
 
 import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
-import { officialCatalogs } from "@/data/catalogs";
-import { buildAdvisorWhatsAppUrl } from "@/lib/contact-links";
+import { officialCatalogs, type OfficialCatalog } from "@/data/catalogs";
+import { buildWhatsAppUrl } from "@/lib/quote-message";
+import { normalizeText } from "@/lib/text";
 
-function WhyUsSection() {
-  const benefits = [
-    {
-      icon: ShieldCheck,
-      title: "Representación comercial",
-      description: "Trabajamos con fabricantes y líneas seleccionadas para ofrecer soluciones competitivas."
-    },
-    {
-      icon: UserCheck,
-      title: "Atención personalizada",
-      description: "Asesoramiento comercial directo para distribuidores, arquitectos y profesionales."
-    },
-    {
-      icon: PackageCheck,
-      title: "Stock y disponibilidad",
-      description: "Consultá disponibilidad, formatos y condiciones comerciales directamente con nuestro equipo."
-    },
-    {
-      icon: Layers,
-      title: "Soluciones para cada proyecto",
-      description: "Desde superficies premium hasta soluciones estructurales y de aislación."
-    }
-  ];
+function slugifyLinea(value: string) {
+  return normalizeText(value).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
+const lineFilters = Array.from(
+  new Set(
+    officialCatalogs
+      .filter((catalog) => catalog.isVisible !== false)
+      .map((catalog) => catalog.filterGroup)
+      .filter(Boolean),
+  ),
+).map((group) => ({ id: slugifyLinea(group as string), label: group as string }));
+
+type CatalogFilter = "todas" | (string & {});
+
+const FILTER_IDS = lineFilters.map((filter) => filter.id);
+
+function catalogHref(catalog: OfficialCatalog) {
+  return catalog.fileUrl;
+}
+
+function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
+  if (filter === "todas") return true;
+  return slugifyLinea(catalog.filterGroup ?? "") === filter;
+}
+
+export const Route = createFileRoute("/catalogo")({
+  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter; catalogo?: string } => {
+    const linea = typeof search["linea"] === "string" ? (search["linea"] as CatalogFilter) : undefined;
+    const catalogo = typeof search["catalogo"] === "string" ? search["catalogo"] : undefined;
+    return {
+      ...(linea && FILTER_IDS.includes(linea) ? { linea } : {}),
+      ...(catalogo ? { catalogo } : {}),
+    };
+  },
+  head: () =>
+    routeMeta({
+      title: "Colecciones y catálogos — Estilo Capitana",
+      description: "Consultá las líneas de Sintered Stone, Porcelanato, Pisos Cerámicos, Viguetas Pretensadas y Telgopor de Construcción representadas por Estilo Capitana.",
+      path: "/catalogo",
+    }),
+  component: CatalogoPage,
+});
+
+function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect?: () => void }) {
+  const href = catalogHref(catalog);
+  const whatsappUrl = buildWhatsAppUrl(
+    `Hola Estilo Capitana, quisiera consultar stock y cotización de la línea ${catalog.title}.`,
+  );
+
+  const primaryActionClass =
+    "inline-flex min-h-11 w-full items-center justify-center rounded-md bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:brightness-105 motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer";
+
+  const isInteractive = [
+    "cat-habitat-full-body",
+    "cat-habitat-laminas",
+    "cat-habitat-porcelanato",
+    "cat-habitat-60x120",
+    "cat-ferrazzano-36",
+    "cat-ferrazzano-43",
+    "cat-viguetas",
+    "cat-eps",
+  ].includes(catalog.id);
 
   return (
-    <section className="py-16 bg-slate-50 border-y border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="text-xs font-bold uppercase tracking-wider text-teal-600 block mb-2">
-            VALOR AGREGADO B2B
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-['Montserrat'] tracking-tight">
-            ¿Por qué trabajar con Estilo Capitana?
-          </h2>
-          <p className="text-sm text-slate-600 mt-3 leading-relaxed">
-            Articulamos soluciones logísticas e insumos de arquitectura conectando directo con fábrica para que adquieras con previsibilidad.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {benefits.map((item, index) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={index}
-                className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="w-10 h-10 rounded-lg bg-teal-50 border border-teal-100 flex items-center justify-center text-teal-600 mb-4">
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-base font-bold text-slate-900 font-['Montserrat'] mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+    <article className="flex min-h-[27rem] flex-col rounded-lg border border-border bg-card p-6 shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial">
+      <div className="flex items-start justify-between gap-4">
+        <span className="rounded-full bg-accent px-3 py-1 text-xs font-normal text-accent-foreground">
+          {catalog.origin}
+        </span>
+        <span className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-surface text-primary">
+          <FileText aria-hidden="true" className="size-5" />
+        </span>
       </div>
-    </section>
+
+      <p className="mt-7 text-xs font-normal uppercase text-primary">{catalog.category}</p>
+      <h2 className="mt-3 text-xl font-semibold leading-snug text-foreground">{catalog.title}</h2>
+      <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
+
+      <div className="mt-auto grid gap-2 pt-7">
+        {isInteractive ? (
+          <button
+            type="button"
+            onClick={onSelect}
+            className={primaryActionClass}
+          >
+            Ver modelos en pantalla
+          </button>
+        ) : (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={primaryActionClass}
+          >
+            Ver / descargar catálogo
+          </a>
+        )}
+
+        {catalog.certificateUrl ? (
+          <a
+            href={catalog.certificateUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-border-strong bg-background px-4 py-2 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <Award aria-hidden="true" className="size-4" />
+            Ver Certificado Adjunto
+          </a>
+        ) : null}
+
+        <Button asChild variant="industrialOutline">
+          <a href={whatsappUrl ?? `https://wa.me/5491161208162`} target="_blank" rel="noopener noreferrer">
+            <MessageCircle aria-hidden="true" />
+            Consultar Stock
+          </a>
+        </Button>
+      </div>
+    </article>
   );
 }
 
-const visibleCatalogCount = officialCatalogs.filter(
-  (catalog) => catalog.isVisible !== false,
-).length;
+function CatalogoPage() {
+  const { linea, catalogo } = Route.useSearch();
+  const [activeFilter, setActiveFilter] = useState<CatalogFilter>(linea ?? "todas");
+  const [selectedCatalogId, setSelectedCatalogId] = useState<string | null>(catalogo ?? null);
 
-// Mosaico superior: cada tarjeta abre directamente todos los productos de ese catálogo específico
-const heroMosaicItems = [
-  {
-    title: "Sintered Stone Full Body 15 mm",
-    catalogId: "cat-habitat-full-body",
-    image: "/products/fullbody/black_salt_pepper.jpg",
-    badge: "Full Body 15 mm",
-    spanClass: "col-span-2 sm:col-span-1",
-  },
-  {
-    title: "Sintered Stone Láminas 120×270",
-    catalogId: "cat-habitat-laminas",
-    image: "/products/sinteredstone/pandora_black.jpg",
-    badge: "Láminas 120×270 cm",
-    spanClass: "col-span-2 sm:col-span-1",
-  },
-  {
-    title: "Porcelanato Habitat 60×120 cm",
-    catalogId: "cat-habitat-60x120",
-    image: "/products/habitat60x120/yta66w12.jpg",
-    badge: "Porcelanato 60×120 cm",
-    spanClass: "col-span-1",
-  },
-  {
-    title: "Porcelanato Habitat 120×120 cm",
-    catalogId: "cat-habitat-porcelanato",
-    image: "/products/habitatIndia/sand_light.jpg",
-    badge: "Porcelanato 120×120 cm",
-    spanClass: "col-span-1",
-  },
-  {
-    title: "Pisos Cerámicos Ferrazzano 43×43 cm",
-    catalogId: "cat-ferrazzano-43",
-    image: "/products/43x43/calacatta_blanco.jpg",
-    badge: "Ferrazzano 43×43 cm",
-    spanClass: "col-span-1",
-  },
-  {
-    title: "Pisos Cerámicos Ferrazzano 36×36 cm",
-    catalogId: "cat-ferrazzano-36",
-    image: "/products/36x36/burano_gris.jpg",
-    badge: "Ferrazzano 36×36 cm",
-    spanClass: "col-span-1",
-  },
-] as const;
+  useEffect(() => {
+    if (linea) setActiveFilter(linea);
+  }, [linea]);
 
-// 5 Colecciones para la grilla inferior
-const productFamilies = [
-  {
-    filter: "sintered-stone",
-    title: "Sintered Stone",
-    detail: "Mesadas de 15 mm y láminas de 120×270 cm para arquitectura de alta gama.",
-    image: "/products/sinteredstone/carrara.jpg",
-  },
-  {
-    filter: "porcelanato",
-    title: "Porcelanatos",
-    detail: "Colección Habitat Importada en grandes formatos y terminaciones premium.",
-    image: "/products/habitatIndia/olister_bianco.jpg",
-  },
-  {
-    filter: "pisos-ceramicos",
-    title: "Pisos Cerámicos",
-    detail: "Línea Ferrazzano Salteña en formatos 36×36 cm y 43×43 cm de alta rotación.",
-    image: "/products/43x43/cachi_gris.jpg",
-  },
-  {
-    filter: "viguetas-pretensadas",
-    title: "Viguetas Pretensadas",
-    detail: "Vigueta Perfecta Salteña para cubiertas y entrepisos de alta resistencia.",
-    image: "/products/viguetas/viguetas_obra.jpg",
-  },
-  {
-    filter: "telgopor-de-construccion",
-    title: "Telgopor de Construcción",
-    detail: "EPS Famapol Salteña: bovedillas y paneles para techos alivianados.",
-    image: "/products/eps/eps_paneles.jpg",
-  },
-] as const;
+  useEffect(() => {
+    if (catalogo) setSelectedCatalogId(catalogo);
+  }, [catalogo]);
 
-export const Route = createFileRoute("/")({
-  head: () =>
-    routeMeta({
-      title: "Estilo Capitana — Agencia comercial de materiales de arquitectura",
-      description:
-        "Representación comercial B2B de superficies Sintered Stone, porcelanatos Habitat, cerámicos Ferrazzano, viguetas pretensadas y EPS Telgopor.",
-      path: "/",
-    }),
-  component: Index,
-});
+  const visibleCatalogs = useMemo(
+    () =>
+      officialCatalogs
+        .filter((catalog) => catalog.isVisible !== false)
+        .filter((catalog) => matchesFilter(catalog, activeFilter)),
+    [activeFilter],
+  );
 
-function Index() {
-  const advisorWhatsAppUrl = buildAdvisorWhatsAppUrl();
+  if (selectedCatalogId === "cat-ferrazzano-43") {
+    return <Catalog43Detail onBack={() => setSelectedCatalogId(null)} />;
+  }
+
+  if (selectedCatalogId === "cat-ferrazzano-36") {
+    return <Catalog36Detail onBack={() => setSelectedCatalogId(null)} />;
+  }
+
+  if (selectedCatalogId === "cat-habitat-full-body") {
+    return <CatalogFullBodyDetail onBack={() => setSelectedCatalogId(null)} />;
+  }
+
+  if (selectedCatalogId === "cat-habitat-laminas") {
+    return <CatalogLaminasDetail onBack={() => setSelectedCatalogId(null)} />;
+  }
+
+  if (selectedCatalogId === "cat-habitat-porcelanato") {
+    return <CatalogHabitatPorcelanatoDetail onBack={() => setSelectedCatalogId(null)} />;
+  }
+
+  if (selectedCatalogId === "cat-habitat-60x120") {
+    return <CatalogHabitat60x120Detail onBack={() => setSelectedCatalogId(null)} />;
+  }
+
+  if (selectedCatalogId === "cat-viguetas") {
+    return <CatalogViguetasDetail onBack={() => setSelectedCatalogId(null)} />;
+  }
+
+  if (selectedCatalogId === "cat-eps") {
+    return <CatalogEpsDetail onBack={() => setSelectedCatalogId(null)} />;
+  }
 
   return (
     <div>
-      {/* HERO PRINCIPAL */}
       <section className="brand-watermark-section border-b border-border bg-background px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-14">
-          <div className="max-w-2xl">
-            <span className="badge-emerald inline-flex items-center rounded-full px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-widest">
-              Representación comercial B2B
-            </span>
-            <h1 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-[1.15] tracking-tight text-foreground font-['Montserrat']">
-              Representación comercial especializada en terminaciones, pisos y materiales de obra
-            </h1>
-            <p className="mt-6 max-w-xl text-base sm:text-lg font-normal leading-8 text-muted-foreground">
-              Conectamos proyectos, distribuidores y profesionales directamente con fábrica para adquirir insumos con previsibilidad.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button asChild variant="industrial" size="lg">
-                <Link to="/catalogo">
-                  Explorar colecciones <ArrowRight aria-hidden="true" />
-                </Link>
-              </Button>
-              <Button asChild variant="industrialOutline" size="lg">
-                <a href={advisorWhatsAppUrl} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle aria-hidden="true" />
-                  Hablar con un asesor
-                </a>
-              </Button>
-            </div>
-            <dl className="mt-10 grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-3">
-              <div className="bg-card p-5">
-                <dt className="sr-only">Colecciones disponibles</dt>
-                <dd>
-                  <strong className="block text-3xl font-bold text-foreground">{visibleCatalogCount}</strong>
-                  <span className="mt-1 block text-sm font-normal text-muted-foreground">colecciones disponibles</span>
-                </dd>
-              </div>
-              <div className="bg-card p-5">
-                <dt className="sr-only">Selección de materiales</dt>
-                <dd>
-                  <strong className="block text-lg font-semibold text-foreground">Selección especializada</strong>
-                  <span className="mt-1 block text-sm font-normal text-muted-foreground">materiales para arquitectura</span>
-                </dd>
-              </div>
-              <div className="bg-card p-5">
-                <dt className="sr-only">Modalidad de atención</dt>
-                <dd>
-                  <strong className="block text-lg font-semibold text-foreground">Atención B2B</strong>
-                  <span className="mt-1 block text-sm font-normal text-muted-foreground">stock y cotización directa</span>
-                </dd>
-              </div>
-            </dl>
-          </div>
-
-          {/* MOSAICO DE LAS 6 IMÁGENES CON RUTA DIRECTA AL CATÁLOGO SELECCIONADO */}
-          <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              {heroMosaicItems.map((item, idx) => (
-                <Link
-                  key={idx}
-                  to="/catalogo"
-                  search={{ catalogo: item.catalogId }}
-                  className={`group relative overflow-hidden rounded-xl border border-border bg-slate-100 shadow-sm transition-all duration-200 hover:border-cyan-500 hover:shadow-md ${item.spanClass}`}
-                >
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="h-32 sm:h-36 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    loading="eager"
-                  />
-                  <span className="pointer-events-none absolute bottom-2 left-2 rounded-md border border-border bg-surface-glass px-2.5 py-1 text-[11px] font-bold text-foreground shadow-glass backdrop-blur-md sm:bottom-3 sm:left-3">
-                    {item.badge}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
+        <div className="mx-auto max-w-7xl">
+          <p className="text-xs font-normal uppercase text-primary">Representación comercial B2B</p>
+          <h1 className="mt-3 max-w-4xl text-4xl font-bold leading-tight text-foreground sm:text-5xl">
+            Colecciones y catálogos de materiales
+          </h1>
+          <p className="mt-5 max-w-3xl text-lg font-normal leading-8 text-muted-foreground">
+            Explorá cada línea de productos, consultá su documentación y contactanos para disponibilidad y cotización comercial
+          </p>
         </div>
       </section>
 
-      {/* SECCIÓN VALOR B2B */}
-      <WhyUsSection />
-
-      {/* COLECCIONES DE PRODUCTOS CON IMÁGENES ÚNICAS CON LINK */}
-      <section className="brand-watermark-section bg-surface px-4 py-16 sm:px-6 lg:px-8">
+      <section className="brand-watermark-section bg-surface px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto max-w-7xl">
-          <p className="text-xs font-normal uppercase text-primary">Colecciones disponibles</p>
-          <h2 className="mt-3 max-w-3xl text-3xl font-semibold text-foreground sm:text-4xl">
-            Cinco colecciones para proyectos y canales profesionales
-          </h2>
-          <div className="mt-9 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-            {productFamilies.map((family) => (
-              <Link
-                key={family.filter}
-                to="/catalogo"
-                search={{ linea: family.filter }}
-                aria-label={`Ver la colección ${family.title}`}
-                className="group flex flex-col rounded-xl border border-border bg-card overflow-hidden shadow-sm transition-all duration-200 hover:border-slate-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <div className="w-full h-36 bg-slate-100 overflow-hidden relative">
-                  <img
-                    src={family.image}
-                    alt={family.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-5 flex flex-col flex-1 justify-between">
-                  <div>
-                    <h3 className="text-base font-bold text-foreground font-['Montserrat']">{family.title}</h3>
-                    <p className="mt-2 text-xs font-normal leading-relaxed text-muted-foreground">{family.detail}</p>
-                  </div>
-                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-cyan-600">
-                    Ver colección
-                    <ArrowRight
-                      aria-hidden="true"
-                      className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
-                    />
-                  </span>
-                </div>
-              </Link>
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar catálogos por línea de productos">
+            <Button
+              key="todas"
+              type="button"
+              size="sm"
+              variant="ghost"
+              className={
+                activeFilter === "todas"
+                  ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
+                  : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"
+              }
+              aria-pressed={activeFilter === "todas"}
+              onClick={() => setActiveFilter("todas")}
+            >
+              Todas las Colecciones
+            </Button>
+            {lineFilters.map((filter) => {
+              const isActive = activeFilter === filter.id;
+              return (
+                <Button
+                  key={filter.id}
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  className={
+                    isActive
+                      ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
+                      : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"
+                  }
+                  aria-pressed={isActive}
+                  onClick={() => setActiveFilter(filter.id)}
+                >
+                  {filter.label}
+                </Button>
+              );
+            })}
+          </div>
+
+          <p className="mt-6 text-xs font-normal text-muted-foreground" aria-live="polite">
+            {visibleCatalogs.length} {visibleCatalogs.length === 1 ? "colección disponible" : "colecciones disponibles"}
+          </p>
+
+          <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {visibleCatalogs.map((catalog) => (
+              <CatalogCard
+                key={catalog.id}
+                catalog={catalog}
+                onSelect={() => setSelectedCatalogId(catalog.id)}
+              />
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* CONSULTA COMERCIAL */}
-      <section className="border-y border-border bg-background px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-xs font-normal uppercase text-primary">Consulta comercial</p>
-            <h2 className="mt-3 text-3xl font-semibold text-foreground">
-              Encontrá la colección adecuada para tu proyecto o canal
-            </h2>
-          </div>
-          <Button asChild variant="industrial" size="lg">
-            <Link to="/contacto">
-              Consultar stock <ArrowRight aria-hidden="true" />
-            </Link>
-          </Button>
         </div>
       </section>
     </div>
   );
 }
 
-export default Index;
+export default CatalogoPage;
