@@ -72,7 +72,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
           className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
         >
           <Download className="w-4 h-4" />
-          <span>VER / DESCARGAR CATÁLOGO</span>
+          <span>Ver / Descargar Catálogo</span>
         </a>
       </div>
 
