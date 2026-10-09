@@ -118,7 +118,7 @@ export const CatalogEpsDetail: React.FC<Props> = ({ onBack }) => {
               key={product.id}
               className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col group hover:border-slate-300 transition-all duration-200"
             >
-              {/* Imagen del Producto con Zoom Lightbox */}
+              {/* Contenedor de la Imagen con la etiqueta limpia en la esquina */}
               <div
                 className="relative h-60 bg-slate-100 overflow-hidden cursor-pointer"
                 onClick={() => setSelectedImage(product.image)}
@@ -129,7 +129,7 @@ export const CatalogEpsDetail: React.FC<Props> = ({ onBack }) => {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
                 />
-                <div className="absolute top-3 left-3">
+                <div className="absolute top-3 left-3 z-10">
                   <span className="px-2.5 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider">
                     {product.family}
                   </span>
