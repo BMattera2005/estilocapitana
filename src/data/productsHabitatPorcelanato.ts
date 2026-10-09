@@ -2,7 +2,7 @@ export interface HabitatPorcelanatoItem {
   id: string;
   name: string;
   series: string;
-  format: string; // Expresado en cm (ej: "120x120 cm" o "60x120 cm")
+  format: string; // Expresado en cm
   thickness: string;
   finish?: "Glossy" | "Velvet" | "Matt" | "Carving";
   finishes?: ("Glossy" | "Velvet" | "Matt" | "Carving")[];
@@ -16,11 +16,11 @@ export interface HabitatPorcelanatoItem {
   weightPalletKg: number;
   description: string;
   image: string;
-  isVisible?: boolean; // Control de visibilidad (true = público, false = oculto)
+  isVisible?: boolean;
 }
 
 export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
-  // --- MODELOS LUXURY STONE 120×120 cm (VISIBLES AL PÚBLICO) ---
+  // --- MODELOS LUXURY STONE 120×120 cm (VISIBLES) ---
   {
     id: "hab-porc-sand-light",
     name: "Sand Light",
@@ -79,7 +79,7 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
     isVisible: true,
   },
 
-  // --- MODELOS FORMATO 60×120 cm (OCULTOS / INVISIBLES EN LA WEB) ---
+  // --- MODELOS FORMATO 60×120 cm (PAUSADOS / OCULTOS) ---
   {
     id: "hab-porc-carrara-snow",
     name: "Carrara Snow",
