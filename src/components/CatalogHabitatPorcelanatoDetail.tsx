@@ -18,7 +18,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
 
   const filteredProducts = productsHabitatPorcelanato.filter((item) => item.isVisible !== false).filter((item) => {
     const matchesFormat = selectedFormat === 'Todos' || item.format === selectedFormat;
-    const itemFinishes = item.finishes;
+    const itemFinishes = item.finishes ?? [];
     const matchesFinish = selectedFinish === 'Todos' || itemFinishes.includes(selectedFinish as any);
     const matchesSearch =
       item.name.toLowerCase().includes(search.toLowerCase()) ||
