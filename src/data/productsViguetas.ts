@@ -21,7 +21,7 @@ export const productsViguetas: ViguetaProduct[] = [
     reinforcement: "Trenza de alambre 2×2.25 mm",
     minSupport: "10 cm en mampostería / 8 cm en tabiques y vigas",
     description: "Vigueta pretensada de hormigón STONOVER de sección constante en T invertida para luces de hasta 4.00 metros.",
-    image: "/products/viguetas/viguetas_obra.jpg",
+    image: "/products/viguetas/Viguetas Series 1 E.Capitana.png",
     isVisible: true,
   },
   {
@@ -33,7 +33,7 @@ export const productsViguetas: ViguetaProduct[] = [
     reinforcement: "Trenza de alambre 3×2.25 mm",
     minSupport: "10 cm en mampostería / 8 cm en tabiques y vigas",
     description: "Elemento estructural semirresistente de hormigón pretensado para luces intermedias de entrepiso.",
-    image: "/products/viguetas/viguetas_obra.jpg",
+    image: "/products/viguetas/Viguetas Series 2 E.Capitana.png",
     isVisible: true,
   },
   {
@@ -45,7 +45,7 @@ export const productsViguetas: ViguetaProduct[] = [
     reinforcement: "Trenza de alambre reforzado 3×3.00 mm",
     minSupport: "10 cm en mampostería / 8 cm en tabiques y vigas",
     description: "Vigueta pretensada con aceros de alta resistencia de grado puente para mayor capacidad portante.",
-    image: "/products/viguetas/viguetas_obra.jpg",
+    image: "/products/viguetas/Viguetas Series 3 E.Capitana.png",
     isVisible: true,
   },
   {
@@ -57,7 +57,7 @@ export const productsViguetas: ViguetaProduct[] = [
     reinforcement: "Armadura pretensada reforzada (Alt. 1 y 2)",
     minSupport: "10 cm en mampostería / 8 cm en tabiques y vigas",
     description: "Diseñada para luces superiores a 5 metros, absorbiendo los esfuerzos exigidos en estructuras residenciales o comerciales.",
-    image: "/products/viguetas/viguetas_obra.jpg",
+    image: "/products/viguetas/Viguetas Series 4 E.Capitana.png",
     isVisible: true,
   },
   {
@@ -69,7 +69,7 @@ export const productsViguetas: ViguetaProduct[] = [
     reinforcement: "Armadura pretensada de alta excentricidad",
     minSupport: "10 cm en mampostería / 8 cm en tabiques y vigas",
     description: "Vigueta de gran longitud para cubrir grandes luces libres con mínima flecha estructural.",
-    image: "/products/viguetas/viguetas_obra.jpg",
+    image: "/products/viguetas/Viguetas Series 5 E.Capitana.png",
     isVisible: true,
   },
   {
@@ -81,7 +81,7 @@ export const productsViguetas: ViguetaProduct[] = [
     reinforcement: "Armadura pretensada de máxima capacidad",
     minSupport: "10 cm en mampostería / 8 cm en tabiques y vigas",
     description: "Máximo alcance en viguetas pretensadas de hormigón industrializado para cubiertas y losas especiales.",
-    image: "/products/viguetas/viguetas_obra.jpg",
+    image: "/products/viguetas/Viguetas Series 6 E.Capitana.png",
     isVisible: true,
   },
 ];
