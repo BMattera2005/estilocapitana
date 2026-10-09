@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
 import { productsHabitatPorcelanato, HabitatPorcelanatoItem } from '../data/productsHabitatPorcelanato';
+import { ZoomableImage } from '@/components/catalog/ZoomableImage';
 
 interface CatalogHabitatPorcelanatoDetailProps {
   onBack: () => void;
@@ -12,8 +13,8 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
   const [selectedFinish, setSelectedFinish] = useState<string>('Todos');
   const [search, setSearch] = useState<string>('');
 
-  const formats = ['Todos', '600x1200 mm', '1200x1200 mm'];
-  const finishes = ['Todos', 'Glossy', 'Velvet', 'Rustic'];
+  const formats = ['Todos', '120x120 cm'];
+  const finishes = ['Todos', 'Glossy', 'Velvet', 'Matt'];
 
   const filteredProducts = productsHabitatPorcelanato.filter((item) => {
     const matchesFormat = selectedFormat === 'Todos' || item.format === selectedFormat;
@@ -40,7 +41,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
         className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
-        Volver a los Catálogos
+        Volver a las Colecciones
       </button>
 
       {/* Cabecera */}
@@ -56,11 +57,11 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Montserrat']">
-            Habitat — Porcelanato Esmaltado
+            Habitat — Luxury Stone 120x120
           </h1>
 
           <p className="text-sm text-slate-500 mt-2 font-normal">
-            Colección Habitat MA · Formatos 60×120 cm (1.44 m² / 30 kg) y 120×120 cm (2.88 m² / 60 kg) · Venta mayorista por pallet
+            Colección Habitat MA · Formato 120×120 cm (2.88 m² / 60 kg) · Venta mayorista por pallet
           </p>
         </div>
 
@@ -98,7 +99,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase text-slate-500">Terminación:</span>
+            <span className="text-xs font-bold uppercase text-slate-500">Textura:</span>
             {finishes.map((fn) => (
               <button
                 key={fn}
@@ -145,7 +146,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
             >
               <div>
                 <div className="w-full h-56 bg-slate-100 relative overflow-hidden flex items-center justify-center">
-                  <img
+                  <ZoomableImage
                     src={p.image}
                     alt={p.name}
                     className="w-full h-full object-cover block"

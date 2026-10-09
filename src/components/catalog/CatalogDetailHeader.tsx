@@ -32,7 +32,7 @@ export function CatalogDetailHeader({
         className="mb-4 min-h-0 px-0 py-0 text-xs font-semibold text-primary hover:bg-transparent hover:text-primary/80"
       >
         <ArrowLeft className="size-3.5" />
-        Volver a los Catálogos
+        Volver a las Colecciones
       </Button>
 
       <div className="mb-8 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
