@@ -1,180 +1,178 @@
-// src/components/CatalogViguetasDetail.tsx
-import React, { useState } from "react";
-import { MessageCircle, ShieldCheck, CheckCircle2 } from "lucide-react";
-import { productsViguetas, productsBovedillasEPS } from "../data/productsViguetas";
+import { useState } from "react";
+import { ArrowLeft, MessageCircle, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { productsViguetas } from "@/data/productsViguetas";
+import { buildWhatsAppUrl } from "@/lib/quote-message";
 
-const visibleViguetas = productsViguetas.filter((prod) => prod.isVisible !== false);
-const visibleBovedillas = productsBovedillasEPS.filter((prod) => prod.isVisible !== false);
-import { Button } from "./ui/button";
-import { CatalogDetailHeader } from "./catalog/CatalogDetailHeader";
+export function CatalogViguetasDetail({ onBack }: { onBack: () => void }) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [zoomedImage, setZoomedImage] = useState<{ src: string; name: string } | null>(null);
 
-interface CatalogViguetasDetailProps {
-  onBack: () => void;
-}
+  const visibleProducts = productsViguetas.filter((p) => p.isVisible !== false);
 
-export function CatalogViguetasDetail({ onBack }: CatalogViguetasDetailProps) {
-  const [tab, setTab] = useState<"viguetas" | "bovedillas">("viguetas");
-
-  const buildViguetaWhatsAppUrl = (item: string, series: string, range: string) => {
-    const text = `Hola estilo.capitana, quisiera consultar cotización y stock de la línea Vigueta Perfecta: ${item} (${series}), rango ${range}.`;
-    return `https://wa.me/5491161208162?text=${encodeURIComponent(text)}`;
-  };
-
-  const buildBovedillaWhatsAppUrl = (item: string, h: number, eje: number) => {
-    const text = `Hola estilo.capitana, quisiera consultar cotización de Bovedillas EPS Famapol: ${item} (H=${h}cm, Eje=${eje}cm).`;
-    return `https://wa.me/5491161208162?text=${encodeURIComponent(text)}`;
-  };
+  const filteredProducts = visibleProducts.filter((p) => {
+    return (
+      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.series.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.lengthRange.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <CatalogDetailHeader
-        origin="Industria Argentina"
-        category="Viguetas Pretensadas & Estructuras"
-        title="Vigueta Perfecta — Sistemas de Entrepisos"
-        description="Sistema de forjados y entrepisos con viguetas pretensadas de hormigón STONOVER y bovedillas de Poliestireno Expandido (EPS) Famapol. Reducción de peso propio de hasta un 45% y alta aislación termoacústica."
-        downloadUrl="/catalogos/viguetas.pdf"
-        onBack={onBack}
-        secondaryAction={
-          <Button asChild variant="industrialOutline" size="sm">
-            <a href="/catalogos/certificado_viguetas.pdf" target="_blank" rel="noopener noreferrer">
-              <ShieldCheck />
-              Ver Certificado Adjunto
-            </a>
-          </Button>
-        }
-      />
+    <div className="bg-surface min-h-screen">
+      {/* CABECERA */}
+      <section className="brand-watermark-section border-b border-border bg-background px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline cursor-pointer mb-6"
+          >
+            <ArrowLeft className="size-4" /> Volver a las Colecciones
+          </button>
 
-      {/* Pestañas de Filtro */}
-      <div className="flex gap-2 mb-8">
-        <button
-          type="button"
-          onClick={() => setTab("viguetas")}
-          className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer ${
-            tab === "viguetas"
-              ? "bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-sm"
-              : "bg-slate-100 text-slate-600 hover:text-slate-900"
-          }`}
-        >
-          Series de Viguetas ({visibleViguetas.length})
-        </button>
-        <button
-          type="button"
-          onClick={() => setTab("bovedillas")}
-          className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-150 cursor-pointer ${
-            tab === "bovedillas"
-              ? "bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-sm"
-              : "bg-slate-100 text-slate-600 hover:text-slate-900"
-          }`}
-        >
-          Bovedillas EPS Famapol ({visibleBovedillas.length})
-        </button>
-      </div>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <span className="rounded-full bg-accent px-3 py-1 text-xs font-normal text-accent-foreground">
+                Industria Argentina
+              </span>
+              <h1 className="mt-3 text-3xl font-bold text-foreground font-['Montserrat'] sm:text-4xl">
+                Viguetas Pretensadas STONOVER
+              </h1>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Cerámica Salteña · Sección T-Invertida 12×9 cm · Memoria y tablas de cálculo estructural
+              </p>
+            </div>
+          </div>
 
-      {/* Grilla de Viguetas */}
-      {tab === "viguetas" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {visibleViguetas.map((vig) => (
-            <article
-              key={vig.id}
-              className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all duration-200 p-6"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-3">
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-100">
-                    {vig.series}
-                  </span>
-                  <span className="text-xs font-mono font-bold text-teal-600">
-                    {vig.lengthRange}
-                  </span>
-                </div>
-
-                <h3 className="text-lg font-bold text-slate-900 mb-2">
-                  {vig.name}
-                </h3>
-                <p className="text-xs text-slate-600 mb-4 leading-relaxed">
-                  {vig.application}
-                </p>
-
-                <div className="space-y-2 mb-6 bg-slate-50 p-3 rounded-lg border border-slate-100 text-xs text-slate-700">
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0 mt-0.5" />
-                    <span><strong>Armadura:</strong> {vig.reinforcement}</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0 mt-0.5" />
-                    <span><strong>Sección:</strong> {vig.section}</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 shrink-0 mt-0.5" />
-                    <span><strong>Apoyo mínimo:</strong> {vig.supportMin}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Botón WhatsApp con el degradado idéntico a Habitat Porcelanato */}
-              <a
-                href={buildViguetaWhatsAppUrl(vig.name, vig.series, vig.lengthRange)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-primary-foreground bg-brand-gradient hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
-              >
-                <MessageCircle className="w-4 h-4 shrink-0" />
-                <span>Solicitar cotización por WhatsApp</span>
-              </a>
-            </article>
-          ))}
+          <div className="mt-8 flex items-center justify-between gap-4 rounded-xl border border-border bg-card p-4 shadow-sm">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              Buscador técnico de series y luces
+            </span>
+            <div className="relative w-full sm:w-72">
+              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Buscar por serie o largo (ej: 4.20 m)..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full rounded-md border border-border bg-background pl-9 pr-4 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+          </div>
         </div>
-      )}
+      </section>
 
-      {/* Grilla de Bovedillas */}
-      {tab === "bovedillas" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-          {visibleBovedillas.map((bov) => (
-            <article
-              key={bov.id}
-              className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all duration-200 p-6"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-3">
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100">
-                    Altura: {bov.heightCm} cm · Eje: {bov.axisSpacingCm} cm
-                  </span>
-                  <span className="text-xs font-mono text-slate-500">
-                    {bov.consumptionPerSqm} bloques / m²
-                  </span>
-                </div>
+      {/* GRILLA DE PRODUCTOS */}
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <p className="text-xs font-normal text-muted-foreground mb-6">
+          {filteredProducts.length} {filteredProducts.length === 1 ? "serie disponible" : "series disponibles"}
+        </p>
 
-                <h3 className="text-lg font-bold text-slate-900 mb-2">
-                  {bov.name}
-                </h3>
-                <p className="text-xs text-slate-600 mb-4 leading-relaxed">
-                  {bov.description}
-                </p>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredProducts.map((product) => {
+            const whatsappUrl = buildWhatsAppUrl(
+              `Hola Estilo Capitana, quisiera consultar disponibilidad y cotización de la ${product.name} (Largo: ${product.lengthRange}).`,
+            );
 
-                <div className="grid grid-cols-2 gap-2 mb-6 bg-slate-50 p-3 rounded-lg border border-slate-100 text-xs text-slate-700">
-                  <div>
-                    <span className="text-slate-500 block">Peso aprox:</span>
-                    <strong>{bov.weightAppx}</strong>
-                  </div>
-                  <div>
-                    <span className="text-slate-500 block">Comportamiento al fuego:</span>
-                    <strong>{bov.fireRating}</strong>
-                  </div>
-                </div>
-              </div>
-
-              {/* Botón WhatsApp */}
-              <a
-                href={buildBovedillaWhatsAppUrl(bov.name, bov.heightCm, bov.axisSpacingCm)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-primary-foreground bg-brand-gradient hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
+            return (
+              <article
+                key={product.id}
+                className="flex flex-col rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:border-border-strong transition-all duration-200"
               >
-                <MessageCircle className="w-4 h-4 shrink-0" />
-                <span>Solicitar cotización por WhatsApp</span>
-              </a>
-            </article>
-          ))}
+                {/* FOTO DE TARJETA CON CLICK PARA ABRIR LIGHTBOX/ZOOM */}
+                <div
+                  className="relative h-60 w-full bg-slate-100 overflow-hidden cursor-pointer group"
+                  onClick={() => setZoomedImage({ src: product.image, name: product.name })}
+                >
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-semibold">
+                    Hacé clic para ampliar 🔍
+                  </div>
+                </div>
+
+                <div className="p-5 flex flex-col flex-1 justify-between">
+                  <div>
+                    <span className="text-[11px] font-bold uppercase text-primary tracking-wider">
+                      {product.series}
+                    </span>
+                    <h3 className="text-lg font-bold text-foreground font-['Montserrat'] mt-1">
+                      {product.name}
+                    </h3>
+                    <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+                      {product.description}
+                    </p>
+
+                    <dl className="mt-4 grid grid-cols-2 gap-2 text-xs border-t border-border pt-3">
+                      <div>
+                        <dt className="text-muted-foreground">Sección:</dt>
+                        <dd className="font-bold text-foreground">{product.section}</dd>
+                      </div>
+                      <div>
+                        <dt className="text-muted-foreground">Rango de Largo:</dt>
+                        <dd className="font-bold text-foreground">{product.lengthRange}</dd>
+                      </div>
+                      <div className="col-span-2">
+                        <dt className="text-muted-foreground">Armadura:</dt>
+                        <dd className="font-bold text-foreground">{product.reinforcement}</dd>
+                      </div>
+                    </dl>
+                  </div>
+
+                  <div className="mt-6">
+                    <Button asChild variant="industrial" className="w-full">
+                      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                        <MessageCircle aria-hidden="true" />
+                        Cotizar por WhatsApp
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* MODAL LIGHTBOX PARA VER LA IMAGEN EN GRANDE Y CON ZOOM */}
+      {zoomedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-md p-4 cursor-zoom-out"
+          onClick={() => setZoomedImage(null)}
+        >
+          <div
+            className="relative max-w-5xl w-full max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl p-2 cursor-default flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setZoomedImage(null)}
+              className="absolute top-4 right-4 z-10 p-2.5 rounded-full bg-slate-900/80 text-white hover:bg-slate-900 transition-colors cursor-pointer"
+            >
+              ✕
+            </button>
+
+            <div className="overflow-auto max-h-[80vh] flex items-center justify-center p-2">
+              <img
+                src={zoomedImage.src}
+                alt={zoomedImage.name}
+                className="max-w-none w-auto h-auto min-w-full rounded-xl bg-slate-100 cursor-zoom-in hover:scale-125 transition-transform duration-300 object-contain"
+              />
+            </div>
+
+            <div className="p-3 text-center border-t border-slate-100 bg-white">
+              <h3 className="text-base font-bold text-slate-900 font-['Montserrat']">
+                {zoomedImage.name}
+              </h3>
+              <p className="text-xs text-slate-500">
+                Pasá el cursor o tocá sobre la imagen para inspeccionar en detalle
+              </p>
+            </div>
+          </div>
         </div>
       )}
     </div>
