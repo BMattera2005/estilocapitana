@@ -22,7 +22,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
 
   const finishes = ['Todos', 'Mate', 'Glossy', 'Brillante', 'Satinada'];
 
-  const filteredProducts = productsLaminas.filter((item) => {
+  const filteredProducts = productsLaminas.filter((item) => item.isVisible !== false).filter((item) => {
     const matchesFinish = selectedFinish === 'Todos' || getLaminaTexture(item.finish) === selectedFinish;
     const matchesSearch =
       item.name.toLowerCase().includes(search.toLowerCase()) ||

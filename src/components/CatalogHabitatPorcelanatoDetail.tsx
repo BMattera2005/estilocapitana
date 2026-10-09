@@ -16,7 +16,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
   const formats = ['Todos', '120x120 cm'];
   const finishes = ['Todos', 'Glossy', 'Velvet', 'Matt'];
 
-  const filteredProducts = productsHabitatPorcelanato.filter((item) => {
+  const filteredProducts = productsHabitatPorcelanato.filter((item) => item.isVisible !== false).filter((item) => {
     const matchesFormat = selectedFormat === 'Todos' || item.format === selectedFormat;
     const itemFinishes = item.finishes;
     const matchesFinish = selectedFinish === 'Todos' || itemFinishes.includes(selectedFinish as any);
