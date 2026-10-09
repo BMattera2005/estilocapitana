@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, MessageCircle, ShieldCheck, UserCheck, PackageCheck, Layers } from "lucide-react";
+import { ArrowRight, Blocks, MessageCircle, ShieldCheck, UserCheck, PackageCheck, Layers } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
