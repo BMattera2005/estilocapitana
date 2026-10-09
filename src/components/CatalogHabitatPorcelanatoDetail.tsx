@@ -1,241 +1,248 @@
-import { useState } from "react";
-import { ArrowLeft, Download, MessageCircle, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { productsHabitatPorcelanato } from "@/data/productsHabitatPorcelanato";
-import { buildWhatsAppUrl } from "@/lib/quote-message";
+import React, { useState } from 'react';
+import { ArrowLeft, Download, MessageCircle, Search, X } from 'lucide-react';
+import { productsHabitatPorcelanato } from '../data/productsHabitatPorcelanato';
 
-export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void }) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedFormat, setSelectedFormat] = useState<string>("Todos");
-  const [selectedTexture, setSelectedTexture] = useState<string>("Todos");
-  const [zoomedImage, setZoomedImage] = useState<{ src: string; name: string } | null>(null);
+interface Props {
+  onBack: () => void;
+}
 
-  // Filtra descartando modelos ocultos con isVisible: false
-  const visibleProducts = productsHabitatPorcelanato.filter((p) => p.isVisible !== false);
+export const CatalogHabitatPorcelanatoDetail: React.FC<Props> = ({ onBack }) => {
+  const [selectedFormat, setSelectedFormat] = useState<string>('Todos');
+  const [selectedFinish, setSelectedFinish] = useState<string>('Todos');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const filteredProducts = visibleProducts.filter((p) => {
+  const visibleProducts = productsHabitatPorcelanato.filter(
+    (p) => p.isVisible !== false
+  );
+
+  const formats = [
+    'Todos',
+    ...Array.from(new Set(visibleProducts.map((p) => p.format))),
+  ];
+
+  const finishes = [
+    'Todos',
+    ...Array.from(new Set(visibleProducts.map((p) => p.finish))),
+  ];
+
+  const filteredProducts = visibleProducts.filter((product) => {
+    const matchesFormat =
+      selectedFormat === 'Todos' || product.format === selectedFormat;
+    const matchesFinish =
+      selectedFinish === 'Todos' || product.finish === selectedFinish;
     const matchesSearch =
-      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.series.toLowerCase().includes(searchTerm.toLowerCase());
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.series.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesFormat = selectedFormat === "Todos" || p.format === selectedFormat;
-    const matchesTexture =
-      selectedTexture === "Todos" ||
-      (p.finishes && p.finishes.includes(selectedTexture as any)) ||
-      p.finishText?.toLowerCase().includes(selectedTexture.toLowerCase());
-
-    return matchesSearch && matchesFormat && matchesTexture;
+    return matchesFormat && matchesFinish && matchesSearch;
   });
 
   return (
-    <div className="bg-surface min-h-screen">
-      {/* CABECERA ALINEADA */}
-      <section className="brand-watermark-section border-b border-border bg-background px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl overflow-hidden">
-          {/* BOTÓN VOLVER */}
-          <button
-            type="button"
-            onClick={onBack}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors cursor-pointer mb-6"
-          >
-            <ArrowLeft className="size-4" /> Volver a las Colecciones
-          </button>
+    <div className="min-h-screen bg-slate-50/50 py-8 px-4 sm:px-6 lg:px-8 font-['Montserrat']">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Cabecera */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+          <div>
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-3 cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Volver a las Colecciones</span>
+            </button>
 
-          {/* TÍTULO Y BOTÓN DE DESCARGAR CATÁLOGO EN LA CABECERA */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-2">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 px-2.5 py-0.5 text-[11px] font-medium">
-                  Novedad Importada
-                </span>
-                <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
-                  CATÁLOGO · PORCELANATO ESMALTADO
-                </span>
-              </div>
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Montserrat']">
-                Habitat — Luxury Stone 120×120
-              </h1>
-              <p className="text-sm text-slate-500 mt-2 font-normal leading-relaxed max-w-3xl">
-                Colección Habitat MA · Formato 120×120 cm (2.88 m² / 60 kg) · Venta mayorista por pallet
-              </p>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="inline-block text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                Novedad Importada
+              </span>
+              <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
+                CATÁLOGO · PORCELANATO ESMALTADO
+              </span>
             </div>
 
-            {/* BOTÓN DESCARGAR CATÁLOGO PDF CON EL COLOR EXACTO DE LA SEGUNDA FOTO */}
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Habitat — Luxury Stone 120×120
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl">
+              Colección Habitat MA · Formato 120×120 cm (2.88 m² / 60 kg) · Venta mayorista por pallet
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
             <a
               href="/catalogos/coleccion_habitat_MA.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-emerald-600 hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer shrink-0"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
             >
               <Download className="w-4 h-4" />
               <span>Ver / Descargar Catálogo</span>
             </a>
           </div>
+        </div>
 
-          {/* BARRA DE FILTROS CON EL CIAN CORPORATIVO */}
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border bg-card p-4 shadow-sm overflow-hidden">
-            <div className="flex flex-wrap items-center gap-3 text-xs font-bold text-slate-700">
-              <span className="text-slate-400 font-semibold uppercase">MEDIDA:</span>
-              {["Todos", "120x120 cm"].map((fmt) => (
-                <button
-                  key={fmt}
-                  type="button"
-                  onClick={() => setSelectedFormat(fmt)}
-                  className={`rounded-md px-3 py-1.5 transition-colors cursor-pointer ${
-                    selectedFormat === fmt
-                      ? "bg-[#00a8cc] text-white font-bold"
-                      : "bg-surface hover:bg-slate-100 text-slate-600"
-                  }`}
-                >
-                  {fmt}
-                </button>
-              ))}
-
-              <span className="ml-2 text-slate-400 font-semibold uppercase">TEXTURA:</span>
-              {["Todos", "Glossy", "Velvet", "Matt"].map((tex) => (
-                <button
-                  key={tex}
-                  type="button"
-                  onClick={() => setSelectedTexture(tex)}
-                  className={`rounded-md px-3 py-1.5 transition-colors cursor-pointer ${
-                    selectedTexture === tex
-                      ? "bg-[#00a8cc] text-white font-bold"
-                      : "bg-surface hover:bg-slate-100 text-slate-600"
-                  }`}
-                >
-                  {tex}
-                </button>
-              ))}
+        {/* Barra de Controles y Filtros */}
+        <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-4">
+            {/* Filtro Medida */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                MEDIDA:
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {formats.map((f) => (
+                  <button
+                    key={f}
+                    type="button"
+                    onClick={() => setSelectedFormat(f)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                      selectedFormat === f
+                        ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    }`}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <div className="relative w-full sm:w-64">
-              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Buscar modelo o serie..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full rounded-md border border-border bg-background pl-9 pr-4 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              />
+            {/* Filtro Textura */}
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                TEXTURA:
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {finishes.map((fn) => (
+                  <button
+                    key={fn}
+                    type="button"
+                    onClick={() => setSelectedFinish(fn)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                      selectedFinish === fn
+                        ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    }`}
+                  >
+                    {fn}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
+
+          {/* Buscador */}
+          <div className="relative w-full lg:w-72">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Buscar modelo o serie..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all bg-slate-50/50"
+            />
+          </div>
         </div>
-      </section>
 
-      {/* GRILLA DE PRODUCTOS */}
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <p className="text-xs font-normal text-slate-500 mb-6">
-          {filteredProducts.length} {filteredProducts.length === 1 ? "modelo disponible" : "modelos disponibles"}
-        </p>
+        {/* Muestra de modelos disponibles */}
+        <div className="text-xs text-slate-500 px-1 font-medium">
+          {filteredProducts.length} modelos disponibles
+        </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredProducts.map((product) => {
-            const whatsappUrl = buildWhatsAppUrl(
-              `Hola Estilo Capitana, quisiera consultar disponibilidad y cotización del modelo ${product.name} (${product.format}) de la colección Luxury Stone 120x120.`,
-            );
-
-            return (
-              <article
-                key={product.id}
-                className="flex flex-col rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:border-slate-300 hover:shadow-md transition-all duration-200"
+        {/* Grilla de Productos */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProducts.map((product) => (
+            <div
+              key={product.id}
+              className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col group hover:border-slate-300 transition-all duration-200"
+            >
+              {/* Imagen del Producto con Zoom Lightbox */}
+              <div
+                className="relative h-64 bg-slate-100 overflow-hidden cursor-pointer"
+                onClick={() => setSelectedImage(product.image)}
               >
-                {/* TARJETA DE IMAGEN Y ACCESO A LIGHTBOX */}
-                <div
-                  className="relative h-64 w-full bg-slate-100 overflow-hidden cursor-pointer group"
-                  onClick={() => setZoomedImage({ src: product.image, name: product.name })}
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+                <div className="absolute top-3 left-3 flex flex-wrap gap-1">
+                  <span className="px-2 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-semibold">
+                    {product.format}
+                  </span>
+                  <span className="px-2 py-1 rounded bg-cyan-600/90 backdrop-blur-md text-white text-[10px] font-semibold">
+                    {product.finish}
+                  </span>
+                </div>
+              </div>
+
+              {/* Contenido de la Tarjeta */}
+              <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
+                <div>
+                  <div className="text-[11px] font-bold text-cyan-600 uppercase tracking-wider mb-1">
+                    {product.series}
+                  </div>
+                  <h3 className="text-base font-bold text-slate-900">
+                    {product.name}
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed">
+                    {product.description}
+                  </p>
+                </div>
+
+                {/* Especificaciones Logísticas */}
+                <div className="pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Packaging:</span>
+                    <span className="font-semibold text-slate-700">
+                      {product.sqmPerBox} m² / {product.weightKg} kg por caja
+                    </span>
+                  </div>
+                </div>
+
+                {/* Botón WhatsApp */}
+                <a
+                  href={`https://wa.me/5491161208162?text=${encodeURIComponent(
+                    `Hola Estilo Capitana, quisiera consultar disponibilidad y cotizar el modelo ${product.name} (${product.format} -${product.finish}).`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200"
                 >
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  {product.finishText && (
-                    <span className="absolute top-3 right-3 rounded-md bg-slate-900/80 px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-md">
-                      {product.finishText}
-                    </span>
-                  )}
-                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-semibold">
-                    Hacé clic para ampliar 🔍
-                  </div>
-                </div>
-
-                {/* DETALLES Y ESPECIFICACIONES TÉCNICAS */}
-                <div className="p-5 flex flex-col flex-1 justify-between">
-                  <div>
-                    <span className="text-[11px] font-bold uppercase text-cyan-600 tracking-wider block truncate">
-                      {product.series} · {product.faces}
-                    </span>
-                    <h3 className="text-xl font-bold text-slate-900 font-['Montserrat'] mt-1 truncate">
-                      {product.name}
-                    </h3>
-
-                    <dl className="mt-4 grid grid-cols-2 gap-2 text-xs border-t border-slate-100 pt-3">
-                      <div>
-                        <dt className="text-slate-400 font-normal">Formato:</dt>
-                        <dd className="font-bold text-slate-800">{product.format}</dd>
-                      </div>
-                      <div>
-                        <dt className="text-slate-400 font-normal">Caja:</dt>
-                        <dd className="font-bold text-slate-800">{product.sqmPerBox} m² ({product.piecesPerBox} pzs)</dd>
-                      </div>
-                    </dl>
-                  </div>
-
-                  {/* BOTÓN WHATSAPP CORPORATIVO DEGRADADO CIAN-VERDE */}
-                  <div className="mt-6">
-                    <button
-                      type="button"
-                      onClick={() => window.open(whatsappUrl, "_blank")}
-                      className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
-                    >
-                      <MessageCircle className="w-4 h-4 text-white shrink-0" />
-                      <span>Solicitar cotización por WhatsApp</span>
-                    </button>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Consultar Stock por WhatsApp</span>
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
-      </section>
+      </div>
 
-      {/* MODAL LIGHTBOX CON ZOOM */}
-      {zoomedImage && (
+      {/* Lightbox / Zoom de Imagen Ampliada */}
+      {selectedImage && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-md p-4 cursor-zoom-out"
-          onClick={() => setZoomedImage(null)}
+          className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setSelectedImage(null)}
         >
-          <div
-            className="relative max-w-5xl w-full max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl p-2 cursor-default flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="relative max-w-4xl max-h-[85vh] bg-white rounded-2xl overflow-hidden shadow-2xl">
             <button
               type="button"
-              onClick={() => setZoomedImage(null)}
-              className="absolute top-4 right-4 z-10 p-2.5 rounded-full bg-slate-900/80 text-white hover:bg-slate-900 transition-colors cursor-pointer"
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 p-2 rounded-full bg-slate-900/60 text-white hover:bg-slate-900 transition-colors z-10 cursor-pointer"
             >
-              ✕
+              <X className="w-5 h-5" />
             </button>
-
-            <div className="overflow-auto max-h-[80vh] flex items-center justify-center p-2">
-              <img
-                src={zoomedImage.src}
-                alt={zoomedImage.name}
-                className="max-w-none w-auto h-auto min-w-full rounded-xl bg-slate-100 cursor-zoom-in hover:scale-125 transition-transform duration-300 object-contain"
-              />
-            </div>
-
-            <div className="p-3 text-center border-t border-slate-100 bg-white">
-              <h3 className="text-base font-bold text-slate-900 font-['Montserrat']">
-                {zoomedImage.name}
-              </h3>
-              <p className="text-xs text-slate-500">
-                Pasá el cursor o tocá sobre la imagen para inspeccionar la textura
-              </p>
-            </div>
+            <img
+              src={selectedImage}
+              alt="Vista ampliada"
+              className="max-w-full max-h-[85vh] object-contain"
+            />
           </div>
         </div>
       )}
     </div>
   );
-}
+};
