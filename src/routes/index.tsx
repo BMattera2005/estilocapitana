@@ -147,13 +147,11 @@ const productFamilies = [
     filter: "viguetas-pretensadas",
     title: "Viguetas Pretensadas",
     detail: "Vigueta Perfecta Salteña para cubiertas y entrepisos de alta resistencia.",
-    image: "/products/viguetas/viguetas_obra.jpg",
   },
   {
     filter: "telgopor-de-construccion",
     title: "Telgopor de Construcción",
     detail: "EPS Famapol Salteña: bovedillas y paneles para techos alivianados.",
-    image: "/products/eps/eps_paneles.jpg",
   },
 ] as const;
 
