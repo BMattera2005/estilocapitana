@@ -1,157 +1,173 @@
-// src/components/CatalogLaminasDetail.tsx
-import React, { useState } from "react";
-import { ArrowLeft, MessageCircle, FileText, Search } from "lucide-react";
-import { productsLaminas } from "../data/productsLaminas";
-import { buildWhatsAppUrl } from "../lib/quote-message";
+import React, { useState } from 'react';
+import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
+import { productsLaminas, LaminaProductItem } from '../data/productsLaminas';
 
 interface CatalogLaminasDetailProps {
   onBack: () => void;
 }
 
 export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBack }) => {
-  const [filterFinish, setFilterFinish] = useState<string>("Todos");
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedFinish, setSelectedFinish] = useState<string>('Todos');
+  const [search, setSearch] = useState<string>('');
 
-  const finishes = ["Todos", ...Array.from(new Set(productsLaminas.map((p) => p.finish)))];
+  const finishes = ['Todos', 'Glossy', 'Digital glaze'];
 
-  const filteredProducts = productsLaminas.filter((product) => {
-    const matchesFinish = filterFinish === "Todos" || product.finish === filterFinish;
+  const filteredProducts = productsLaminas.filter((item) => {
+    const matchesFinish = selectedFinish === 'Todos' || item.craft.toLowerCase().includes(selectedFinish.toLowerCase());
     const matchesSearch =
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.code.toLowerCase().includes(searchQuery.toLowerCase());
+      item.name.toLowerCase().includes(search.toLowerCase()) ||
+      item.code.toLowerCase().includes(search.toLowerCase());
     return matchesFinish && matchesSearch;
   });
 
-  return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <button
-          onClick={onBack}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Volver a Catálogos
-        </button>
+  const handleWhatsAppQuote = (item: LaminaProductItem) => {
+    const phone = "5491161208162";
+    const message = `Hola Estilo Capitana, me interesa cotizar la lámina Sintered Stone XL ${item.name} (Código: ${item.code}, Formato: 1200x2700x9 mm). Quisiera consultar disponibilidad por pallet.`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+  };
 
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Botón Volver */}
+      <button 
+        onClick={onBack}
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
+      >
+        <ArrowLeft className="w-3.5 h-3.5" />
+        Volver a los Catálogos
+      </button>
+
+      {/* Cabecera */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+              Novedad Importada
+            </span>
+            <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
+              SHOP · LÁMINAS SINTERED STONE XL 120x270 CM
+            </span>
+          </div>
+
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Montserrat']">
+            Habitat — Láminas 120×270 cm
+          </h1>
+
+          <p className="text-sm text-slate-500 mt-2 font-normal">
+            Placas XL de Sintered Stone (1200×2700×9 mm, 3.24 m²/pieza) para muros continuos, solados y fachadas de gran formato.
+          </p>
+        </div>
+
+        {/* Botón superior de descarga */}
         <a
           href="/catalogos/slabs_sintered_stone.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 text-white rounded-lg text-sm font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
         >
-          <FileText className="w-4 h-4" />
-          Descargar PDF Oficial Láminas
+          <Download className="w-4 h-4" />
+          <span>Ver/Descargar Catalogo</span>
         </a>
       </div>
 
-      <div className="mb-8">
-        <span className="text-xs font-bold uppercase tracking-wider text-sky-600">Slabs Sintered Stone</span>
-        <h1 className="text-3xl font-extrabold text-slate-900 mt-1 font-['Montserrat']">
-          Habitat — Láminas 120×270 cm
-        </h1>
-        <p className="text-slate-600 mt-2 max-w-3xl text-sm leading-relaxed">
-          Placas sinterizadas continuas de gran escala para revestimientos completos de piso a techo, mesadas y arquitectura sin juntas visibles.
-        </p>
-      </div>
-
-      {/* BARRA UNIFICADA CON BUSCADOR PROMINENTE */}
+      {/* BARRA DE FILTROS Y BUSCADOR */}
       <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-bold uppercase text-slate-500">Terminación:</span>
-          {finishes.map((finish) => (
-            <button
-              key={finish}
-              onClick={() => setFilterFinish(finish)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                filterFinish === finish
-                  ? "bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-sm"
-                  : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
-              }`}
-            >
-              {finish}
-            </button>
-          ))}
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase text-slate-500">Terminación:</span>
+            {finishes.map((fn) => (
+              <button
+                key={fn}
+                type="button"
+                onClick={() => setSelectedFinish(fn)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  selectedFinish === fn
+                    ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm'
+                    : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
+                }`}
+              >
+                {fn}
+              </button>
+            ))}
+          </div>
         </div>
 
+        {/* Buscador */}
         <div className="relative w-full md:w-80">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-700 font-bold pointer-events-none" />
           <input
             type="text"
             placeholder="Buscar modelo o código..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-white border-2 border-slate-400 rounded-lg text-xs font-semibold text-slate-900 placeholder-slate-500 focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20 shadow-xs transition-all"
           />
         </div>
       </div>
 
+      <p className="text-xs text-slate-500 mb-6 font-normal">
+        {filteredProducts.length} {filteredProducts.length === 1 ? 'modelo disponible' : 'modelos disponibles'}
+      </p>
+
+      {/* Grilla de Modelos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map((product) => {
-          const whatsappMsg = `Hola estilo.capitana, consulto cotización por la Lámina ${product.name} (Código: ${product.code}, Medida: ${product.format}, Espesor: ${product.thickness}, Acabado: ${product.finish}).`;
-          const whatsappUrl = buildWhatsAppUrl(whatsappMsg);
-
-          return (
-            <div
-              key={product.id}
-              className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
-            >
-              <div>
-                <div className="relative w-full h-72 bg-slate-100 overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover block"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-                  <div className="absolute top-3 right-3">
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs">
-                      120×270 · 9 mm
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-4">
-                  <span className="text-[11px] font-bold text-sky-600 block mb-0.5">
-                    {product.code}
+        {filteredProducts.map((p) => (
+          <div
+            key={p.id}
+            className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all duration-200"
+          >
+            <div>
+              <div className="w-full h-80 bg-slate-100 relative overflow-hidden flex items-center justify-center">
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  className="w-full h-full object-cover block"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLElement).style.display = 'none';
+                  }}
+                />
+                <div className="absolute top-3 right-3">
+                  <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs">
+                    {p.craft}
                   </span>
-                  <h3 className="text-lg font-bold text-slate-900 font-['Montserrat'] leading-tight">
-                    {product.name}
-                  </h3>
-
-                  <div className="mt-3 space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 font-medium">Acabado:</span>
-                      <span className="font-semibold text-slate-800">{product.finish}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 font-medium">Diseño:</span>
-                      <span className="font-semibold text-slate-800">{product.faces}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 font-medium">Rendimiento:</span>
-                      <span className="font-semibold text-slate-800">{product.sqmPerSlab} m² / placa</span>
-                    </div>
-                  </div>
                 </div>
               </div>
 
-              <div className="p-4 pt-0">
-                <a
-                  href={whatsappUrl ?? undefined}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  Cotizar por WhatsApp
-                </a>
+              <div className="p-4">
+                <div className="text-[11px] font-semibold text-sky-600 uppercase tracking-wide mb-1">
+                  CÓD: {p.code} · {p.faces}
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-3 font-['Montserrat'] leading-tight">
+                  {p.name}
+                </h3>
+
+                <div className="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-2.5">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400 font-medium">Formato:</span>
+                    <span className="font-semibold text-slate-800">1200×2700 mm (9 mm)</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400 font-medium">Superficie:</span>
+                    <span className="font-semibold text-slate-800">3.24 m² / placa</span>
+                  </div>
+                </div>
               </div>
             </div>
-          );
-        })}
+
+            <div className="p-4 pt-0">
+              <button
+                type="button"
+                onClick={() => handleWhatsAppQuote(p)}
+                className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
+              >
+                <MessageCircle className="w-4 h-4 text-white shrink-0" />
+                <span>Cotizar por WhatsApp</span>
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 };
+export default CatalogLaminasDetail;
