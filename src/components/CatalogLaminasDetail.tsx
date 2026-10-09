@@ -55,7 +55,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
               Novedad Importada
             </span>
             <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
-              SHOP · LÁMINAS SINTERED STONE XL 120x270 CM
+              CATÁLOGO · LÁMINAS SINTERED STONE XL 120x270 CM
             </span>
           </div>
 

@@ -28,3 +28,4 @@
 - [x] Abrir la vista extendida de productos desde /catalogo?catalogo=ID.
 - [x] Renombrar la solapa "Catálogos" a "Colecciones" en el menú.
 - [x] Corregir tipado heredado (CeramicProduct36, finishText/finishes, finish) y repuestos de imagen de Viguetas y Telgopor.
+- [x] Reemplazar la etiqueta "SHOP ·" por "CATÁLOGO ·" en las cabeceras de las ocho vistas de colección.

@@ -49,7 +49,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
               Novedad Importada
             </span>
             <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
-              SHOP · SINTERED STONE FULL BODY 15 MM
+              CATÁLOGO · SINTERED STONE FULL BODY 15 MM
             </span>
           </div>
 

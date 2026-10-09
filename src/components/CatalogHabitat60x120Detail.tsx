@@ -47,7 +47,7 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
               Novedad Importada
             </span>
             <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
-              SHOP · LUXURY STONE SLAB SERIES 60x120 CM
+              CATÁLOGO · LUXURY STONE SLAB SERIES 60x120 CM
             </span>
           </div>
 

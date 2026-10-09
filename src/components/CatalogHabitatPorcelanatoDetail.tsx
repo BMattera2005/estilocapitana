@@ -52,7 +52,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
               Novedad Importada
             </span>
             <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
-              SHOP · PORCELANATO ESMALTADO
+              CATÁLOGO · PORCELANATO ESMALTADO
             </span>
           </div>
 
