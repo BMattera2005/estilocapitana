@@ -46,9 +46,17 @@ function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
 }
 
 export const Route = createFileRoute("/catalogo")({
-  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter } => {
+  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter; catalogo?: string } => {
     const linea = typeof search["linea"] === "string" ? (search["linea"] as CatalogFilter) : undefined;
-    return linea && FILTER_IDS.includes(linea) ? { linea } : {};
+    const rawCatalogo = typeof search["catalogo"] === "string" ? search["catalogo"] : undefined;
+    const catalogo =
+      rawCatalogo && officialCatalogs.some((catalog) => catalog.id === rawCatalogo && catalog.isVisible !== false)
+        ? rawCatalogo
+        : undefined;
+    return {
+      ...(linea && FILTER_IDS.includes(linea) ? { linea } : {}),
+      ...(catalogo ? { catalogo } : {}),
+    };
   },
   head: () =>
     routeMeta({
