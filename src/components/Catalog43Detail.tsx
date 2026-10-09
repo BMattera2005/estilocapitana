@@ -46,7 +46,7 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
               Industria Argentina
             </span>
             <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
-              SHOP · CERÁMICA SALTEÑA 43×43 CM
+              CATÁLOGO · CERÁMICA SALTEÑA 43×43 CM
             </span>
           </div>
 

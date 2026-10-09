@@ -42,7 +42,7 @@ export function CatalogDetailHeader({
               {origin}
             </span>
             <span className="text-xs font-bold uppercase tracking-wider text-primary">
-              SHOP · {category}
+              CATÁLOGO · {category}
             </span>
           </div>
 
