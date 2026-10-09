@@ -10,7 +10,7 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
   const [selectedTexture, setSelectedTexture] = useState<string>("Todos");
   const [zoomedImage, setZoomedImage] = useState<{ src: string; name: string } | null>(null);
 
-  // Filtra descartando los que tengan isVisible: false
+  // Filtra descartando modelos ocultos con isVisible: false
   const visibleProducts = productsHabitatPorcelanato.filter((p) => p.isVisible !== false);
 
   const filteredProducts = visibleProducts.filter((p) => {
@@ -29,35 +29,40 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
 
   return (
     <div className="bg-surface min-h-screen">
-      {/* CABECERA */}
+      {/* CABECERA UNIFICADA DE MARCA */}
       <section className="brand-watermark-section border-b border-border bg-background px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-7xl overflow-hidden">
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline cursor-pointer mb-6"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors cursor-pointer mb-6"
           >
             <ArrowLeft className="size-4" /> Volver a las Colecciones
           </button>
 
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <span className="rounded-full bg-accent px-3 py-1 text-xs font-normal text-accent-foreground">
-                Novedad Importada
-              </span>
-              <h1 className="mt-3 text-3xl font-bold text-foreground font-['Montserrat'] sm:text-4xl">
-                Luxury Stone 120×120
+              <div className="flex items-center gap-2 mb-2">
+                <span className="rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 px-2.5 py-0.5 text-[11px] font-medium">
+                  Novedad Importada
+                </span>
+                <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
+                  CATÁLOGO · PORCELANATO ESMALTADO
+                </span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Montserrat']">
+                Habitat — Luxury Stone 120×120
               </h1>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="text-sm text-slate-500 mt-2 font-normal leading-relaxed max-w-3xl">
                 Colección Habitat MA · Formato 120×120 cm (2.88 m² / 60 kg) · Venta mayorista por pallet
               </p>
             </div>
           </div>
 
-          {/* FILTROS CON TEXTURA Y BÚSQUEDA */}
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border bg-card p-4 shadow-sm">
-            <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-muted-foreground">
-              <span>MEDIDA:</span>
+          {/* BARRA DE FILTROS Y BÚSQUEDA TÉCNICA */}
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border bg-card p-4 shadow-sm overflow-hidden">
+            <div className="flex flex-wrap items-center gap-3 text-xs font-bold text-slate-700">
+              <span className="text-slate-400 font-semibold uppercase">MEDIDA:</span>
               {["Todos", "120x120 cm"].map((fmt) => (
                 <button
                   key={fmt}
@@ -65,15 +70,15 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
                   onClick={() => setSelectedFormat(fmt)}
                   className={`rounded-md px-3 py-1.5 transition-colors cursor-pointer ${
                     selectedFormat === fmt
-                      ? "bg-primary text-primary-foreground font-bold"
-                      : "bg-surface hover:bg-accent"
+                      ? "bg-cyan-600 text-white font-bold"
+                      : "bg-surface hover:bg-slate-100 text-slate-600"
                   }`}
                 >
                   {fmt}
                 </button>
               ))}
 
-              <span className="ml-2">TEXTURA:</span>
+              <span className="ml-2 text-slate-400 font-semibold uppercase">TEXTURA:</span>
               {["Todos", "Glossy", "Velvet", "Matt"].map((tex) => (
                 <button
                   key={tex}
@@ -81,8 +86,8 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
                   onClick={() => setSelectedTexture(tex)}
                   className={`rounded-md px-3 py-1.5 transition-colors cursor-pointer ${
                     selectedTexture === tex
-                      ? "bg-primary text-primary-foreground font-bold"
-                      : "bg-surface hover:bg-accent"
+                      ? "bg-cyan-600 text-white font-bold"
+                      : "bg-surface hover:bg-slate-100 text-slate-600"
                   }`}
                 >
                   {tex}
@@ -97,16 +102,16 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
                 placeholder="Buscar modelo o serie..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full rounded-md border border-border bg-background pl-9 pr-4 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full rounded-md border border-border bg-background pl-9 pr-4 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* GRILLA DE PRODUCTOS */}
+      {/* GRILLA DE PRODUCTOS BLINDADA CONTRA DESBORDES */}
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <p className="text-xs font-normal text-muted-foreground mb-6">
+        <p className="text-xs font-normal text-slate-500 mb-6">
           {filteredProducts.length} {filteredProducts.length === 1 ? "modelo disponible" : "modelos disponibles"}
         </p>
 
@@ -119,9 +124,9 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
             return (
               <article
                 key={product.id}
-                className="flex flex-col rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:border-border-strong transition-all duration-200"
+                className="flex flex-col rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:border-slate-300 hover:shadow-md transition-all duration-200"
               >
-                {/* TARJETA CON CLICK PARA AMPLIAR */}
+                {/* TARJETA DE IMAGEN Y ACCESO A LIGHTBOX */}
                 <div
                   className="relative h-64 w-full bg-slate-100 overflow-hidden cursor-pointer group"
                   onClick={() => setZoomedImage({ src: product.image, name: product.name })}
@@ -141,26 +146,29 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
                   </div>
                 </div>
 
+                {/* DETALLES Y ESPECIFICACIONES TÉCNICAS */}
                 <div className="p-5 flex flex-col flex-1 justify-between">
                   <div>
-                    <span className="text-[11px] font-bold uppercase text-primary tracking-wider">
+                    <span className="text-[11px] font-bold uppercase text-cyan-600 tracking-wider block truncate">
                       {product.series} · {product.faces}
                     </span>
-                    <h3 className="text-xl font-bold text-foreground font-['Montserrat'] mt-1">
+                    <h3 className="text-xl font-bold text-slate-900 font-['Montserrat'] mt-1 truncate">
                       {product.name}
                     </h3>
-                    <dl className="mt-4 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+
+                    <dl className="mt-4 grid grid-cols-2 gap-2 text-xs border-t border-slate-100 pt-3">
                       <div>
-                        <dt className="font-normal">Formato:</dt>
-                        <dd className="font-bold text-foreground">{product.format}</dd>
+                        <dt className="text-slate-400 font-normal">Formato:</dt>
+                        <dd className="font-bold text-slate-800">{product.format}</dd>
                       </div>
                       <div>
-                        <dt className="font-normal">Caja:</dt>
-                        <dd className="font-bold text-foreground">{product.sqmPerBox} m² ({product.piecesPerBox} pzs)</dd>
+                        <dt className="text-slate-400 font-normal">Caja:</dt>
+                        <dd className="font-bold text-slate-800">{product.sqmPerBox} m² ({product.piecesPerBox} pzs)</dd>
                       </div>
                     </dl>
                   </div>
 
+                  {/* BOTÓN WHATSAPP CORPORATIVO */}
                   <div className="mt-6">
                     <Button asChild variant="industrial" className="w-full">
                       <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
@@ -176,7 +184,7 @@ export function CatalogHabitatPorcelanatoDetail({ onBack }: { onBack: () => void
         </div>
       </section>
 
-      {/* MODAL LIGHTBOX CON ZOOM AMPLIADO */}
+      {/* MODAL LIGHTBOX CON ZOOM */}
       {zoomedImage && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-md p-4 cursor-zoom-out"
