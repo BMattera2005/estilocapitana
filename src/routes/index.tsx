@@ -93,7 +93,7 @@ const heroMosaicItems = [
     category: "Sintered Stone",
     catalogId: "cat-habitat-laminas",
     lineaFilter: "sintered-stone",
-    image: "/products/laminas/yate_white_jade.jpg",
+    image: "/products/laminas/pandora_black.jpg",
     badge: "Láminas 120×270 cm",
     spanClass: "col-span-2 sm:col-span-1",
   },
