@@ -20,7 +20,7 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
     return matchesFinish && matchesSearch;
   });
 
-  const handleWhatsAppQuote = (item: Ceramic36Product) => {
+  const handleWhatsAppQuote = (item: CeramicProduct36) => {
     const phone = "5491161208162";
     const message = `Hola Estilo Capitana, me interesa cotizar el piso cerámico Ferrazzano ${item.name} (Formato: 36x36 cm, Acabado: ${item.finish}). Quisiera consultar disponibilidad por pallet.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
