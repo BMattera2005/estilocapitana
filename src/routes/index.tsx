@@ -135,23 +135,27 @@ const productFamilies = [
     filter: "porcelanato",
     title: "Porcelanatos",
     detail: "Colección Habitat Importada en grandes formatos y terminaciones premium.",
-    image: "/products/habitatIndia/olister_bianco.jpg",
+    image: "/products/habitatIndia/carrara_snow.jpg",
   },
   {
     filter: "pisos-ceramicos",
     title: "Pisos Cerámicos",
     detail: "Línea Ferrazzano Salteña en formatos 36×36 cm y 43×43 cm de alta rotación.",
-    image: "/products/43x43/cachi_gris.jpg",
+    image: "/products/36x36/burano_gris.jpg",
   },
   {
     filter: "viguetas-pretensadas",
     title: "Viguetas Pretensadas",
     detail: "Vigueta Perfecta Salteña para cubiertas y entrepisos de alta resistencia.",
+    // Imagen tomada de la carpeta viguetas
+    image: "/products/viguetas/Viguetas Series 1 E.Capitana.png", 
   },
   {
     filter: "telgopor-de-construccion",
     title: "Telgopor de Construcción",
     detail: "EPS Famapol Salteña: bovedillas y paneles para techos alivianados.",
+    // Imagen 1 de la carpeta famapol (Logo / Carátula Famapol)
+    image: "/products/famapol/CERAMICA-SALTENA-PRODUCTOS-FAMAPOL_page-0001.jpg", 
   },
 ] as const;
 
