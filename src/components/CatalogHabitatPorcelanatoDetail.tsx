@@ -158,6 +158,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<Props> = ({ onBack }) => 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => {
             const textureLabel = product.finishText || product.finish || (product.finishes ? product.finishes.join(' / ') : 'Matt');
+            const messageText = "Hola Estilo Capitana, quisiera consultar disponibilidad y cotizar el modelo " + product.name + " (" + (product.format || '120x120 cm') + " - " + textureLabel + ").";
 
             return (
               <div
@@ -208,9 +209,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<Props> = ({ onBack }) => 
 
                   {/* Botón WhatsApp */}
                   <a
-                    href={`https://wa.me/5491161208162?text=${encodeURIComponent(
-                      `Hola Estilo Capitana, quisiera consultar disponibilidad y cotizar el modelo ${product.name} (${product.format \vert{}\vert{} '120x120 cm'} -${textureLabel}).`
-                    )}`}
+                    href={`https://wa.me/5491161208162?text=${encodeURIComponent(messageText)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200"
