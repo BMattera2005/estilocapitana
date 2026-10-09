@@ -15,7 +15,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
   const formats = ['Todos', '80x240 cm'];
   const finishes = ['Todos', 'Glossy', 'Matt'];
 
-  const filteredProducts = productsFullBody.filter((item) => {
+  const filteredProducts = productsFullBody.filter((item) => item.isVisible !== false).filter((item) => {
     const matchesFormat = selectedFormat === 'Todos' || item.allFormats.includes(selectedFormat);
     const matchesFinish = selectedFinish === 'Todos' || item.allFinishes.includes(selectedFinish);
     const matchesSearch =
