@@ -77,7 +77,7 @@ const visibleCatalogCount = officialCatalogs.filter(
   (catalog) => catalog.isVisible !== false,
 ).length;
 
-// Colecciones con imagen real y link directo a la vista
+// Colecciones con fotos ÚNICAS que NO se repiten con las del Hero arriba
 const productFamilies = [
   {
     filter: "sintered-stone",
@@ -89,7 +89,7 @@ const productFamilies = [
     filter: "porcelanato",
     title: "Porcelanatos",
     detail: "Colección Habitat Importada en grandes formatos y terminaciones premium.",
-    image: "/products/habitat60x120/yta66w12.jpg",
+    image: "/products/habitatIndia/olister_bianco.jpg",
   },
   {
     filter: "pisos-ceramicos",
@@ -101,20 +101,21 @@ const productFamilies = [
     filter: "viguetas-pretensadas",
     title: "Viguetas Pretensadas",
     detail: "Vigueta Perfecta Salteña para cubiertas y entrepisos de alta resistencia.",
-    image: "/products/sinteredstone/emerald_green.jpg",
+    image: "/products/viguetas/viguetas_obra.jpg",
   },
   {
     filter: "telgopor-de-construccion",
     title: "Telgopor de Construcción",
     detail: "EPS Famapol Salteña: bovedillas y paneles para techos alivianados.",
-    image: "/products/habitat60x120/yta66w13.jpg",
+    image: "/products/eps/eps_paneles.jpg",
   },
 ] as const;
 
+// Fotos exclusivas del Hero Mosaico (distintas a las de productFamilies)
 const heroImages = {
-  wide: "/products/sinteredstone/carrara.jpg",
+  wideTop: "/products/fullbody/black_salt_pepper.jpg",
   tallA: "/products/habitat60x120/yta66w12.jpg",
-  tallB: "/products/sinteredstone/emerald_green.jpg",
+  tallB: "/products/habitatIndia/sand_light.jpg",
 } as const;
 
 const heroBadges = [
@@ -194,20 +195,20 @@ function Index() {
           <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
             <div className="grid grid-cols-2 gap-4">
               <img
-                src={heroImages.wide}
-                alt="Mesada de Sintered Stone Full Body"
+                src={heroImages.wideTop}
+                alt="Mesada Sintered Stone Full Body"
                 className="col-span-2 h-52 w-full rounded-xl border border-border object-cover shadow-industrial sm:h-64"
                 loading="eager"
               />
               <img
                 src={heroImages.tallA}
-                alt="Interior con porcelanato de gran formato"
+                alt="Porcelanato 60x120 cm"
                 className="h-44 w-full rounded-xl border border-border object-cover shadow-industrial sm:h-52"
                 loading="eager"
               />
               <img
                 src={heroImages.tallB}
-                alt="Superficie Sintered Stone"
+                alt="Porcelanato Gran Formato 120x120 cm"
                 className="h-44 w-full rounded-xl border border-border object-cover shadow-industrial sm:h-52"
                 loading="eager"
               />
@@ -227,7 +228,7 @@ function Index() {
       {/* SECCIÓN VALOR B2B */}
       <WhyUsSection />
 
-      {/* COLECCIONES DE PRODUCTOS CON IMAGEN Y LINK */}
+      {/* COLECCIONES DE PRODUCTOS CON IMÁGENES ÚNICAS CON LINK */}
       <section className="brand-watermark-section bg-surface px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-normal uppercase text-primary">Colecciones disponibles</p>
