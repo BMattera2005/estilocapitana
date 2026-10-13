@@ -129,7 +129,7 @@ const productFamilies = [
     filter: "sintered-stone",
     title: "Sintered Stone",
     detail: "Mesadas de 15 mm y láminas de 120×270 cm para arquitectura de alta gama.",
-    image: "/products/sinteredstone/carrara.jpg",
+    image: "/products/sinteredstone/carrara_gold.jpg",
   },
   {
     filter: "porcelanato",
