@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { ArrowLeft, MessageCircle, Download, Search, X } from "lucide-react";
+import { ArrowLeft, MessageCircle, Download, Search } from "lucide-react";
 import { productsLaminas } from "../data/productsLaminas";
+import { ZoomableImage } from "@/components/catalog/ZoomableImage";
 
 interface CatalogLaminasDetailProps {
   onBack: () => void;
@@ -9,7 +10,6 @@ interface CatalogLaminasDetailProps {
 export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBack }) => {
   const [filterFinish, setFilterFinish] = useState<string>("Todos");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [zoomedImage, setZoomedImage] = useState<{ src: string; title: string } | null>(null);
 
   const rawList = Array.isArray(productsLaminas) ? productsLaminas : [];
 
@@ -19,7 +19,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
       new Set(
         rawList
           .map((p) => p?.finish)
-          .filter((f): f is string => Boolean(f))
+          .filter((f) => f != null)
       )
     ),
   ];
@@ -152,11 +152,8 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
             >
               <div>
                 {/* Imagen con Zoom Modal */}
-                <div
-                  className="relative w-full h-72 bg-slate-100 overflow-hidden cursor-pointer group"
-                  onClick={() => setZoomedImage({ src: product.image, title: product.name })}
-                >
-                  <img
+                <div className="relative w-full h-72 bg-slate-100 overflow-hidden group">
+                  <ZoomableImage
                     src={product.image}
                     alt={product.name}
                     className="w-full h-full object-cover block transition-transform duration-300 group-hover:scale-105"
@@ -164,7 +161,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
                       e.currentTarget.style.display = "none";
                     }}
                   />
-                  <div className="absolute top-3 right-3">
+                  <div className="pointer-events-none absolute top-3 right-3">
                     <span className="px-2.5 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
                       {product.finish}
                     </span>
@@ -212,36 +209,6 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
         })}
       </div>
 
-      {/* Modal Zoom Ampliado */}
-      {zoomedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4"
-          onClick={() => setZoomedImage(null)}
-        >
-          <div
-            className="relative max-w-4xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl p-2"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              onClick={() => setZoomedImage(null)}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-900/70 text-white hover:bg-slate-900 transition-colors cursor-pointer"
-            >
-              <X className="w-5 h-5" />
-            </button>
-            <img
-              src={zoomedImage.src}
-              alt={zoomedImage.title}
-              className="w-full h-[75vh] object-contain rounded-xl bg-slate-100"
-            />
-            <div className="p-4 text-center">
-              <h3 className="text-lg font-bold text-slate-900">
-                {zoomedImage.title}
-              </h3>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

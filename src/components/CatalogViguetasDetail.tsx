@@ -3,10 +3,11 @@ import { ArrowLeft, MessageCircle, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { productsViguetas } from "@/data/productsViguetas";
 import { buildWhatsAppUrl } from "@/lib/quote-message";
+import { ZoomableImage } from "@/components/catalog/ZoomableImage";
 
 export function CatalogViguetasDetail({ onBack }: { onBack: () => void }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [zoomedImage, setZoomedImage] = useState<{ src: string; name: string } | null>(null);
+
 
   // Filtro de visibilidad activa
   const visibleProducts = productsViguetas.filter((p) => p.isVisible !== false);
@@ -89,16 +90,13 @@ export function CatalogViguetasDetail({ onBack }: { onBack: () => void }) {
                 className="flex flex-col rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:border-slate-300 hover:shadow-md transition-all duration-200"
               >
                 {/* TARJETA DE IMAGEN Y ACCESO A LIGHTBOX */}
-                <div
-                  className="relative h-64 w-full bg-slate-100 overflow-hidden cursor-pointer group"
-                  onClick={() => setZoomedImage({ src: product.image, name: product.name })}
-                >
-                  <img
+                <div className="relative h-64 w-full bg-slate-100 overflow-hidden group">
+                  <ZoomableImage
                     src={product.image}
                     alt={product.name}
                     className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-semibold">
+                  <div className="pointer-events-none absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-semibold">
                     Hacé clic para ampliar 🔍
                   </div>
                 </div>
@@ -135,7 +133,7 @@ export function CatalogViguetasDetail({ onBack }: { onBack: () => void }) {
                   {/* BOTÓN WHATSAPP CORPORATIVO CON DEGRADADO */}
                   <div className="mt-6">
                     <Button asChild variant="industrial" className="w-full">
-                      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                      <a href={whatsappUrl ?? undefined} target="_blank" rel="noopener noreferrer">
                         <MessageCircle aria-hidden="true" />
                         Cotizar por WhatsApp
                       </a>
@@ -148,43 +146,6 @@ export function CatalogViguetasDetail({ onBack }: { onBack: () => void }) {
         </div>
       </section>
 
-      {/* MODAL LIGHTBOX FLOTANTE CON ZOOM */}
-      {zoomedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-md p-4 cursor-zoom-out"
-          onClick={() => setZoomedImage(null)}
-        >
-          <div
-            className="relative max-w-5xl w-full max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl p-2 cursor-default flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              onClick={() => setZoomedImage(null)}
-              className="absolute top-4 right-4 z-10 p-2.5 rounded-full bg-slate-900/80 text-white hover:bg-slate-900 transition-colors cursor-pointer"
-            >
-              ✕
-            </button>
-
-            <div className="overflow-auto max-h-[80vh] flex items-center justify-center p-2">
-              <img
-                src={zoomedImage.src}
-                alt={zoomedImage.name}
-                className="max-w-none w-auto h-auto min-w-full rounded-xl bg-slate-100 cursor-zoom-in hover:scale-125 transition-transform duration-300 object-contain"
-              />
-            </div>
-
-            <div className="p-3 text-center border-t border-slate-100 bg-white">
-              <h3 className="text-base font-bold text-slate-900 font-['Montserrat']">
-                {zoomedImage.name}
-              </h3>
-              <p className="text-xs text-slate-500">
-                Pasá el cursor o tocá sobre la imagen para inspeccionar en detalle
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
