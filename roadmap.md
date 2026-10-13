@@ -29,3 +29,4 @@
 - [x] Renombrar la solapa "Catálogos" a "Colecciones" en el menú.
 - [x] Corregir tipado heredado (CeramicProduct36, finishText/finishes, finish) y repuestos de imagen de Viguetas y Telgopor.
 - [x] Reemplazar la etiqueta "SHOP ·" por "CATÁLOGO ·" en las cabeceras de las ocho vistas de colección.
+- [x] Zoom interactivo en el lightbox de las ocho vistas: visor compartido con hover:scale-150, contenedor desplazable max-h-[80vh] y ayuda "hacer zoom e inspeccionar la textura"; Láminas, Viguetas, Porcelanato Esmaltado y EPS migradas al visor común.
