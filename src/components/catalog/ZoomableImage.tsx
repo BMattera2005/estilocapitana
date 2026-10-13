@@ -1,84 +1,64 @@
 import { useEffect, useState, type ImgHTMLAttributes } from "react";
-import { createPortal } from "react-dom";
-import { X } from "lucide-react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { RotateCcw, X, ZoomIn, ZoomOut } from "lucide-react";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+import { Button } from "@/components/ui/button";
 
-/**
- * Foto de producto que se abre ampliada en pantalla completa al hacer clic.
- * Dentro del modal la imagen escala al pasar el cursor y el contenedor
- * permite desplazarse para inspeccionar vetas y texturas en alta resolución.
- */
+/** Visor compartido: pellizco, doble toque, rueda y arrastre. */
 export function ZoomableImage(props: ImgHTMLAttributes<HTMLImageElement>) {
   const [open, setOpen] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
-  }, [open]);
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  const animationTime = reducedMotion ? 0 : 200;
 
   return (
-    <>
-      <button
+    <Dialog.Root open={open} onOpenChange={setOpen}>
+      <Dialog.Trigger asChild>
+      <Button
         type="button"
-        onClick={() => setOpen(true)}
+        variant="ghost"
         aria-label={`Ampliar imagen de ${props.alt ?? "producto"}`}
-        className="block h-full w-full cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="block h-full w-full cursor-zoom-in rounded-none p-0 hover:bg-transparent"
       >
         <img {...props} />
-      </button>
-      {open &&
-        createPortal(
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label={props.alt ?? "Imagen ampliada"}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-foreground/90 p-4 backdrop-blur-md motion-safe:animate-in motion-safe:fade-in cursor-zoom-out"
-            onClick={() => setOpen(false)}
-          >
-            <div
-              className="relative flex max-h-[90vh] w-full max-w-5xl cursor-default flex-col overflow-hidden rounded-2xl bg-background p-2 shadow-industrial"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                type="button"
-                autoFocus
-                onClick={() => setOpen(false)}
-                aria-label="Cerrar imagen ampliada"
-                className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-foreground/80 text-background transition-colors hover:bg-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <X className="h-5 w-5" aria-hidden="true" />
-              </button>
-
-              {/* Contenedor desplazable para inspeccionar la pieza en alta resolución */}
-              <div className="flex max-h-[80vh] items-center justify-center overflow-auto p-2">
-                <img
-                  src={props.src}
-                  alt={props.alt}
-                  className="h-auto min-w-full max-w-none w-auto cursor-zoom-in rounded-xl object-contain bg-muted transition-transform duration-300 hover:scale-150"
-                  onClick={(e) => e.stopPropagation()}
-                />
-              </div>
-
-              <div className="border-t border-border bg-background p-3 text-center">
-                <h3 className="text-base font-bold text-foreground font-['Montserrat']">
-                  {props.alt ?? "Imagen ampliada"}
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  Pasá el cursor o tocá sobre la imagen para hacer zoom e inspeccionar la textura
-                </p>
-              </div>
-            </div>
-          </div>,
-          document.body,
-        )}
-    </>
+      </Button>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 z-[100] cursor-zoom-out bg-foreground/90 backdrop-blur-md" />
+        <Dialog.Content aria-describedby={undefined} className="fixed left-1/2 top-1/2 z-[101] flex max-h-[94dvh] w-[calc(100%-1rem)] max-w-5xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl bg-background p-2 shadow-industrial focus:outline-none sm:w-[calc(100%-2rem)]">
+          <TransformWrapper minScale={1} maxScale={5} centerOnInit smooth wheel={{ step: 0.002 }} doubleClick={{ mode: "toggle", step: 1.5, animationTime }} zoomAnimation={{ animationTime }} autoAlignment={{ animationTime }} velocityAnimation={{ disabled: reducedMotion }}>
+            {({ zoomIn, zoomOut, resetTransform, state }) => (
+              <>
+                <div className="flex shrink-0 items-center justify-between gap-2 px-1 pb-2">
+                  <div className="flex items-center gap-1">
+                    <Button variant="ghost" size="icon" aria-label="Alejar imagen" title="Alejar imagen" disabled={state.scale <= 1} onClick={() => zoomOut(0.5, animationTime)}><ZoomOut aria-hidden="true" /></Button>
+                    <span className="w-12 text-center text-xs tabular-nums text-muted-foreground" aria-live="polite">{Math.round(state.scale * 100)}%</span>
+                    <Button variant="ghost" size="icon" aria-label="Acercar imagen" title="Acercar imagen" disabled={state.scale >= 5} onClick={() => zoomIn(0.5, animationTime)}><ZoomIn aria-hidden="true" /></Button>
+                    <Button variant="ghost" size="icon" aria-label="Restablecer zoom" title="Restablecer zoom" onClick={() => resetTransform(animationTime)}><RotateCcw aria-hidden="true" /></Button>
+                  </div>
+                  <Dialog.Close asChild><Button variant="ghost" size="icon" aria-label="Cerrar imagen ampliada" title="Cerrar imagen ampliada"><X aria-hidden="true" /></Button></Dialog.Close>
+                </div>
+                <div className="h-[65dvh] min-h-0 overflow-hidden rounded-xl bg-muted sm:h-[70dvh]">
+                  <TransformComponent wrapperClass="!h-full !w-full touch-none cursor-grab active:cursor-grabbing" contentClass="!h-full !w-full">
+                    <img src={props.src} srcSet={props.srcSet} sizes={props.sizes} alt={props.alt ?? "Imagen ampliada"} draggable={false} className="h-full w-full select-none object-contain" />
+                  </TransformComponent>
+                </div>
+              </>
+            )}
+          </TransformWrapper>
+          <div className="shrink-0 border-t border-border bg-background p-3 text-center">
+            <Dialog.Title className="text-base font-bold text-foreground font-['Montserrat']">{props.alt ?? "Imagen ampliada"}</Dialog.Title>
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }
