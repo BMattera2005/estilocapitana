@@ -209,36 +209,6 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
         })}
       </div>
 
-      {/* Modal Zoom Ampliado */}
-      {zoomedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4"
-          onClick={() => setZoomedImage(null)}
-        >
-          <div
-            className="relative max-w-4xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl p-2"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              onClick={() => setZoomedImage(null)}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-900/70 text-white hover:bg-slate-900 transition-colors cursor-pointer"
-            >
-              <X className="w-5 h-5" />
-            </button>
-            <img
-              src={zoomedImage.src}
-              alt={zoomedImage.title}
-              className="w-full h-[75vh] object-contain rounded-xl bg-slate-100"
-            />
-            <div className="p-4 text-center">
-              <h3 className="text-lg font-bold text-slate-900">
-                {zoomedImage.title}
-              </h3>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
