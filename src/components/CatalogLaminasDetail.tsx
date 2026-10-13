@@ -123,73 +123,73 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
           {filteredProducts.length} modelos disponibles
         </div>
 
-        {/* Grilla de Productos */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProducts.map((product) => (
-            <div
-              key={product.id}
-              className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col group hover:border-slate-300 transition-all duration-200"
-            >
-              <div
-                className="relative h-80 bg-slate-100 overflow-hidden cursor-pointer"
-                onClick={() => setSelectedImage(product.image)}
-              >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-                <div className="absolute top-3 left-3 flex flex-wrap gap-1">
-                  <span className="px-2 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-semibold">
-                    {product.format}
-                  </span>
-                  <span className="px-2 py-1 rounded bg-cyan-600/90 backdrop-blur-md text-white text-[10px] font-semibold">
-                    {product.finish}
-                  </span>
-                </div>
-              </div>
+       {/* Grilla de Productos */}
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {filteredProducts.map((product) => (
+    <div
+      key={product.id}
+      className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col group hover:border-slate-300 transition-all duration-200"
+    >
+      {/* Contenedor de Imagen */}
+      <div
+        className="relative h-80 bg-slate-100 overflow-hidden cursor-pointer"
+        onClick={() => setSelectedImage(product.image)}
+      >
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+          }}
+        />
 
-              <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                <div>
-                  <div className="text-[11px] font-bold text-cyan-600 uppercase tracking-wider mb-1">
-                    CÓDIGO: {product.code}
-                  </div>
-                  <h3 className="text-base font-bold text-slate-900">
-                    {product.name}
-                  </h3>
-                </div>
-
-                <div className="pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Diseño / Caras:</span>
-                    <span className="font-semibold text-slate-700">{product.faces}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Rendimiento:</span>
-                    <span className="font-semibold text-slate-700">{product.sqmPerSlab} m² / placa</span>
-                  </div>
-                </div>
-
-                <a
-                  href={`https://wa.me/5491161208162?text=${encodeURIComponent(
-                    `Hola Estilo Capitana, me interesa cotizar la lámina sinterizada ${product.name} (${product.code} - Formato 120×270 cm - Textura${product.finish}).`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Consultar Stock por WhatsApp</span>
-                </a>
-              </div>
-            </div>
-          ))}
+        {/* Píldora Flotante Negra Única (Solo Textura) */}
+        <div className="absolute top-3 left-3">
+          <span className="px-2.5 py-1 rounded bg-slate-900 text-white text-[10px] font-semibold uppercase tracking-wider shadow-sm">
+            {product.finish}
+          </span>
         </div>
       </div>
+
+      {/* Cuerpo de la Tarjeta */}
+      <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
+        <div>
+          <div className="text-[11px] font-bold text-cyan-600 uppercase tracking-wider mb-1">
+            CÓDIGO: {product.code}
+          </div>
+          <h3 className="text-base font-bold text-slate-900">
+            {product.name}
+          </h3>
+        </div>
+
+        <div className="pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
+          <div className="flex justify-between">
+            <span className="text-slate-400">Diseño / Caras:</span>
+            <span className="font-semibold text-slate-700">{product.faces}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-slate-400">Rendimiento:</span>
+            <span className="font-semibold text-slate-700">{product.sqmPerSlab} m² / placa</span>
+          </div>
+        </div>
+
+        <a
+          href={`https://wa.me/5491161208162?text=${encodeURIComponent(
+            `Hola Estilo Capitana, me interesa cotizar la lámina sinterizada ${product.name} (${product.code} - Textura${product.finish}).`
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200"
+        >
+          <MessageCircle className="w-4 h-4" />
+          <span>Consultar Stock por WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  ))}
+</div>
 
       {/* Lightbox Modal de Zoom */}
       {selectedImage && (
