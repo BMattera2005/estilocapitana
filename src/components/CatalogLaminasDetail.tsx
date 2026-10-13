@@ -13,13 +13,27 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
   const [search, setSearch] = useState<string>('');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const finishes = ['Todos', 'Glossy', 'Satin', 'Matt'];
+  // Eliminamos "Brillante" de los botones de filtro
+  const finishes = ['Todos', 'Mate', 'Glossy', 'Satin'];
 
   const filteredProducts = productsLaminas.filter((prod) => {
-    const matchesFinish = selectedFinish === 'Todos' || prod.finish === selectedFinish;
+    // Control opcional de visibilidad (isVisible: false no se muestra)
+    if (prod.isVisible === false) return false;
+
+    // Normalización de coincidencia para "Mate" / "Matt" y "Satin"
+    let matchesFinish = false;
+    if (selectedFinish === 'Todos') {
+      matchesFinish = true;
+    } else if (selectedFinish === 'Mate') {
+      matchesFinish = prod.finish === 'Matt' || prod.finish === 'Mate';
+    } else {
+      matchesFinish = prod.finish === selectedFinish;
+    }
+
     const matchesSearch =
       prod.name.toLowerCase().includes(search.toLowerCase()) ||
       prod.code.toLowerCase().includes(search.toLowerCase());
+
     return matchesFinish && matchesSearch;
   });
 
@@ -60,10 +74,10 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
               href="/catalogos/slabs_sintered_stone.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer uppercase"
             >
               <Download className="w-4 h-4" />
-              <span>Ver / Descargar Catálogo PDF</span>
+              <span>Ver / Descargar Catálogo</span>
             </a>
           </div>
         </div>
@@ -177,7 +191,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
         </div>
       </div>
 
-      {/* Lightbox / Modal de Imagen Ampliada */}
+      {/* Lightbox Modal de Zoom */}
       {selectedImage && (
         <div
           className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4"
