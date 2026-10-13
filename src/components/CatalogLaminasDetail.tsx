@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ArrowLeft, MessageCircle, Download, Search, X } from "lucide-react";
-import { productsLaminas, type LaminaProductItem } from "../data/productsLaminas";
+import { productsLaminas } from "../data/productsLaminas";
 
 interface CatalogLaminasDetailProps {
   onBack: () => void;
@@ -34,8 +34,8 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
   });
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      {/* Tarjeta / Contenedor Superior Estilo Imagen 2 */}
+    <div className="w-full max-w-7xl mx-auto px-4 py-8 font-['Montserrat']">
+      {/* Tarjeta / Contenedor Superior */}
       <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 mb-6 shadow-xs">
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div>
@@ -60,23 +60,23 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
             </div>
 
             {/* Título Principal H1 */}
-            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight font-['Montserrat']">
+            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
               Habitat — Láminas 120×270 cm
             </h1>
 
             {/* Descripción Técnica */}
-            <p className="text-slate-500 text-xs sm:text-sm mt-2 max-w-3xl leading-relaxed">
+            <p className="text-slate-500 text-xs sm:text-sm mt-2 max-w-3xl leading-relaxed font-normal">
               Colección Habitat MA · Formato 120×270 cm (3.24 m² / 46 kg) · Venta mayorista por placa
             </p>
           </div>
 
-          {/* Botón Superior Ver / Descargar Catálogo */}
+          {/* Botón Superior Ver / Descargar Catálogo con el Color Cian Corporativo Corregido */}
           <div className="shrink-0">
             <a
               href="/catalogos/slabs_sintered_stone.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-teal-500 to-emerald-600 hover:brightness-105 shadow-xs transition-all cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
             >
               <Download className="w-4 h-4" />
               <span>Ver / Descargar Catálogo</span>
@@ -85,7 +85,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
         </div>
       </div>
 
-      {/* Barra de Filtros y Buscador Identica a Imagen 2 */}
+      {/* Barra de Filtros y Buscador */}
       <div className="bg-white border border-slate-200 rounded-2xl p-4 mb-8 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <div className="flex items-center gap-4 flex-wrap">
           {/* Filtro por Medida */}
@@ -126,7 +126,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
           </div>
         </div>
 
-        {/* Buscador Prominente */}
+        {/* Buscador */}
         <div className="relative w-full md:w-80">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
           <input
@@ -175,7 +175,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
                   <span className="text-[11px] font-bold text-sky-600 block mb-0.5">
                     {product.code}
                   </span>
-                  <h3 className="text-lg font-bold text-slate-900 font-['Montserrat'] leading-tight">
+                  <h3 className="text-lg font-bold text-slate-900 leading-tight">
                     {product.name}
                   </h3>
 
@@ -201,7 +201,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 bg-gradient-to-r from-teal-500 to-emerald-600 hover:brightness-105 text-white font-semibold text-xs rounded-lg transition-all shadow-xs cursor-pointer"
+                  className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 text-white font-semibold text-xs rounded-lg transition-all shadow-xs cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4" />
                   Cotizar por WhatsApp
@@ -235,7 +235,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
               className="w-full h-[75vh] object-contain rounded-xl bg-slate-100"
             />
             <div className="p-4 text-center">
-              <h3 className="text-lg font-bold text-slate-900 font-['Montserrat']">
+              <h3 className="text-lg font-bold text-slate-900">
                 {zoomedImage.title}
               </h3>
             </div>
