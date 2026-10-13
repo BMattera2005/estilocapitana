@@ -133,7 +133,7 @@ export function CatalogViguetasDetail({ onBack }: { onBack: () => void }) {
                   {/* BOTÓN WHATSAPP CORPORATIVO CON DEGRADADO */}
                   <div className="mt-6">
                     <Button asChild variant="industrial" className="w-full">
-                      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                      <a href={whatsappUrl ?? undefined} target="_blank" rel="noopener noreferrer">
                         <MessageCircle aria-hidden="true" />
                         Cotizar por WhatsApp
                       </a>

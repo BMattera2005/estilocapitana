@@ -19,7 +19,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
       new Set(
         rawList
           .map((p) => p?.finish)
-          .filter((f): f is string => Boolean(f))
+          .filter((f) => f != null)
       )
     ),
   ];
