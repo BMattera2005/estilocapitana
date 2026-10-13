@@ -146,43 +146,6 @@ export function CatalogViguetasDetail({ onBack }: { onBack: () => void }) {
         </div>
       </section>
 
-      {/* MODAL LIGHTBOX FLOTANTE CON ZOOM */}
-      {zoomedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-md p-4 cursor-zoom-out"
-          onClick={() => setZoomedImage(null)}
-        >
-          <div
-            className="relative max-w-5xl w-full max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl p-2 cursor-default flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              onClick={() => setZoomedImage(null)}
-              className="absolute top-4 right-4 z-10 p-2.5 rounded-full bg-slate-900/80 text-white hover:bg-slate-900 transition-colors cursor-pointer"
-            >
-              ✕
-            </button>
-
-            <div className="overflow-auto max-h-[80vh] flex items-center justify-center p-2">
-              <img
-                src={zoomedImage.src}
-                alt={zoomedImage.name}
-                className="max-w-none w-auto h-auto min-w-full rounded-xl bg-slate-100 cursor-zoom-in hover:scale-125 transition-transform duration-300 object-contain"
-              />
-            </div>
-
-            <div className="p-3 text-center border-t border-slate-100 bg-white">
-              <h3 className="text-base font-bold text-slate-900 font-['Montserrat']">
-                {zoomedImage.name}
-              </h3>
-              <p className="text-xs text-slate-500">
-                Pasá el cursor o tocá sobre la imagen para inspeccionar en detalle
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
