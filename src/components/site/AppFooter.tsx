@@ -11,7 +11,10 @@ export function AppFooter() {
         <div>
           <div className="flex items-center gap-3">
             <img src="/logo.png" alt="estilo.capitana" className="h-9 w-auto object-contain" />
-            <p className="text-base font-semibold text-foreground">{siteConfig.brandNameDisplay}</p>
+            <p className="text-base font-semibold text-foreground">
+              Estilo Capitana <span className="font-normal text-muted-foreground">·</span>{" "}
+              <span className="text-sm font-normal text-muted-foreground">{siteConfig.descriptor}</span>
+            </p>
           </div>
           <p className="mt-3 text-sm text-muted-foreground">{siteConfig.descriptor}</p>
         </div>

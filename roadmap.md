@@ -14,3 +14,20 @@
 - [x] Unificar la comunicación como líneas de productos y quitar puntos finales de los títulos.
 - [x] Precargar consultas de stock en todos los enlaces de correo y WhatsApp.
 - [x] Completar Respaldo industrial con las unidades representadas.
+- [x] Perfeccionar la interfaz Shop del catálogo Ferrazzano 43×43.
+- [x] Restaurar el degradado de marca en los botones principales del catálogo y la Shop.
+- [x] Activar la vista Shop interactiva del catálogo Habitat Porcelanato Esmaltado.
+- [x] Eliminar el producto de prueba Pearl White del catálogo Full Body.
+- [x] Reparar la hidratación del cliente alineando @tanstack/react-router 1.170.18 con react-start 1.168.32.
+- [x] Estandarizar las cabeceras y acciones de las vistas de detalle de catálogo.
+- [x] Rediseñar el Hero de Inicio en dos columnas con badge B2B, CTAs y composición visual.
+- [x] Actualizar las cinco familias de productos con sus accesos filtrados al catálogo.
+- [x] Reparar errores de tipado heredados de los cambios externos de GitHub en las vistas de detalle.
+- [x] Reparar la estructura JSX de Inicio e integrar la sección de valor agregado B2B.
+- [x] Enlazar las 6 imágenes del mosaico del Hero directo a su colección vía ?catalogo=ID.
+- [x] Abrir la vista extendida de productos desde /catalogo?catalogo=ID.
+- [x] Renombrar la solapa "Catálogos" a "Colecciones" en el menú.
+- [x] Corregir tipado heredado (CeramicProduct36, finishText/finishes, finish) y repuestos de imagen de Viguetas y Telgopor.
+- [x] Reemplazar la etiqueta "SHOP ·" por "CATÁLOGO ·" en las cabeceras de las ocho vistas de colección.
+- [x] Zoom interactivo en el lightbox de las ocho vistas: visor compartido con hover:scale-150, contenedor desplazable max-h-[80vh] y ayuda "hacer zoom e inspeccionar la textura"; Láminas, Viguetas, Porcelanato Esmaltado y EPS migradas al visor común.
+- [x] Mejorar el visor compartido para móvil: pellizco, doble toque, arrastre y controles de zoom; verificar móvil y escritorio.

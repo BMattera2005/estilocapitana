@@ -17,7 +17,7 @@ export const siteConfig = {
   },
   navigation: [
     { label: "Inicio", to: "/" },
-    { label: "Catálogos", to: "/catalogo" },
+    { label: "Colecciones", to: "/catalogo" },
     { label: "Quiénes somos", to: "/nosotros" },
     { label: "Contacto", to: "/contacto" },
   ],

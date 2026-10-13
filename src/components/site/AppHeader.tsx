@@ -1,3 +1,4 @@
+// src/components/AppHeader.tsx
 import { Link } from "@tanstack/react-router";
 import { Menu } from "lucide-react";
 
@@ -14,10 +15,11 @@ import {
 import { siteConfig, type SiteNavigationItem } from "@/config/site";
 
 import { BrandLogo } from "./BrandLogo";
-const navBaseClass =
-  "rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
-const activeNavClass = "bg-brand-gradient text-primary-foreground shadow-glass";
+const navBaseClass =
+  "rounded-lg px-3.5 py-2 text-xs font-bold uppercase tracking-wider text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+
+const activeNavClass = "bg-brand-gradient text-primary-foreground shadow-glass font-bold";
 
 function NavLink({ item }: { item: SiteNavigationItem }) {
   return (
@@ -37,7 +39,7 @@ function MobileNavLink({ item }: { item: SiteNavigationItem }) {
     <SheetClose asChild>
       <Link
         to={item.to}
-        className="rounded-md border border-border bg-surface px-4 py-3 text-sm font-medium text-foreground transition-colors duration-200 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="rounded-lg border border-border bg-surface px-4 py-3 text-xs font-bold uppercase tracking-wider text-foreground transition-colors duration-200 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         activeProps={{ className: activeNavClass }}
         activeOptions={{ exact: item.to === "/" }}
       >
@@ -53,13 +55,13 @@ export function AppHeader() {
       <div className="mx-auto grid h-20 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 sm:px-6 lg:px-8">
         <Link
           to="/"
-          aria-label="Ir al inicio de estilo.capitana"
+          aria-label="Ir al inicio de ESTILO CAPITANA"
           className="min-w-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           <BrandLogo />
         </Link>
 
-        <nav aria-label="Navegación principal" className="hidden min-w-0 items-center justify-end gap-1 lg:flex">
+        <nav aria-label="Navegación principal" className="hidden min-w-0 items-center justify-end gap-1.5 lg:flex">
           {siteConfig.navigation.map((item) => (
             <NavLink key={item.to} item={item} />
           ))}
@@ -75,7 +77,7 @@ export function AppHeader() {
 
             <SheetContent className="w-[min(92vw,24rem)] border-border-strong">
               <SheetHeader className="pr-10 text-left">
-                <SheetTitle>Menú</SheetTitle>
+                <SheetTitle className="font-bold uppercase tracking-wider text-sm">Menú</SheetTitle>
                 <SheetDescription>{siteConfig.descriptor}</SheetDescription>
               </SheetHeader>
               <div className="mt-8 grid gap-3">
