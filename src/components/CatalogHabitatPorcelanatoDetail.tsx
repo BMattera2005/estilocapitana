@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Download, MessageCircle, Search, X } from 'lucide-react';
+import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
 import { productsHabitatPorcelanato } from '../data/productsHabitatPorcelanato';
+import { ZoomableImage } from '@/components/catalog/ZoomableImage';
 
 interface Props {
   onBack: () => void;
@@ -10,7 +11,6 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<Props> = ({ onBack }) => 
   const [selectedFormat, setSelectedFormat] = useState<string>('Todos');
   const [selectedFinish, setSelectedFinish] = useState<string>('Todos');
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const visibleProducts = productsHabitatPorcelanato.filter(
     (p) => p.isVisible !== false
@@ -166,17 +166,14 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<Props> = ({ onBack }) => 
                 className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col group hover:border-slate-300 transition-all duration-200"
               >
                 {/* Imagen del Producto con Zoom Lightbox */}
-                <div
-                  className="relative h-64 bg-slate-100 overflow-hidden cursor-pointer"
-                  onClick={() => setSelectedImage(product.image)}
-                >
-                  <img
+                <div className="relative h-64 bg-slate-100 overflow-hidden group">
+                  <ZoomableImage
                     src={product.image}
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                   />
-                  <div className="absolute top-3 left-3">
+                  <div className="pointer-events-none absolute top-3 left-3">
                     <span className="px-2.5 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider">
                       {textureLabel}
                     </span>
@@ -224,28 +221,6 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<Props> = ({ onBack }) => 
         </div>
       </div>
 
-      {/* Lightbox / Zoom de Imagen Ampliada */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="relative max-w-4xl max-h-[85vh] bg-white rounded-2xl overflow-hidden shadow-2xl">
-            <button
-              type="button"
-              onClick={() => setSelectedImage(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-slate-900/60 text-white hover:bg-slate-900 transition-colors z-10 cursor-pointer"
-            >
-              <X className="w-5 h-5" />
-            </button>
-            <img
-              src={selectedImage}
-              alt="Vista ampliada"
-              className="max-w-full max-h-[85vh] object-contain"
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 };
