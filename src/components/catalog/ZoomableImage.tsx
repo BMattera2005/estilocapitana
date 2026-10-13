@@ -34,7 +34,7 @@ export function ZoomableImage(props: ImgHTMLAttributes<HTMLImageElement>) {
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-[100] cursor-zoom-out bg-foreground/90 backdrop-blur-md" />
-        <Dialog.Content aria-describedby={undefined} className="fixed left-1/2 top-1/2 z-[101] flex max-h-[94dvh] w-[calc(100vw-1rem)] max-w-5xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl bg-background p-2 shadow-industrial focus:outline-none sm:w-[calc(100vw-2rem)]">
+        <Dialog.Content aria-describedby={undefined} className="fixed left-[50dvw] top-[50dvh] z-[101] flex max-h-[94dvh] w-[calc(100vw-1rem)] max-w-5xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl bg-background p-2 shadow-industrial focus:outline-none sm:w-[calc(100vw-2rem)]">
           <TransformWrapper minScale={1} maxScale={5} centerOnInit smooth onTransform={(_, next) => setScale(next.scale)} wheel={{ step: 0.002 }} doubleClick={{ mode: "toggle", step: 1.5, animationTime }} zoomAnimation={{ animationTime }} autoAlignment={{ animationTime }} velocityAnimation={{ disabled: reducedMotion }}>
             {({ zoomIn, zoomOut, resetTransform }) => (
               <>
