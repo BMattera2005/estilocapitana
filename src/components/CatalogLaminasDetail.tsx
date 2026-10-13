@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { ArrowLeft, MessageCircle, Download, Search, X } from "lucide-react";
+import { ArrowLeft, MessageCircle, Download, Search } from "lucide-react";
 import { productsLaminas } from "../data/productsLaminas";
+import { ZoomableImage } from "@/components/catalog/ZoomableImage";
 
 interface CatalogLaminasDetailProps {
   onBack: () => void;
@@ -9,7 +10,6 @@ interface CatalogLaminasDetailProps {
 export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBack }) => {
   const [filterFinish, setFilterFinish] = useState<string>("Todos");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [zoomedImage, setZoomedImage] = useState<{ src: string; title: string } | null>(null);
 
   const rawList = Array.isArray(productsLaminas) ? productsLaminas : [];
 
@@ -152,11 +152,8 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
             >
               <div>
                 {/* Imagen con Zoom Modal */}
-                <div
-                  className="relative w-full h-72 bg-slate-100 overflow-hidden cursor-pointer group"
-                  onClick={() => setZoomedImage({ src: product.image, title: product.name })}
-                >
-                  <img
+                <div className="relative w-full h-72 bg-slate-100 overflow-hidden group">
+                  <ZoomableImage
                     src={product.image}
                     alt={product.name}
                     className="w-full h-full object-cover block transition-transform duration-300 group-hover:scale-105"
@@ -164,7 +161,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
                       e.currentTarget.style.display = "none";
                     }}
                   />
-                  <div className="absolute top-3 right-3">
+                  <div className="pointer-events-none absolute top-3 right-3">
                     <span className="px-2.5 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
                       {product.finish}
                     </span>
