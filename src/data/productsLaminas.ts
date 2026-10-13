@@ -88,7 +88,7 @@ export const productsLaminas: LaminaProductItem[] = [
     format: "120x270 cm",
     thickness: "9 mm",
     sqmPerSlab: 3.24,
-    image: "/products/sinteredstone/carrara.jpg",
+    image: "/products/sinteredstone/carrara_gold.jpg",
   },
   {
     id: "lam-08",
