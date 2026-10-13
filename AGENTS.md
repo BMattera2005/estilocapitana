@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Catalog detail views share `CatalogDetailHeader` so navigation, hierarchy, and primary actions stay visually consistent.
+- Catalog photos share `ZoomableImage` with Radix Dialog and react-zoom-pan-pinch so touch gestures, zoom bounds, and accessible modal behavior stay consistent.
