@@ -260,7 +260,7 @@ function Index() {
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-normal uppercase text-primary">Colecciones disponibles</p>
           <h2 className="mt-3 max-w-3xl text-3xl font-semibold text-foreground sm:text-4xl">
-            Cinco colecciones para proyectos y canales profesionales
+            Cinco familias comerciales para proyectos y canales profesionales
           </h2>
           <div className="mt-9 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
             {productFamilies.map((family) => (
