@@ -1,6 +1,5 @@
-// src/components/Catalog36Detail.tsx
 import React, { useState } from "react";
-import { ArrowLeft, MessageCircle, FileText, Search, Package, Truck, Layers, Minus, Plus } from "lucide-react";
+import { ArrowLeft, MessageCircle, Download, Search, Minus, Plus } from "lucide-react";
 import { products36x36, CeramicProduct36, packingEsmaltados36 } from "../data/products36";
 import { buildWhatsAppUrl } from "../lib/quote-message";
 
@@ -8,133 +7,182 @@ interface Catalog36DetailProps {
   onBack: () => void;
 }
 
-// Subcomponente de tarjeta individual con su propio estado de calculadora
-const ProductCard36: React.FC<{ p: CeramicProduct36 }> = ({ p }) => {
+const ProductCard36: React.FC<{ product: CeramicProduct36; onZoom: (src: string, title: string) => void }> = ({ product, onZoom }) => {
+  const pkg = product.packaging || packingEsmaltados36;
+
   const [pallets, setPallets] = useState<number>(1);
+  const [boxes, setBoxes] = useState<number>(pkg.boxesPerPallet);
+  const [sqm, setSqm] = useState<number>(Number(pkg.sqmPerPallet.toFixed(2)));
 
-  // Selecciona automáticamente packaging de esmaltado o colonial según el modelo
-  const pkg = p.packaging || packingEsmaltados36;
+  const handlePalletsChange = (val: number) => {
+    const newPallets = Math.max(1, val);
+    setPallets(newPallets);
+    setBoxes(newPallets * pkg.boxesPerPallet);
+    setSqm(Number((newPallets * pkg.sqmPerPallet).toFixed(2)));
+  };
 
-  // Cálculos dinámicos en tiempo real
-  const totalBoxes = pallets * pkg.boxesPerPallet;
-  const totalSqm = (pallets * pkg.sqmPerPallet).toFixed(2);
-  const totalKg = pallets * pkg.kgPerPallet;
+  const handleBoxesChange = (val: number) => {
+    const newBoxes = Math.max(1, val);
+    setBoxes(newBoxes);
+    const calculatedPallets = Math.max(1, Math.round(newBoxes / pkg.boxesPerPallet));
+    setPallets(calculatedPallets);
+    setSqm(Number((newBoxes * pkg.sqmPerBox).toFixed(2)));
+  };
+
+  const handleSqmChange = (val: number) => {
+    const newSqm = Math.max(0.1, val);
+    setSqm(newSqm);
+    const calculatedBoxes = Math.max(1, Math.ceil(newSqm / pkg.sqmPerBox));
+    setBoxes(calculatedBoxes);
+    setPallets(Math.max(1, Math.ceil(calculatedBoxes / pkg.boxesPerPallet)));
+  };
+
+  const totalKg = Number((boxes * pkg.kgPerBox).toFixed(0));
   const totalTons = (totalKg / 1000).toFixed(2);
 
-  const whatsappMsg = `Hola estilo.capitana, quisiera solicitar cotización para la cerámica Ferrazzano 36x36: ${p.name} (Línea: ${p.line}, Acabado: ${p.finish}). Cantidad: ${pallets} pallet(s) (${totalSqm} m² / ${totalBoxes} cajas / ${totalTons} tn).`;
+  const whatsappMsg = `Hola Estilo Capitana, quisiera solicitar cotización para la cerámica Ferrazzano 36x36: ${product.name} (Línea: ${product.line}, Acabado: ${product.finish}). Cantidad: ${pallets} pallet(s) (${boxes} cajas / ${sqm} m² / ${totalTons} tn).`;
   const whatsappUrl = buildWhatsAppUrl(whatsappMsg);
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
       <div>
-        {/* Imagen del modelo */}
-        <div className="relative w-full h-56 bg-slate-100 overflow-hidden">
+        {/* Imagen del Producto con Zoom Modal */}
+        <div
+          className="relative w-full h-72 bg-slate-100 overflow-hidden cursor-pointer group"
+          onClick={() => onZoom(product.image, product.name)}
+        >
           <img
-            src={p.image}
-            alt={p.name}
-            className="w-full h-full object-cover block"
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover block transition-transform duration-300 group-hover:scale-105"
             onError={(e) => {
               e.currentTarget.style.display = "none";
             }}
           />
           <div className="absolute top-3 right-3">
-            <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs">
-              {p.finish}
+            <span className="px-2.5 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
+              {product.finish}
             </span>
           </div>
         </div>
 
-        {/* Información del Producto */}
-        <div className="p-4 pb-2">
-          <span className="text-[11px] font-bold text-sky-600 block mb-0.5 uppercase">
-            {p.line} · {p.colorOrDesign}
+        {/* Ficha e Información */}
+        <div className="p-4">
+          <span className="text-[11px] font-bold text-sky-600 block mb-0.5">
+            {product.line} · {product.colorOrDesign}
           </span>
-          <h3 className="text-lg font-bold text-slate-900 font-['Montserrat'] leading-tight mb-2">
-            {p.name}
+          <h3 className="text-lg font-bold text-slate-900 leading-tight">
+            {product.name}
           </h3>
 
-          <div className="space-y-1 text-xs text-slate-600 border-t border-slate-100 pt-2 mb-3">
+          <div className="mt-3 space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
             <div className="flex justify-between">
               <span className="text-slate-400 font-medium">Tránsito / Uso:</span>
-              <span className="font-semibold text-slate-800">{p.traffic.split(" ")[0]}</span>
+              <span className="font-semibold text-slate-800">{product.traffic.split(" ")[0]}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-400 font-medium">Superficie:</span>
-              <span className="font-semibold text-slate-800">{p.surface}</span>
+              <span className="font-semibold text-slate-800">{product.surface}</span>
             </div>
           </div>
 
-          {/* CALCULADORA DE UNIDADES / PALLETS */}
-          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 my-2">
-            <div className="flex items-center justify-between gap-2 mb-2">
-              <span className="text-[11px] font-bold uppercase text-slate-500">Pallets Cerrados:</span>
-              <div className="flex items-center bg-white border border-slate-300 rounded-md overflow-hidden">
-                <button
-                  type="button"
-                  onClick={() => setPallets(Math.max(1, pallets - 1))}
-                  className="px-2 py-1 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
-                  aria-label="Restar pallet"
-                >
-                  <Minus className="w-3.5 h-3.5" />
-                </button>
-                <input
-                  type="number"
-                  min="1"
-                  value={pallets}
-                  onChange={(e) => setPallets(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-10 text-center font-bold text-xs text-slate-900 focus:outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={() => setPallets(pallets + 1)}
-                  className="px-2 py-1 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
-                  aria-label="Sumar pallet"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                </button>
+          {/* CALCULADORA REESTRUCTURADA SIN RECORTES DE TEXTO */}
+          <div className="mt-3 bg-slate-50 border border-slate-100 rounded-lg p-2.5 space-y-2">
+            <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider block text-center">
+              Calculadora de Unidades
+            </span>
+
+            <div className="grid grid-cols-3 gap-1.5 text-[11px]">
+              {/* Selector Pallets */}
+              <div className="bg-white border border-slate-200 rounded p-1.5 text-center flex flex-col justify-between">
+                <span className="text-[9px] text-slate-400 font-bold uppercase block">Pallets</span>
+                <div className="flex items-center justify-center gap-0.5 mt-1">
+                  <button
+                    type="button"
+                    onClick={() => handlePalletsChange(pallets - 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 transition-colors"
+                  >
+                    <Minus className="w-3 h-3" />
+                  </button>
+                  <input
+                    type="number"
+                    min="1"
+                    value={pallets}
+                    onChange={(e) => handlePalletsChange(parseInt(e.target.value) || 1)}
+                    className="min-w-[1.75rem] max-w-[2.5rem] text-center font-bold text-slate-800 focus:outline-none bg-transparent px-0.5"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handlePalletsChange(pallets + 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 transition-colors"
+                  >
+                    <Plus className="w-3 h-3" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Selector Cajas (Con ancho suficiente para 2 o 3 dígitos) */}
+              <div className="bg-white border border-slate-200 rounded p-1.5 text-center flex flex-col justify-between">
+                <span className="text-[9px] text-slate-400 font-bold uppercase block">Cajas</span>
+                <div className="flex items-center justify-center gap-0.5 mt-1">
+                  <button
+                    type="button"
+                    onClick={() => handleBoxesChange(boxes - 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 transition-colors"
+                  >
+                    <Minus className="w-3 h-3" />
+                  </button>
+                  <input
+                    type="number"
+                    min="1"
+                    value={boxes}
+                    onChange={(e) => handleBoxesChange(parseInt(e.target.value) || 1)}
+                    className="min-w-[2.25rem] max-w-[3rem] text-center font-bold text-slate-800 focus:outline-none bg-transparent px-0.5"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleBoxesChange(boxes + 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 transition-colors"
+                  >
+                    <Plus className="w-3 h-3" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Campo m² */}
+              <div className="bg-white border border-slate-200 rounded p-1.5 text-center flex flex-col justify-between">
+                <span className="text-[9px] text-slate-400 font-bold uppercase block">m²</span>
+                <div className="flex items-center justify-center mt-1">
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0.1"
+                    value={sqm}
+                    onChange={(e) => handleSqmChange(parseFloat(e.target.value) || 0.1)}
+                    className="w-full text-center font-bold text-slate-800 focus:outline-none bg-transparent px-0.5"
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Rendimiento Dinámico */}
-            <div className="grid grid-cols-3 gap-1.5 pt-2 border-t border-slate-200/80 text-center">
-              <div>
-                <div className="flex items-center justify-center gap-1 text-sky-600 mb-0.5">
-                  <Layers className="w-3 h-3" />
-                  <span className="text-[9px] font-bold uppercase">Superficie</span>
-                </div>
-                <span className="text-xs font-extrabold text-slate-900">{totalSqm} m²</span>
-              </div>
-
-              <div className="border-x border-slate-200">
-                <div className="flex items-center justify-center gap-1 text-emerald-600 mb-0.5">
-                  <Package className="w-3 h-3" />
-                  <span className="text-[9px] font-bold uppercase">Cajas</span>
-                </div>
-                <span className="text-xs font-extrabold text-slate-900">{totalBoxes} cajas</span>
-              </div>
-
-              <div>
-                <div className="flex items-center justify-center gap-1 text-amber-600 mb-0.5">
-                  <Truck className="w-3 h-3" />
-                  <span className="text-[9px] font-bold uppercase">Peso</span>
-                </div>
-                <span className="text-xs font-extrabold text-slate-900">{totalTons} tn</span>
-              </div>
+            <div className="flex justify-between items-center text-[10px] text-slate-500 pt-1.5 border-t border-slate-200/60">
+              <span>Peso estimado:</span>
+              <span className="font-bold text-slate-800">{totalTons} tn ({totalKg} kg)</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Botón Acción WhatsApp */}
-      <div className="p-4 pt-2">
+      {/* Botón WhatsApp */}
+      <div className="p-4 pt-0">
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
+          className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 text-white font-semibold text-xs rounded-lg transition-all shadow-xs cursor-pointer"
         >
           <MessageCircle className="w-4 h-4" />
-          Cotizar Lote por WhatsApp
+          Cotizar por WhatsApp
         </a>
       </div>
     </div>
@@ -142,87 +190,160 @@ const ProductCard36: React.FC<{ p: CeramicProduct36 }> = ({ p }) => {
 };
 
 export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
-  const [selectedFinish, setSelectedFinish] = useState<string>("Todos");
+  const [filterFinish, setFilterFinish] = useState<string>("Todos");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [zoomedImage, setZoomedImage] = useState<{ src: string; title: string } | null>(null);
 
   const finishes = ["Todos", "Brillante", "Mate", "Colonial"];
 
-  const filteredProducts = products36x36.filter((p) => {
-    const matchesFinish = selectedFinish === "Todos" || p.finish === selectedFinish;
-    const matchesSearch =
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.line.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.colorOrDesign.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesFinish && matchesSearch;
+  const filteredProducts = products36x36.filter((product) => {
+    const matchesFinish = filterFinish === "Todos" || product.finish === filterFinish;
+    const name = product.name ? product.name.toLowerCase() : "";
+    const line = product.line ? product.line.toLowerCase() : "";
+    const color = product.colorOrDesign ? product.colorOrDesign.toLowerCase() : "";
+    const query = searchQuery.toLowerCase();
+    return matchesFinish && (name.includes(query) || line.includes(query) || color.includes(query));
   });
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <button
-          onClick={onBack}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+    <div className="w-full max-w-7xl mx-auto px-4 py-8 font-['Montserrat']">
+      {/* Lightbox / Zoom Ampliado Modal */}
+      {zoomedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4"
+          onClick={() => setZoomedImage(null)}
         >
-          <ArrowLeft className="w-4 h-4" />
-          Volver a Catálogos
-        </button>
-
-        <a
-          href="/catalogos/ferrazzano_36.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 text-white rounded-lg text-sm font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer"
-        >
-          <FileText className="w-4 h-4" />
-          Descargar PDF 36×36
-        </a>
-      </div>
-
-      <div className="mb-8">
-        <span className="text-xs font-bold uppercase tracking-wider text-sky-600">Industria Argentina</span>
-        <h1 className="text-3xl font-extrabold text-slate-900 mt-1 font-['Montserrat']">
-          Ferrazzano — Formato 36×36 cm
-        </h1>
-        <p className="text-slate-600 mt-2 max-w-3xl text-sm leading-relaxed">
-          Cerámica Salteña · Esmaltados: 2,33 m² por caja (83,98 m² / pallet) · Coloniales: 2,20 m² por caja (79,32 m² / pallet) · Pallet de 36 cajas (1.220 kg)
-        </p>
-      </div>
-
-      {/* BARRA UNIFICADA CON BUSCADOR Y FILTROS */}
-      <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-bold uppercase text-slate-500">Acabado:</span>
-          {finishes.map((fn) => (
+          <div
+            className="relative max-w-4xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl p-2"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
-              key={fn}
-              onClick={() => setSelectedFinish(fn)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                selectedFinish === fn
-                  ? "bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-sm"
-                  : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
-              }`}
+              type="button"
+              onClick={() => setZoomedImage(null)}
+              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-900/70 text-white hover:bg-slate-900 transition-colors cursor-pointer"
             >
-              {fn}
+              ✕
             </button>
-          ))}
+            <img
+              src={zoomedImage.src}
+              alt={zoomedImage.title}
+              className="w-full h-[75vh] object-contain rounded-xl bg-slate-100"
+            />
+            <div className="p-4 text-center">
+              <h3 className="text-lg font-bold text-slate-900 font-['Montserrat']">{zoomedImage.title}</h3>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tarjeta / Contenedor Superior */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 mb-6 shadow-xs">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+          <div>
+            {/* Botón Volver a las Colecciones */}
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors cursor-pointer mb-4"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Volver a las Colecciones</span>
+            </button>
+
+            {/* Badges y Categoría */}
+            <div className="flex items-center gap-2 flex-wrap mb-2">
+              <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px] font-medium">
+                Industria Argentina
+              </span>
+              <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
+                CATÁLOGO · PISOS CERÁMICOS
+              </span>
+            </div>
+
+            {/* Título Principal H1 */}
+            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Ferrazzano — Formato 36×36 cm
+            </h1>
+
+            {/* Descripción Técnica */}
+            <p className="text-slate-500 text-xs sm:text-sm mt-2 max-w-3xl leading-relaxed font-normal">
+              Cerámica Salteña · Esmaltados: 2,33 m² por caja (83,98 m² / pallet) · Coloniales: 2,20 m² por caja (79,32 m² / pallet) · Pallet de 36 cajas (1.220 kg)
+            </p>
+          </div>
+
+          {/* Botón Superior Ver / Descargar Catálogo */}
+          <div className="shrink-0">
+            <a
+              href="/catalogos/ferrazzano_36.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
+            >
+              <Download className="w-4 h-4" />
+              <span>Ver / Descargar Catálogo</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Barra de Filtros y Buscador */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 mb-8 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
+          {/* Filtro por Medida */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-[11px] font-bold uppercase text-slate-400">MEDIDA:</span>
+            <div className="flex gap-1">
+              <button
+                type="button"
+                className="px-3 py-1 rounded-lg text-xs font-semibold bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-xs cursor-default"
+              >
+                36x36 cm
+              </button>
+            </div>
+          </div>
+
+          {/* Filtro por Textura */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-[11px] font-bold uppercase text-slate-400">TEXTURA:</span>
+            <div className="flex gap-1 flex-wrap">
+              {finishes.map((finish) => {
+                const isActive = filterFinish === finish;
+                return (
+                  <button
+                    key={finish}
+                    type="button"
+                    onClick={() => setFilterFinish(finish)}
+                    className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-xs"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    }`}
+                  >
+                    {finish}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
+        {/* Buscador */}
         <div className="relative w-full md:w-80">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-700 font-bold pointer-events-none" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
           <input
             type="text"
-            placeholder="Buscar modelo o diseño..."
+            placeholder="Buscar modelo o serie..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-white border-2 border-slate-400 rounded-lg text-xs font-semibold text-slate-900 placeholder-slate-500 focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20 shadow-xs transition-all"
+            className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:bg-white transition-all"
           />
         </div>
       </div>
 
-      {/* GRILLA DE MODELOS */}
+      {/* Grilla de Productos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map((p) => (
-          <ProductCard36 key={p.id} p={p} />
+        {filteredProducts.map((product) => (
+          <ProductCard36 key={product.id} product={product} onZoom={(src, title) => setZoomedImage({ src, title })} />
         ))}
       </div>
     </div>
