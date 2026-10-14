@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ArrowLeft, FileText, Search, Package, Truck, Layers, Minus, Plus, MessageCircle } from "lucide-react";
+vimport React, { useState } from "react";
+import { ArrowLeft, MessageCircle, Download, Search, Minus, Plus } from "lucide-react";
 import { products43x43, CeramicProduct, packingStandard43 } from "../data/products43";
 import { buildWhatsAppUrl } from "../lib/quote-message";
 
@@ -7,8 +7,8 @@ interface Catalog43DetailProps {
   onBack: () => void;
 }
 
-const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: string) => void }> = ({ p, onZoom }) => {
-  const pkg = p.packaging || packingStandard43;
+const ProductCard43: React.FC<{ product: CeramicProduct }> = ({ product }) => {
+  const pkg = product.packaging || packingStandard43;
 
   const [pallets, setPallets] = useState<number>(1);
   const [boxes, setBoxes] = useState<number>(pkg.boxesPerPallet);
@@ -40,151 +40,144 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
   const totalKg = Number((boxes * pkg.kgPerBox).toFixed(0));
   const totalTons = (totalKg / 1000).toFixed(2);
 
-  const whatsappMsg = `Hola Estilo Capitana, quisiera solicitar cotización para la cerámica Ferrazzano 43x43: ${p.name} (Línea: ${p.line}, Acabado: ${p.finish}). Cantidad: ${pallets} pallet(s) (${boxes} cajas / ${sqm} m² / ${totalTons} tn).`;
+  const whatsappMsg = `Hola Estilo Capitana, quisiera solicitar cotización para la cerámica Ferrazzano 43x43: ${product.name} (Línea: ${product.line}, Acabado: ${product.finish}). Cantidad: ${pallets} pallet(s) (${boxes} cajas / ${sqm} m² / ${totalTons} tn).`;
   const whatsappUrl = buildWhatsAppUrl(whatsappMsg);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between">
+    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
       <div>
-        <div
-          className="relative w-full h-52 bg-slate-100 overflow-hidden cursor-pointer group"
-          onClick={() => onZoom(p.image, p.name)}
-        >
+        {/* Imagen del Producto */}
+        <div className="relative w-full h-72 bg-slate-100 overflow-hidden group">
           <img
-            src={p.image}
-            alt={p.name}
-            className="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-300"
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover block transition-transform duration-300 group-hover:scale-105"
             onError={(e) => {
               e.currentTarget.style.display = "none";
             }}
           />
           <div className="absolute top-3 right-3">
-            <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs">
-              {p.finish}
+            <span className="px-2.5 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
+              {product.finish}
             </span>
           </div>
         </div>
 
-        <div className="p-4 pb-2">
-          <span className="text-[11px] font-bold text-[#00b4d8] block mb-0.5 uppercase tracking-wide">
-            {p.line} · {p.colorOrDesign}
+        {/* Ficha e Información */}
+        <div className="p-4">
+          <span className="text-[11px] font-bold text-sky-600 block mb-0.5">
+            {product.line} · {product.colorOrDesign}
           </span>
-          <h3 className="text-base font-bold text-slate-900 font-['Montserrat'] leading-snug mb-2">
-            {p.name}
+          <h3 className="text-lg font-bold text-slate-900 leading-tight">
+            {product.name}
           </h3>
 
-          <div className="space-y-1 text-xs text-slate-600 border-t border-slate-100 pt-2 mb-3">
+          <div className="mt-3 space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
             <div className="flex justify-between">
               <span className="text-slate-400 font-medium">Tránsito / Uso:</span>
-              <span className="font-semibold text-slate-800">{p.traffic.split(" ")[0]}</span>
+              <span className="font-semibold text-slate-800">{product.traffic.split(" ")[0]}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-400 font-medium">Caras / Trama:</span>
-              <span className="font-semibold text-slate-800">{p.faces} caras</span>
+              <span className="font-semibold text-slate-800">{product.faces} caras</span>
             </div>
           </div>
 
-          {/* CALCULADORA ESTÁNDAR DE UNIDADES */}
-          <div className="bg-slate-50/80 border border-slate-200/80 rounded-xl p-3 my-2 space-y-2">
-            <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider block mb-1">
-              Calculadora de Lote
+          {/* CALCULADORA COMPACTA DE UNIDADES */}
+          <div className="mt-3 bg-slate-50 border border-slate-100 rounded-lg p-2.5 space-y-2">
+            <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider block">
+              Calculadora de Unidades
             </span>
 
-            <div className="grid grid-cols-3 gap-1.5 text-xs">
-              <div className="bg-white border border-slate-200 rounded-lg p-1.5 text-center">
-                <span className="text-[9px] font-bold text-slate-400 uppercase block mb-0.5">Pallets</span>
-                <div className="flex items-center justify-center gap-1">
+            <div className="grid grid-cols-3 gap-1 text-[11px]">
+              {/* Pallets */}
+              <div className="bg-white border border-slate-200 rounded p-1 text-center">
+                <span className="text-[9px] text-slate-400 font-bold block uppercase">Pallets</span>
+                <div className="flex items-center justify-center gap-1 mt-0.5">
                   <button
                     type="button"
                     onClick={() => handlePalletsChange(pallets - 1)}
-                    className="text-slate-400 hover:text-slate-800 transition-colors"
+                    className="text-slate-400 hover:text-slate-800"
                   >
-                    <Minus className="w-3 h-3" />
+                    <Minus className="w-2.5 h-2.5" />
                   </button>
                   <input
                     type="number"
                     min="1"
                     value={pallets}
                     onChange={(e) => handlePalletsChange(parseInt(e.target.value) || 1)}
-                    className="w-7 text-center font-extrabold text-xs text-slate-900 focus:outline-none bg-transparent"
+                    className="w-6 text-center font-bold text-slate-800 focus:outline-none bg-transparent"
                   />
                   <button
                     type="button"
                     onClick={() => handlePalletsChange(pallets + 1)}
-                    className="text-slate-400 hover:text-slate-800 transition-colors"
+                    className="text-slate-400 hover:text-slate-800"
                   >
-                    <Plus className="w-3 h-3" />
+                    <Plus className="w-2.5 h-2.5" />
                   </button>
                 </div>
               </div>
 
-              <div className="bg-white border border-slate-200 rounded-lg p-1.5 text-center">
-                <span className="text-[9px] font-bold text-slate-400 uppercase block mb-0.5">Cajas</span>
-                <div className="flex items-center justify-center gap-1">
+              {/* Cajas */}
+              <div className="bg-white border border-slate-200 rounded p-1 text-center">
+                <span className="text-[9px] text-slate-400 font-bold block uppercase">Cajas</span>
+                <div className="flex items-center justify-center gap-1 mt-0.5">
                   <button
                     type="button"
                     onClick={() => handleBoxesChange(boxes - 1)}
-                    className="text-slate-400 hover:text-slate-800 transition-colors"
+                    className="text-slate-400 hover:text-slate-800"
                   >
-                    <Minus className="w-3 h-3" />
+                    <Minus className="w-2.5 h-2.5" />
                   </button>
                   <input
                     type="number"
                     min="1"
                     value={boxes}
                     onChange={(e) => handleBoxesChange(parseInt(e.target.value) || 1)}
-                    className="w-8 text-center font-extrabold text-xs text-slate-900 focus:outline-none bg-transparent"
+                    className="w-7 text-center font-bold text-slate-800 focus:outline-none bg-transparent"
                   />
                   <button
                     type="button"
                     onClick={() => handleBoxesChange(boxes + 1)}
-                    className="text-slate-400 hover:text-slate-800 transition-colors"
+                    className="text-slate-400 hover:text-slate-800"
                   >
-                    <Plus className="w-3 h-3" />
+                    <Plus className="w-2.5 h-2.5" />
                   </button>
                 </div>
               </div>
 
-              <div className="bg-white border border-slate-200 rounded-lg p-1.5 text-center">
-                <span className="text-[9px] font-bold text-slate-400 uppercase block mb-0.5">m²</span>
+              {/* m² */}
+              <div className="bg-white border border-slate-200 rounded p-1 text-center">
+                <span className="text-[9px] text-slate-400 font-bold block uppercase">m²</span>
                 <input
                   type="number"
                   step="0.01"
                   min="0.1"
                   value={sqm}
                   onChange={(e) => handleSqmChange(parseFloat(e.target.value) || 0.1)}
-                  className="w-full text-center font-extrabold text-xs text-slate-900 focus:outline-none bg-transparent"
+                  className="w-full text-center font-bold text-slate-800 focus:outline-none bg-transparent mt-0.5"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-1 pt-2 border-t border-slate-200/60 text-center">
-              <div>
-                <span className="text-[9px] font-semibold text-slate-400 uppercase block">Metraje</span>
-                <span className="text-xs font-bold text-slate-900">{sqm} m²</span>
-              </div>
-              <div className="border-x border-slate-200/80">
-                <span className="text-[9px] font-semibold text-slate-400 uppercase block">Empaque</span>
-                <span className="text-xs font-bold text-slate-900">{boxes} cajas</span>
-              </div>
-              <div>
-                <span className="text-[9px] font-semibold text-slate-400 uppercase block">Flete</span>
-                <span className="text-xs font-bold text-slate-900">{totalTons} tn</span>
-              </div>
+            <div className="flex justify-between items-center text-[10px] text-slate-500 pt-1 border-t border-slate-200/60">
+              <span>Peso estimado:</span>
+              <span className="font-bold text-slate-800">{totalTons} tn ({totalKg} kg)</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="p-4 pt-2">
+      {/* Botón WhatsApp */}
+      <div className="p-4 pt-0">
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 text-white font-semibold text-xs rounded-xl transition-all shadow-xs cursor-pointer"
+          className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 text-white font-semibold text-xs rounded-lg transition-all shadow-xs cursor-pointer"
         >
           <MessageCircle className="w-4 h-4" />
-          Cotizar Lote por WhatsApp
+          Cotizar por WhatsApp
         </a>
       </div>
     </div>
@@ -192,114 +185,114 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
 };
 
 export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
-  const [selectedFinish, setSelectedFinish] = useState<string>("Todos");
+  const [filterFinish, setFilterFinish] = useState<string>("Todos");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [zoomedImage, setZoomedImage] = useState<{ src: string; title: string } | null>(null);
 
   const finishes = ["Todos", "Brillante", "Satinado", "Mate con Granilla", "Colonial"];
 
-  const filteredProducts = products43x43.filter((p) => {
-    const matchesFinish = selectedFinish === "Todos" || p.finish === selectedFinish;
-    const matchesSearch =
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.line.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.colorOrDesign.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesFinish && matchesSearch;
+  const filteredProducts = products43x43.filter((product) => {
+    const matchesFinish = filterFinish === "Todos" || product.finish === filterFinish;
+    const name = product.name ? product.name.toLowerCase() : "";
+    const line = product.line ? product.line.toLowerCase() : "";
+    const color = product.colorOrDesign ? product.colorOrDesign.toLowerCase() : "";
+    const query = searchQuery.toLowerCase();
+    return matchesFinish && (name.includes(query) || line.includes(query) || color.includes(query));
   });
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      {zoomedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4"
-          onClick={() => setZoomedImage(null)}
-        >
-          <div
-            className="relative max-w-4xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl p-2"
-            onClick={(e) => e.stopPropagation()}
-          >
+    <div className="w-full max-w-7xl mx-auto px-4 py-8 font-['Montserrat']">
+      {/* Tarjeta / Contenedor Superior */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 mb-6 shadow-xs">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+          <div>
+            {/* Botón Volver a las Colecciones */}
             <button
               type="button"
-              onClick={() => setZoomedImage(null)}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-900/70 text-white hover:bg-slate-900 transition-colors cursor-pointer"
+              onClick={onBack}
+              className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors cursor-pointer mb-4"
             >
-              ✕
+              <ArrowLeft className="w-4 h-4" />
+              <span>Volver a las Colecciones</span>
             </button>
-            <img
-              src={zoomedImage.src}
-              alt={zoomedImage.title}
-              className="w-full h-[75vh] object-contain rounded-xl bg-slate-100"
-            />
-            <div className="p-4 text-center">
-              <h3 className="text-lg font-bold text-slate-900 font-['Montserrat']">{zoomedImage.title}</h3>
-            </div>
-          </div>
-        </div>
-      )}
 
-      {/* TARJETA / RECTÁNGULO CONTENEDOR DE CABECERA (IGUAL A 120x270 CM) */}
-      <div className="mb-6 bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-xs">
-        <div className="mb-4">
-          <button
-            onClick={onBack}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#00b4d8] hover:text-[#0096b4] transition-colors cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Volver a las Colecciones</span>
-          </button>
-        </div>
-
-        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
+            {/* Badges y Categoría */}
+            <div className="flex items-center gap-2 flex-wrap mb-2">
+              <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px] font-medium">
                 Industria Argentina
               </span>
-              <span className="text-xs font-bold text-[#00b4d8] uppercase tracking-wider">
-                CATÁLOGO · PISOS CERÁMICOS 43×43 CM
+              <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
+                CATÁLOGO · PISOS CERÁMICOS
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Montserrat']">
+            {/* Título Principal H1 */}
+            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
               Ferrazzano — Formato 43×43 cm
             </h1>
 
-            <p className="text-slate-500 mt-2 text-sm font-normal leading-relaxed max-w-3xl">
+            {/* Descripción Técnica */}
+            <p className="text-slate-500 text-xs sm:text-sm mt-2 max-w-3xl leading-relaxed font-normal">
               Cerámica Salteña · Rendimiento estándar: 2,25 m² por caja (12 piezas / 32 kg) · Pallet de 48 cajas (108 m² / 1.500 kg)
             </p>
           </div>
 
-          <a
-            href="/catalogos/ferrazzano_43.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer shrink-0"
-          >
-            <FileText className="w-4 h-4" />
-            <span>Ver / Descargar Catálogo</span>
-          </a>
+          {/* Botón Superior Ver / Descargar Catálogo */}
+          <div className="shrink-0">
+            <a
+              href="/catalogos/ferrazzano_43.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
+            >
+              <Download className="w-4 h-4" />
+              <span>Ver / Descargar Catálogo</span>
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* BARRA DE FILTROS Y BUSCADOR */}
-      <div className="mb-8 p-3 bg-slate-50/60 border border-slate-200/80 rounded-2xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-bold uppercase text-slate-400 mr-1 tracking-wider">TEXTURA:</span>
-          {finishes.map((fn) => (
-            <button
-              key={fn}
-              onClick={() => setSelectedFinish(fn)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                selectedFinish === fn
-                  ? "bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-xs"
-                  : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
-              }`}
-            >
-              {fn}
-            </button>
-          ))}
+      {/* Barra de Filtros y Buscador */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 mb-8 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
+          {/* Filtro por Medida */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-[11px] font-bold uppercase text-slate-400">MEDIDA:</span>
+            <div className="flex gap-1">
+              <button
+                type="button"
+                className="px-3 py-1 rounded-lg text-xs font-semibold bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-xs cursor-default"
+              >
+                43x43 cm
+              </button>
+            </div>
+          </div>
+
+          {/* Filtro por Textura */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-[11px] font-bold uppercase text-slate-400">TEXTURA:</span>
+            <div className="flex gap-1 flex-wrap">
+              {finishes.map((finish) => {
+                const isActive = filterFinish === finish;
+                return (
+                  <button
+                    key={finish}
+                    type="button"
+                    onClick={() => setFilterFinish(finish)}
+                    className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-xs"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    }`}
+                  >
+                    {finish}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
+        {/* Buscador */}
         <div className="relative w-full md:w-80">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
           <input
@@ -307,15 +300,15 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
             placeholder="Buscar modelo o serie..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900/10 shadow-xs transition-all"
+            className="w-full pl-10 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-cyan-500 focus:bg-white transition-all"
           />
         </div>
       </div>
 
-      {/* GRILLA DE MODELOS */}
+      {/* Grilla de Productos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map((p) => (
-          <ProductCard43 key={p.id} p={p} onZoom={(src, title) => setZoomedImage({ src, title })} />
+        {filteredProducts.map((product) => (
+          <ProductCard43 key={product.id} product={product} />
         ))}
       </div>
     </div>
