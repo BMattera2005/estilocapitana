@@ -1,5 +1,19 @@
 import React, { useState } from "react";
-import { ArrowLeft, MessageCircle, Download, Search, Minus, Plus } from "lucide-react";
+import {
+  ArrowLeft,
+  MessageCircle,
+  Download,
+  Search,
+  Minus,
+  Plus,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  X,
+  Layers,
+  Box,
+  Grid,
+} from "lucide-react";
 import { products36x36, CeramicProduct36, packingEsmaltados36 } from "../data/products36";
 import { buildWhatsAppUrl } from "../lib/quote-message";
 
@@ -7,7 +21,10 @@ interface Catalog36DetailProps {
   onBack: () => void;
 }
 
-const ProductCard36: React.FC<{ product: CeramicProduct36; onZoom: (src: string, title: string) => void }> = ({ product, onZoom }) => {
+const ProductCard36: React.FC<{ product: CeramicProduct36; onZoom: (src: string, title: string) => void }> = ({
+  product,
+  onZoom,
+}) => {
   const pkg = product.packaging || packingEsmaltados36;
 
   const [pallets, setPallets] = useState<number>(1);
@@ -46,9 +63,9 @@ const ProductCard36: React.FC<{ product: CeramicProduct36; onZoom: (src: string,
   return (
     <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
       <div>
-        {/* Imagen del Producto con Zoom Modal */}
+        {/* Imagen del Producto - Clic abre Zoom Lightbox Ampliado */}
         <div
-          className="relative w-full h-72 bg-slate-100 overflow-hidden cursor-pointer group"
+          className="relative w-full h-72 bg-slate-100 overflow-hidden group cursor-pointer"
           onClick={() => onZoom(product.image, product.name)}
         >
           <img
@@ -59,7 +76,7 @@ const ProductCard36: React.FC<{ product: CeramicProduct36; onZoom: (src: string,
               e.currentTarget.style.display = "none";
             }}
           />
-          <div className="absolute top-3 right-3">
+          <div className="absolute top-3 right-3 pointer-events-none">
             <span className="px-2.5 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
               {product.finish}
             </span>
@@ -86,86 +103,95 @@ const ProductCard36: React.FC<{ product: CeramicProduct36; onZoom: (src: string,
             </div>
           </div>
 
-          {/* CALCULADORA REESTRUCTURADA SIN RECORTES DE TEXTO */}
-          <div className="mt-3 bg-slate-50 border border-slate-100 rounded-lg p-2.5 space-y-2">
-            <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider block text-center">
+          {/* CALCULADORA DE UNIDADES VERTICAL (MÁXIMA VISIBILIDAD) */}
+          <div className="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+            <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider block mb-1">
               Calculadora de Unidades
             </span>
 
-            <div className="grid grid-cols-3 gap-1.5 text-[11px]">
-              {/* Selector Pallets */}
-              <div className="bg-white border border-slate-200 rounded p-1.5 text-center flex flex-col justify-between">
-                <span className="text-[9px] text-slate-400 font-bold uppercase block">Pallets</span>
-                <div className="flex items-center justify-center gap-0.5 mt-1">
+            <div className="space-y-2">
+              {/* Fila 1: Pallets */}
+              <div className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-2xs">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-600 w-24">
+                  <Layers className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>Pallets</span>
+                </div>
+                <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => handlePalletsChange(pallets - 1)}
-                    className="p-1 text-slate-400 hover:text-slate-800 transition-colors"
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors"
                   >
-                    <Minus className="w-3 h-3" />
+                    <Minus className="w-3.5 h-3.5" />
                   </button>
                   <input
                     type="number"
                     min="1"
                     value={pallets}
                     onChange={(e) => handlePalletsChange(parseInt(e.target.value) || 1)}
-                    className="min-w-[1.75rem] max-w-[2.5rem] text-center font-bold text-slate-800 focus:outline-none bg-transparent px-0.5"
+                    className="w-12 text-center font-bold text-sm text-slate-900 focus:outline-none bg-transparent"
                   />
                   <button
                     type="button"
                     onClick={() => handlePalletsChange(pallets + 1)}
-                    className="p-1 text-slate-400 hover:text-slate-800 transition-colors"
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors"
                   >
-                    <Plus className="w-3 h-3" />
+                    <Plus className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
 
-              {/* Selector Cajas (Con ancho suficiente para 2 o 3 dígitos) */}
-              <div className="bg-white border border-slate-200 rounded p-1.5 text-center flex flex-col justify-between">
-                <span className="text-[9px] text-slate-400 font-bold uppercase block">Cajas</span>
-                <div className="flex items-center justify-center gap-0.5 mt-1">
+              {/* Fila 2: Cajas */}
+              <div className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-2xs">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-600 w-24">
+                  <Box className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>Cajas</span>
+                </div>
+                <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => handleBoxesChange(boxes - 1)}
-                    className="p-1 text-slate-400 hover:text-slate-800 transition-colors"
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors"
                   >
-                    <Minus className="w-3 h-3" />
+                    <Minus className="w-3.5 h-3.5" />
                   </button>
                   <input
                     type="number"
                     min="1"
                     value={boxes}
                     onChange={(e) => handleBoxesChange(parseInt(e.target.value) || 1)}
-                    className="min-w-[2.25rem] max-w-[3rem] text-center font-bold text-slate-800 focus:outline-none bg-transparent px-0.5"
+                    className="w-12 text-center font-bold text-sm text-slate-900 focus:outline-none bg-transparent"
                   />
                   <button
                     type="button"
                     onClick={() => handleBoxesChange(boxes + 1)}
-                    className="p-1 text-slate-400 hover:text-slate-800 transition-colors"
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors"
                   >
-                    <Plus className="w-3 h-3" />
+                    <Plus className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
 
-              {/* Campo m² */}
-              <div className="bg-white border border-slate-200 rounded p-1.5 text-center flex flex-col justify-between">
-                <span className="text-[9px] text-slate-400 font-bold uppercase block">m²</span>
-                <div className="flex items-center justify-center mt-1">
+              {/* Fila 3: m² */}
+              <div className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-2xs">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-600 w-24">
+                  <Grid className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>m²</span>
+                </div>
+                <div className="flex items-center justify-end">
                   <input
                     type="number"
                     step="0.01"
                     min="0.1"
                     value={sqm}
                     onChange={(e) => handleSqmChange(parseFloat(e.target.value) || 0.1)}
-                    className="w-full text-center font-bold text-slate-800 focus:outline-none bg-transparent px-0.5"
+                    className="w-20 text-right font-bold text-sm text-slate-900 focus:outline-none bg-transparent pr-1"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-between items-center text-[10px] text-slate-500 pt-1.5 border-t border-slate-200/60">
+            <div className="flex justify-between items-center text-[10px] text-slate-500 pt-2 border-t border-slate-200/70">
               <span>Peso estimado:</span>
               <span className="font-bold text-slate-800">{totalTons} tn ({totalKg} kg)</span>
             </div>
@@ -194,6 +220,9 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [zoomedImage, setZoomedImage] = useState<{ src: string; title: string } | null>(null);
 
+  // Estados de control para el Modal con Zoom
+  const [zoomScale, setZoomScale] = useState<number>(1.2);
+
   const finishes = ["Todos", "Brillante", "Mate", "Colonial"];
 
   const filteredProducts = products36x36.filter((product) => {
@@ -205,32 +234,88 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
     return matchesFinish && (name.includes(query) || line.includes(query) || color.includes(query));
   });
 
+  const handleZoomIn = () => setZoomScale((prev) => Math.min(prev + 0.4, 3.5));
+  const handleZoomOut = () => setZoomScale((prev) => Math.max(prev - 0.3, 0.8));
+  const handleResetZoom = () => setZoomScale(1.2);
+
+  const openZoom = (src: string, title: string) => {
+    setZoomScale(1.2);
+    setZoomedImage({ src, title });
+  };
+
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8 font-['Montserrat']">
-      {/* Lightbox / Zoom Ampliado Modal */}
+      {/* LIGHTBOX / MODAL CON BARRA DE CONTROLES SUPERIOR Y ZOOM AMPLIADO GRANDE */}
       {zoomedImage && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-md p-2 md:p-6"
           onClick={() => setZoomedImage(null)}
         >
           <div
-            className="relative max-w-4xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl p-2"
+            className="relative w-full max-w-6xl h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col justify-between"
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              type="button"
-              onClick={() => setZoomedImage(null)}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-900/70 text-white hover:bg-slate-900 transition-colors cursor-pointer"
-            >
-              ✕
-            </button>
-            <img
-              src={zoomedImage.src}
-              alt={zoomedImage.title}
-              className="w-full h-[75vh] object-contain rounded-xl bg-slate-100"
-            />
-            <div className="p-4 text-center">
-              <h3 className="text-lg font-bold text-slate-900 font-['Montserrat']">{zoomedImage.title}</h3>
+            {/* Barra de Herramientas Superior */}
+            <div className="flex items-center justify-between px-6 py-3 border-b border-slate-100 bg-white z-10">
+              <div className="flex items-center gap-3 text-slate-600">
+                <button
+                  type="button"
+                  onClick={handleZoomOut}
+                  className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 transition-colors"
+                  title="Alejar"
+                >
+                  <ZoomOut className="w-4 h-4" />
+                </button>
+
+                <span className="text-xs font-bold text-slate-700 min-w-[45px] text-center">
+                  {Math.round(zoomScale * 100)}%
+                </span>
+
+                <button
+                  type="button"
+                  onClick={handleZoomIn}
+                  className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 transition-colors"
+                  title="Acercar"
+                >
+                  <ZoomIn className="w-4 h-4" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleResetZoom}
+                  className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 transition-colors ml-1"
+                  title="Restablecer"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setZoomedImage(null)}
+                className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Área de Visualización con Scroll y Escala de Zoom Ampliada */}
+            <div className="relative flex-grow overflow-auto p-4 flex items-center justify-center bg-slate-100/60">
+              <div
+                className="transition-transform duration-200 ease-out origin-center flex items-center justify-center min-w-full min-h-full"
+                style={{ transform: `scale(${zoomScale})` }}
+              >
+                <img
+                  src={zoomedImage.src}
+                  alt={zoomedImage.title}
+                  className="max-h-[75vh] w-auto object-contain rounded-lg shadow-md"
+                />
+              </div>
+            </div>
+
+            {/* Pie de Foto del Modal */}
+            <div className="p-3.5 text-center border-t border-slate-100 bg-white z-10">
+              <h3 className="text-base font-bold text-slate-800">{zoomedImage.title}</h3>
             </div>
           </div>
         </div>
@@ -240,7 +325,6 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
       <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 mb-6 shadow-xs">
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div>
-            {/* Botón Volver a las Colecciones */}
             <button
               type="button"
               onClick={onBack}
@@ -250,7 +334,6 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
               <span>Volver a las Colecciones</span>
             </button>
 
-            {/* Badges y Categoría */}
             <div className="flex items-center gap-2 flex-wrap mb-2">
               <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px] font-medium">
                 Industria Argentina
@@ -260,18 +343,15 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
               </span>
             </div>
 
-            {/* Título Principal H1 */}
             <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
               Ferrazzano — Formato 36×36 cm
             </h1>
 
-            {/* Descripción Técnica */}
             <p className="text-slate-500 text-xs sm:text-sm mt-2 max-w-3xl leading-relaxed font-normal">
               Cerámica Salteña · Esmaltados: 2,33 m² por caja (83,98 m² / pallet) · Coloniales: 2,20 m² por caja (79,32 m² / pallet) · Pallet de 36 cajas (1.220 kg)
             </p>
           </div>
 
-          {/* Botón Superior Ver / Descargar Catálogo */}
           <div className="shrink-0">
             <a
               href="/catalogos/ferrazzano_36.pdf"
@@ -289,7 +369,6 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
       {/* Barra de Filtros y Buscador */}
       <div className="bg-white border border-slate-200 rounded-2xl p-4 mb-8 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <div className="flex items-center gap-4 flex-wrap">
-          {/* Filtro por Medida */}
           <div className="flex items-center gap-1.5">
             <span className="text-[11px] font-bold uppercase text-slate-400">MEDIDA:</span>
             <div className="flex gap-1">
@@ -302,7 +381,6 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
             </div>
           </div>
 
-          {/* Filtro por Textura */}
           <div className="flex items-center gap-1.5">
             <span className="text-[11px] font-bold uppercase text-slate-400">TEXTURA:</span>
             <div className="flex gap-1 flex-wrap">
@@ -327,7 +405,6 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
           </div>
         </div>
 
-        {/* Buscador */}
         <div className="relative w-full md:w-80">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
           <input
@@ -343,7 +420,7 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
       {/* Grilla de Productos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((product) => (
-          <ProductCard36 key={product.id} product={product} onZoom={(src, title) => setZoomedImage({ src, title })} />
+          <ProductCard36 key={product.id} product={product} onZoom={openZoom} />
         ))}
       </div>
     </div>
