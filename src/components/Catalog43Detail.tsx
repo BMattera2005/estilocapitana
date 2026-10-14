@@ -220,8 +220,8 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [zoomedImage, setZoomedImage] = useState<{ src: string; title: string } | null>(null);
 
-  // Estado de zoom inicial en 100% (1.0)
-  const [zoomScale, setZoomScale] = useState<number>(1);
+  // Escala inicial en 1.4 (140%) para que arranque más cerca
+  const [zoomScale, setZoomScale] = useState<number>(1.4);
 
   const finishes = ["Todos", "Brillante", "Satinado", "Mate con Granilla", "Colonial"];
 
@@ -234,27 +234,36 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
     return matchesFinish && (name.includes(query) || line.includes(query) || color.includes(query));
   });
 
-  const handleZoomIn = () => setZoomScale((prev) => Math.min(prev + 0.4, 3.0));
-  const handleZoomOut = () => setZoomScale((prev) => Math.max(prev - 0.4, 0.8));
-  const handleResetZoom = () => setZoomScale(1);
+  const handleZoomIn = () => setZoomScale((prev) => Math.min(prev + 0.3, 3.5));
+  const handleZoomOut = () => setZoomScale((prev) => Math.max(prev - 0.3, 0.8));
+  const handleResetZoom = () => setZoomScale(1.4);
 
   // Clic directo sobre la foto para alternar el zoom
   const handleImageClick = () => {
-    if (zoomScale < 1.8) {
-      setZoomScale(2.2); // Zoom in al hacer clic en la foto
+    if (zoomScale < 2.0) {
+      setZoomScale(2.4);
     } else {
-      setZoomScale(1.0); // Reset al volver a hacer clic
+      setZoomScale(1.4);
+    }
+  };
+
+  // Zoom con la ruedita del mouse
+  const handleWheelZoom = (e: React.WheelEvent) => {
+    if (e.deltaY < 0) {
+      setZoomScale((prev) => Math.min(prev + 0.2, 3.5));
+    } else {
+      setZoomScale((prev) => Math.max(prev - 0.2, 0.8));
     }
   };
 
   const openZoom = (src: string, title: string) => {
-    setZoomScale(1);
+    setZoomScale(1.4);
     setZoomedImage({ src, title });
   };
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8 font-['Montserrat']">
-      {/* LIGHTBOX / MODAL CON ZOOM INTERACTIVO AL HACER CLIC EN LA FOTO */}
+      {/* LIGHTBOX / MODAL CON RUEDITA DE MOUSE, CLIC INTERACTIVO Y INICIO CERCANO (140%) */}
       {zoomedImage && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-md p-2 md:p-6"
@@ -263,6 +272,7 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
           <div
             className="relative w-full max-w-6xl h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col justify-between"
             onClick={(e) => e.stopPropagation()}
+            onWheel={handleWheelZoom}
           >
             {/* Barra de Herramientas Superior */}
             <div className="flex items-center justify-between px-6 py-3 border-b border-slate-100 bg-white z-10">
@@ -308,10 +318,10 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
               </button>
             </div>
 
-            {/* Área de Visualización con Scroll y Zoom al Hacer Clic */}
+            {/* Área de Visualización con Scroll, Ruedita y Clic Ampliado */}
             <div className="relative flex-grow overflow-auto p-4 flex items-center justify-center bg-slate-100/60">
               <div
-                className="transition-transform duration-300 ease-out flex items-center justify-center min-w-full min-h-full"
+                className="transition-transform duration-200 ease-out flex items-center justify-center min-w-full min-h-full"
                 style={{ transform: `scale(${zoomScale})` }}
               >
                 <img
@@ -319,9 +329,9 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
                   alt={zoomedImage.title}
                   onClick={handleImageClick}
                   className={`max-h-[72vh] w-auto object-contain rounded-lg shadow-md transition-all ${
-                    zoomScale < 1.8 ? "cursor-zoom-in" : "cursor-zoom-out"
+                    zoomScale < 2.0 ? "cursor-zoom-in" : "cursor-zoom-out"
                   }`}
-                  title="Haz clic para ampliar/reducir la imagen"
+                  title="Haz clic o usa la rueda del mouse para hacer zoom"
                 />
               </div>
             </div>
@@ -330,7 +340,7 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
             <div className="p-3.5 text-center border-t border-slate-100 bg-white z-10">
               <h3 className="text-base font-bold text-slate-800">{zoomedImage.title}</h3>
               <p className="text-xs text-slate-400 mt-0.5">
-                Haz clic sobre la foto para hacer zoom directo a la textura o usa la lupa superior
+                Usa la rueda del mouse o haz clic sobre la foto para ajustar el zoom
               </p>
             </div>
           </div>
