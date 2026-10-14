@@ -10,12 +10,12 @@ interface Catalog43DetailProps {
 const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: string) => void }> = ({ p, onZoom }) => {
   const pkg = p.packaging || packingStandard43;
 
-  // Estado local independiente por unidad
+  // Estado local e independiente por unidad
   const [pallets, setPallets] = useState<number>(1);
   const [boxes, setBoxes] = useState<number>(pkg.boxesPerPallet);
   const [sqm, setSqm] = useState<number>(pkg.sqmPerPallet);
 
-  // Sincronización al cambiar Pallets
+  // Re-cálculos sincronizados
   const handlePalletsChange = (val: number) => {
     const newPallets = Math.max(1, val);
     setPallets(newPallets);
@@ -23,7 +23,6 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
     setSqm(Number((newPallets * pkg.sqmPerPallet).toFixed(2)));
   };
 
-  // Sincronización al cambiar Cajas
   const handleBoxesChange = (val: number) => {
     const newBoxes = Math.max(1, val);
     setBoxes(newBoxes);
@@ -32,7 +31,6 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
     setSqm(Number((newBoxes * pkg.sqmPerBox).toFixed(2)));
   };
 
-  // Sincronización al cambiar m²
   const handleSqmChange = (val: number) => {
     const newSqm = Math.max(0.1, val);
     setSqm(newSqm);
@@ -48,11 +46,11 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
   const whatsappUrl = buildWhatsAppUrl(whatsappMsg);
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between">
       <div>
-        {/* Imagen del modelo con modal ampliado */}
+        {/* Imagen con visor Zoom flotante */}
         <div
-          className="relative w-full h-56 bg-slate-100 overflow-hidden cursor-pointer group"
+          className="relative w-full h-52 bg-slate-100 overflow-hidden cursor-pointer group"
           onClick={() => onZoom(p.image, p.name)}
         >
           <img
@@ -70,12 +68,12 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
           </div>
         </div>
 
-        {/* Informacion del Producto */}
+        {/* Info del producto */}
         <div className="p-4 pb-2">
-          <span className="text-[11px] font-bold text-sky-600 block mb-0.5 uppercase">
+          <span className="text-[11px] font-bold text-sky-600 block mb-0.5 uppercase tracking-wide">
             {p.line} · {p.colorOrDesign}
           </span>
-          <h3 className="text-lg font-bold text-slate-900 font-['Montserrat'] leading-tight mb-2">
+          <h3 className="text-base font-bold text-slate-900 font-['Montserrat'] leading-snug mb-2">
             {p.name}
           </h3>
 
@@ -90,120 +88,109 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
             </div>
           </div>
 
-          {/* CALCULADORA MULTI-UNIDAD LIBRE */}
-          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 my-2 space-y-2">
-            <span className="text-[11px] font-bold uppercase text-slate-500 block mb-1">
-              Selección de Cantidad
+          {/* CALCULADORA DE UNIDADES ESTILIZADA Y COMPACTA */}
+          <div className="bg-slate-50/80 border border-slate-200/80 rounded-xl p-3 my-2 space-y-2">
+            <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider block mb-1">
+              Calculadora de Lote
             </span>
 
-            {/* Selector de Pallets */}
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-semibold text-slate-700">Pallets:</span>
-              <div className="flex items-center bg-white border border-slate-300 rounded-md overflow-hidden">
-                <button
-                  type="button"
-                  onClick={() => handlePalletsChange(pallets - 1)}
-                  className="px-2 py-0.5 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
-                >
-                  <Minus className="w-3 h-3" />
-                </button>
-                <input
-                  type="number"
-                  min="1"
-                  value={pallets}
-                  onChange={(e) => handlePalletsChange(parseInt(e.target.value) || 1)}
-                  className="w-12 text-center font-bold text-xs text-slate-900 focus:outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={() => handlePalletsChange(pallets + 1)}
-                  className="px-2 py-0.5 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
-                >
-                  <Plus className="w-3 h-3" />
-                </button>
+            <div className="grid grid-cols-3 gap-1.5 text-xs">
+              {/* Selector Pallets */}
+              <div className="bg-white border border-slate-200 rounded-lg p-1.5 text-center">
+                <span className="text-[9px] font-bold text-slate-400 uppercase block mb-0.5">Pallets</span>
+                <div className="flex items-center justify-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => handlePalletsChange(pallets - 1)}
+                    className="text-slate-400 hover:text-slate-800 transition-colors"
+                  >
+                    <Minus className="w-3 h-3" />
+                  </button>
+                  <input
+                    type="number"
+                    min="1"
+                    value={pallets}
+                    onChange={(e) => handlePalletsChange(parseInt(e.target.value) || 1)}
+                    className="w-7 text-center font-extrabold text-xs text-slate-900 focus:outline-none bg-transparent"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handlePalletsChange(pallets + 1)}
+                    className="text-slate-400 hover:text-slate-800 transition-colors"
+                  >
+                    <Plus className="w-3 h-3" />
+                  </button>
+                </div>
               </div>
-            </div>
 
-            {/* Selector de Cajas */}
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-semibold text-slate-700">Cajas:</span>
-              <div className="flex items-center bg-white border border-slate-300 rounded-md overflow-hidden">
-                <button
-                  type="button"
-                  onClick={() => handleBoxesChange(boxes - 1)}
-                  className="px-2 py-0.5 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
-                >
-                  <Minus className="w-3 h-3" />
-                </button>
-                <input
-                  type="number"
-                  min="1"
-                  value={boxes}
-                  onChange={(e) => handleBoxesChange(parseInt(e.target.value) || 1)}
-                  className="w-12 text-center font-bold text-xs text-slate-900 focus:outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleBoxesChange(boxes + 1)}
-                  className="px-2 py-0.5 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
-                >
-                  <Plus className="w-3 h-3" />
-                </button>
+              {/* Selector Cajas */}
+              <div className="bg-white border border-slate-200 rounded-lg p-1.5 text-center">
+                <span className="text-[9px] font-bold text-slate-400 uppercase block mb-0.5">Cajas</span>
+                <div className="flex items-center justify-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => handleBoxesChange(boxes - 1)}
+                    className="text-slate-400 hover:text-slate-800 transition-colors"
+                  >
+                    <Minus className="w-3 h-3" />
+                  </button>
+                  <input
+                    type="number"
+                    min="1"
+                    value={boxes}
+                    onChange={(e) => handleBoxesChange(parseInt(e.target.value) || 1)}
+                    className="w-8 text-center font-extrabold text-xs text-slate-900 focus:outline-none bg-transparent"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleBoxesChange(boxes + 1)}
+                    className="text-slate-400 hover:text-slate-800 transition-colors"
+                  >
+                    <Plus className="w-3 h-3" />
+                  </button>
+                </div>
               </div>
-            </div>
 
-            {/* Selector de m² */}
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-semibold text-slate-700">Metros (m²):</span>
-              <div className="flex items-center bg-white border border-slate-300 rounded-md overflow-hidden">
+              {/* Input m² */}
+              <div className="bg-white border border-slate-200 rounded-lg p-1.5 text-center">
+                <span className="text-[9px] font-bold text-slate-400 uppercase block mb-0.5">m²</span>
                 <input
                   type="number"
                   step="0.01"
                   min="0.1"
                   value={sqm}
                   onChange={(e) => handleSqmChange(parseFloat(e.target.value) || 0.1)}
-                  className="w-20 px-1 py-0.5 text-center font-bold text-xs text-slate-900 focus:outline-none"
+                  className="w-full text-center font-extrabold text-xs text-slate-900 focus:outline-none bg-transparent"
                 />
               </div>
             </div>
 
-            {/* Rendimiento Dinámico y Peso */}
-            <div className="grid grid-cols-3 gap-1.5 pt-2 border-t border-slate-200/80 text-center">
+            {/* Rendimiento Consolidado */}
+            <div className="grid grid-cols-3 gap-1 pt-2 border-t border-slate-200/60 text-center">
               <div>
-                <div className="flex items-center justify-center gap-1 text-sky-600 mb-0.5">
-                  <Layers className="w-3 h-3" />
-                  <span className="text-[9px] font-bold uppercase">Superficie</span>
-                </div>
-                <span className="text-xs font-extrabold text-slate-900">{sqm} m²</span>
+                <span className="text-[9px] font-semibold text-slate-400 uppercase block">Metraje</span>
+                <span className="text-xs font-bold text-slate-900">{sqm} m²</span>
               </div>
-
-              <div className="border-x border-slate-200">
-                <div className="flex items-center justify-center gap-1 text-emerald-600 mb-0.5">
-                  <Package className="w-3 h-3" />
-                  <span className="text-[9px] font-bold uppercase">Cajas</span>
-                </div>
-                <span className="text-xs font-extrabold text-slate-900">{boxes} cajas</span>
+              <div className="border-x border-slate-200/80">
+                <span className="text-[9px] font-semibold text-slate-400 uppercase block">Empaque</span>
+                <span className="text-xs font-bold text-slate-900">{boxes} cajas</span>
               </div>
-
               <div>
-                <div className="flex items-center justify-center gap-1 text-amber-600 mb-0.5">
-                  <Truck className="w-3 h-3" />
-                  <span className="text-[9px] font-bold uppercase">Peso</span>
-                </div>
-                <span className="text-xs font-extrabold text-slate-900">{totalTons} tn</span>
+                <span className="text-[9px] font-semibold text-slate-400 uppercase block">Flete</span>
+                <span className="text-xs font-bold text-slate-900">{totalTons} tn</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Boton Accion WhatsApp */}
+      {/* Botón WhatsApp con Gradiente Corporativo Oficial */}
       <div className="p-4 pt-2">
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 text-white font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
+          className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 text-white font-semibold text-xs rounded-xl transition-all shadow-xs cursor-pointer"
         >
           <MessageCircle className="w-4 h-4" />
           Cotizar Lote por WhatsApp
@@ -231,7 +218,7 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      {/* Lightbox / Modal Ampliado */}
+      {/* Lightbox / Modal Ampliado de Inspección */}
       {zoomedImage && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4"
@@ -260,6 +247,7 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
         </div>
       )}
 
+      {/* Botones de Navegación de Cabecera */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <button
           onClick={onBack}
@@ -276,7 +264,7 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
           className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
         >
           <FileText className="w-4 h-4" />
-          Ver/Descargar Catalogo
+          <span>Ver/Descargar Catalogo</span>
         </a>
       </div>
 
@@ -290,17 +278,17 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
         </p>
       </div>
 
-      {/* BARRA UNIFICADA CON BUSCADOR Y FILTROS */}
-      <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+      {/* BARRA UNIFICADA CON BUSCADOR Y FILTROS EN CIAN CORPORATIVO */}
+      <div className="mb-8 p-4 bg-slate-50/80 border border-slate-200/80 rounded-2xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-bold uppercase text-slate-500">Textura:</span>
+          <span className="text-xs font-bold uppercase text-slate-500 mr-1">Textura:</span>
           {finishes.map((fn) => (
             <button
               key={fn}
               onClick={() => setSelectedFinish(fn)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 selectedFinish === fn
-                  ? "bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm"
+                  ? "bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-xs"
                   : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
               }`}
             >
@@ -316,7 +304,7 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
             placeholder="Buscar modelo o diseño..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-white border-2 border-slate-400 rounded-lg text-xs font-semibold text-slate-900 placeholder-slate-500 focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20 shadow-xs transition-all"
+            className="w-full pl-10 pr-4 py-2 bg-white border-2 border-slate-300 rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 shadow-xs transition-all"
           />
         </div>
       </div>
