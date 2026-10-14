@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowLeft, MessageCircle, FileText, Search, Package, Truck, Layers, Minus, Plus } from "lucide-react";
+import { ArrowLeft, FileText, Search, Package, Truck, Layers, Minus, Plus, MessageCircle } from "lucide-react";
 import { products43x43, CeramicProduct, packingStandard43 } from "../data/products43";
 import { buildWhatsAppUrl } from "../lib/quote-message";
 
@@ -10,12 +10,10 @@ interface Catalog43DetailProps {
 const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: string) => void }> = ({ p, onZoom }) => {
   const pkg = p.packaging || packingStandard43;
 
-  // Estado local e independiente por unidad
   const [pallets, setPallets] = useState<number>(1);
   const [boxes, setBoxes] = useState<number>(pkg.boxesPerPallet);
   const [sqm, setSqm] = useState<number>(pkg.sqmPerPallet);
 
-  // Re-cálculos sincronizados
   const handlePalletsChange = (val: number) => {
     const newPallets = Math.max(1, val);
     setPallets(newPallets);
@@ -48,7 +46,6 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between">
       <div>
-        {/* Imagen con visor Zoom flotante */}
         <div
           className="relative w-full h-52 bg-slate-100 overflow-hidden cursor-pointer group"
           onClick={() => onZoom(p.image, p.name)}
@@ -68,9 +65,8 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
           </div>
         </div>
 
-        {/* Info del producto */}
         <div className="p-4 pb-2">
-          <span className="text-[11px] font-bold text-sky-600 block mb-0.5 uppercase tracking-wide">
+          <span className="text-[11px] font-bold text-cyan-600 block mb-0.5 uppercase tracking-wide">
             {p.line} · {p.colorOrDesign}
           </span>
           <h3 className="text-base font-bold text-slate-900 font-['Montserrat'] leading-snug mb-2">
@@ -88,14 +84,12 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
             </div>
           </div>
 
-          {/* CALCULADORA DE UNIDADES ESTILIZADA Y COMPACTA */}
           <div className="bg-slate-50/80 border border-slate-200/80 rounded-xl p-3 my-2 space-y-2">
             <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider block mb-1">
               Calculadora de Lote
             </span>
 
             <div className="grid grid-cols-3 gap-1.5 text-xs">
-              {/* Selector Pallets */}
               <div className="bg-white border border-slate-200 rounded-lg p-1.5 text-center">
                 <span className="text-[9px] font-bold text-slate-400 uppercase block mb-0.5">Pallets</span>
                 <div className="flex items-center justify-center gap-1">
@@ -123,7 +117,6 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
                 </div>
               </div>
 
-              {/* Selector Cajas */}
               <div className="bg-white border border-slate-200 rounded-lg p-1.5 text-center">
                 <span className="text-[9px] font-bold text-slate-400 uppercase block mb-0.5">Cajas</span>
                 <div className="flex items-center justify-center gap-1">
@@ -151,7 +144,6 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
                 </div>
               </div>
 
-              {/* Input m² */}
               <div className="bg-white border border-slate-200 rounded-lg p-1.5 text-center">
                 <span className="text-[9px] font-bold text-slate-400 uppercase block mb-0.5">m²</span>
                 <input
@@ -165,7 +157,6 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
               </div>
             </div>
 
-            {/* Rendimiento Consolidado */}
             <div className="grid grid-cols-3 gap-1 pt-2 border-t border-slate-200/60 text-center">
               <div>
                 <span className="text-[9px] font-semibold text-slate-400 uppercase block">Metraje</span>
@@ -184,7 +175,6 @@ const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: 
         </div>
       </div>
 
-      {/* Botón WhatsApp con Gradiente Corporativo Oficial */}
       <div className="p-4 pt-2">
         <a
           href={whatsappUrl}
@@ -218,7 +208,6 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8">
-      {/* Lightbox / Modal Ampliado de Inspección */}
       {zoomedImage && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4"
@@ -247,41 +236,53 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
         </div>
       )}
 
-      {/* Botones de Navegación de Cabecera */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+      {/* Flecha Volver */}
+      <div className="mb-4">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#00b4d8] hover:text-[#0096b4] transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          Volver a Colecciones
+          <span>Volver a las Colecciones</span>
         </button>
+      </div>
+
+      {/* Cabecera Exacta a la Referencia Visual */}
+      <div className="mb-6 flex flex-col md:flex-row md:items-start justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
+              Industria Argentina
+            </span>
+            <span className="text-xs font-bold text-[#00b4d8] uppercase tracking-wider">
+              CATÁLOGO · PISOS CERÁMICOS 43×43 CM
+            </span>
+          </div>
+
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Montserrat']">
+            Ferrazzano — Formato 43×43 cm
+          </h1>
+
+          <p className="text-slate-500 mt-2 text-sm font-normal leading-relaxed max-w-3xl">
+            Cerámica Salteña · Rendimiento estándar: 2,25 m² por caja (12 piezas / 32 kg) · Pallet de 48 cajas (108 m² / 1.500 kg)
+          </p>
+        </div>
 
         <a
           href="/catalogos/ferrazzano_43.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer shrink-0"
         >
           <FileText className="w-4 h-4" />
           <span>Ver/Descargar Catalogo</span>
         </a>
       </div>
 
-      <div className="mb-8">
-        <span className="text-xs font-bold uppercase tracking-wider text-sky-600">Industria Argentina</span>
-        <h1 className="text-3xl font-extrabold text-slate-900 mt-1 font-['Montserrat']">
-          Ferrazzano — Formato 43×43 cm
-        </h1>
-        <p className="text-slate-600 mt-2 max-w-3xl text-sm leading-relaxed">
-          Cerámica Salteña · Rendimiento estándar: 2,25 m² por caja (12 piezas / 32 kg) · Pallet de 48 cajas (108 m² / 1.500 kg)
-        </p>
-      </div>
-
-      {/* BARRA UNIFICADA CON BUSCADOR Y FILTROS EN CIAN CORPORATIVO */}
-      <div className="mb-8 p-4 bg-slate-50/80 border border-slate-200/80 rounded-2xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+      {/* Tarjeta de Filtros y Buscador */}
+      <div className="mb-8 p-3 bg-slate-50/60 border border-slate-200/80 rounded-2xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-bold uppercase text-slate-500 mr-1">Textura:</span>
+          <span className="text-xs font-bold uppercase text-slate-400 mr-1 tracking-wider">TEXTURA:</span>
           {finishes.map((fn) => (
             <button
               key={fn}
@@ -298,18 +299,17 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
         </div>
 
         <div className="relative w-full md:w-80">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-700 font-bold pointer-events-none" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
           <input
             type="text"
-            placeholder="Buscar modelo o diseño..."
+            placeholder="Buscar modelo o serie..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-white border-2 border-slate-300 rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 shadow-xs transition-all"
+            className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900/10 shadow-xs transition-all"
           />
         </div>
       </div>
 
-      {/* GRILLA DE MODELOS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((p) => (
           <ProductCard43 key={p.id} p={p} onZoom={(src, title) => setZoomedImage({ src, title })} />
