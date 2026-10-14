@@ -1,11 +1,219 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
+import {
+  ArrowLeft,
+  Download,
+  MessageCircle,
+  Search,
+  Minus,
+  Plus,
+  Layers,
+  Box,
+  Grid,
+} from 'lucide-react';
 import { productsFullBody, FullBodyProductItem } from '../data/productsFullBody';
 import { ZoomableImage } from '@/components/catalog/ZoomableImage';
 
 interface CatalogFullBodyDetailProps {
   onBack: () => void;
 }
+
+// Componente de Tarjeta individual con la Calculadora de Unidades Integrada
+const ProductCardFullBody: React.FC<{ item: FullBodyProductItem }> = ({ item }) => {
+  // Datos del producto (Sintered Stone Full Body 15 mm)
+  // Formato estándar principal: 800x2400 mm (1.92 m² / pieza o placa)
+  const sqmPerPiece = 1.92;
+  const kgPerPiece = 67;
+
+  const [pallets, setPallets] = useState<number>(1);
+  const [boxes, setBoxes] = useState<number>(1); // En placas XL, las cajas equivalen a piezas/placas
+  const [sqm, setSqm] = useState<number>(sqmPerPiece);
+
+  const handlePalletsChange = (val: number) => {
+    const newPallets = Math.max(1, val);
+    setPallets(newPallets);
+    // Asumiendo un estimado promedio o relación 1 pallet
+    setBoxes(newPallets * 20); 
+    setSqm(Number((newPallets * 20 * sqmPerPiece).toFixed(2)));
+  };
+
+  const handleBoxesChange = (val: number) => {
+    const newBoxes = Math.max(1, val);
+    setBoxes(newBoxes);
+    const calculatedPallets = Math.max(1, Math.round(newBoxes / 20));
+    setPallets(calculatedPallets);
+    setSqm(Number((newBoxes * sqmPerPiece).toFixed(2)));
+  };
+
+  const handleSqmChange = (val: number) => {
+    const newSqm = Math.max(0.1, val);
+    setSqm(newSqm);
+    const calculatedBoxes = Math.max(1, Math.ceil(newSqm / sqmPerPiece));
+    setBoxes(calculatedBoxes);
+    setPallets(Math.max(1, Math.ceil(calculatedBoxes / 20)));
+  };
+
+  const totalKg = Number((boxes * kgPerPiece).toFixed(0));
+  const totalTons = (totalKg / 1000).toFixed(2);
+
+  const handleWhatsAppQuote = () => {
+    const phone = "5491161208162";
+    const message = `Hola Estilo Capitana, me interesa cotizar la placa Sintered Stone Full Body ${item.name} (${item.series}, Espesor: 1,5 cm). Cantidad requerida: ${pallets} pallet(s) (${boxes} placas / ${sqm} m² / ${totalTons} tn). Quisiera consultar disponibilidad.`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  return (
+    <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all duration-200">
+      <div>
+        {/* Imagen del Producto */}
+        <div className="w-full h-64 bg-slate-100 relative overflow-hidden flex items-center justify-center">
+          <ZoomableImage
+            src={item.image}
+            alt={item.name}
+            className="w-full h-full object-cover block"
+            onError={(e) => {
+              (e.currentTarget as HTMLElement).style.display = 'none';
+            }}
+          />
+          <div className="absolute top-3 right-3 pointer-events-none">
+            <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs">
+              1,5 cm Masa Homogénea
+            </span>
+          </div>
+        </div>
+
+        {/* Ficha e Información */}
+        <div className="p-5">
+          <div className="text-[11px] font-semibold text-sky-600 uppercase tracking-wide mb-1">
+            {item.series}
+          </div>
+          <h3 className="text-xl font-bold text-slate-900 mb-2 font-['Montserrat'] leading-tight">
+            {item.name}
+          </h3>
+          <p className="text-xs text-slate-600 mb-4 leading-relaxed font-normal">
+            {item.recommendedUses}
+          </p>
+
+          <div className="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
+            <div className="flex justify-between">
+              <span className="text-slate-400 font-medium">Formatos:</span>
+              <span className="font-semibold text-slate-800">{item.allFormats.join(' / ')}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-400 font-medium">Acabados:</span>
+              <span className="font-semibold text-slate-800">{item.allFinishes.join(' / ')}</span>
+            </div>
+          </div>
+
+          {/* CALCULADORA DE UNIDADES VERTICAL */}
+          <div className="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+            <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider block mb-1">
+              Calculadora de Unidades
+            </span>
+
+            <div className="space-y-2">
+              {/* Fila 1: Pallets */}
+              <div className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-2xs">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-600 w-24">
+                  <Layers className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>Pallets</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handlePalletsChange(pallets - 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <input
+                    type="number"
+                    min="1"
+                    value={pallets}
+                    onChange={(e) => handlePalletsChange(parseInt(e.target.value) || 1)}
+                    className="w-12 text-center font-bold text-sm text-slate-900 focus:outline-none bg-transparent"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handlePalletsChange(pallets + 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Fila 2: Placas / Cajas */}
+              <div className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-2xs">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-600 w-24">
+                  <Box className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>Placas</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleBoxesChange(boxes - 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <input
+                    type="number"
+                    min="1"
+                    value={boxes}
+                    onChange={(e) => handleBoxesChange(parseInt(e.target.value) || 1)}
+                    className="w-12 text-center font-bold text-sm text-slate-900 focus:outline-none bg-transparent"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleBoxesChange(boxes + 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Fila 3: m² */}
+              <div className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-2xs">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-600 w-24">
+                  <Grid className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>m²</span>
+                </div>
+                <div className="flex items-center justify-end">
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0.1"
+                    value={sqm}
+                    onChange={(e) => handleSqmChange(parseFloat(e.target.value) || 0.1)}
+                    className="w-20 text-right font-bold text-sm text-slate-900 focus:outline-none bg-transparent pr-1"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center text-[10px] text-slate-500 pt-2 border-t border-slate-200/70">
+              <span>Peso estimado:</span>
+              <span className="font-bold text-slate-800">{totalTons} tn ({totalKg} kg)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Botón de Cotización por WhatsApp */}
+      <div className="p-5 pt-0">
+        <button
+          type="button"
+          onClick={handleWhatsAppQuote}
+          className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
+        >
+          <MessageCircle className="w-4 h-4 text-white shrink-0" />
+          <span>Cotizar por WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ onBack }) => {
   const [selectedFormat, setSelectedFormat] = useState<string>('Todos');
@@ -15,20 +223,16 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
   const formats = ['Todos', '80x240 cm'];
   const finishes = ['Todos', 'Glossy', 'Matt'];
 
-  const filteredProducts = productsFullBody.filter((item) => item.isVisible !== false).filter((item) => {
-    const matchesFormat = selectedFormat === 'Todos' || item.allFormats.includes(selectedFormat);
-    const matchesFinish = selectedFinish === 'Todos' || item.allFinishes.includes(selectedFinish);
-    const matchesSearch =
-      item.name.toLowerCase().includes(search.toLowerCase()) ||
-      item.series.toLowerCase().includes(search.toLowerCase());
-    return matchesFormat && matchesFinish && matchesSearch;
-  });
-
-  const handleWhatsAppQuote = (item: FullBodyProductItem) => {
-    const phone = "5491161208162";
-    const message = `Hola Estilo Capitana, me interesa cotizar la placa Sintered Stone Full Body ${item.name} (${item.series}, Espesor: 1,5 cm). Quisiera consultar disponibilidad.`;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-  };
+  const filteredProducts = productsFullBody
+    .filter((item) => item.isVisible !== false)
+    .filter((item) => {
+      const matchesFormat = selectedFormat === 'Todos' || item.allFormats.includes(selectedFormat);
+      const matchesFinish = selectedFinish === 'Todos' || item.allFinishes.includes(selectedFinish);
+      const matchesSearch =
+        item.name.toLowerCase().includes(search.toLowerCase()) ||
+        item.series.toLowerCase().includes(search.toLowerCase());
+      return matchesFormat && matchesFinish && matchesSearch;
+    });
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -134,65 +338,11 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
       {/* Grilla de Modelos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
         {filteredProducts.map((p) => (
-          <div
-            key={p.id}
-            className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all duration-200"
-          >
-            <div>
-              <div className="w-full h-64 bg-slate-100 relative overflow-hidden flex items-center justify-center">
-                <ZoomableImage
-                  src={p.image}
-                  alt={p.name}
-                  className="w-full h-full object-cover block"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLElement).style.display = 'none';
-                  }}
-                />
-                <div className="absolute top-3 right-3">
-                  <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs">
-                    1,5 cm Masa Homogénea
-                  </span>
-                </div>
-              </div>
-
-              <div className="p-5">
-                <div className="text-[11px] font-semibold text-sky-600 uppercase tracking-wide mb-1">
-                  {p.series}
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2 font-['Montserrat'] leading-tight">
-                  {p.name}
-                </h3>
-                <p className="text-xs text-slate-600 mb-4 leading-relaxed font-normal">
-                  {p.recommendedUses}
-                </p>
-
-                <div className="space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400 font-medium">Formatos:</span>
-                    <span className="font-semibold text-slate-800">{p.allFormats.join(' / ')}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400 font-medium">Acabados:</span>
-                    <span className="font-semibold text-slate-800">{p.allFinishes.join(' / ')}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-5 pt-0">
-              <button
-                type="button"
-                onClick={() => handleWhatsAppQuote(p)}
-                className="w-full py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 active:scale-[0.99] flex items-center justify-center gap-2 shadow-sm transition-all duration-200 cursor-pointer"
-              >
-                <MessageCircle className="w-4 h-4 text-white shrink-0" />
-                <span>Cotizar por WhatsApp</span>
-              </button>
-            </div>
-          </div>
+          <ProductCardFullBody key={p.id} item={p} />
         ))}
       </div>
     </div>
   );
 };
+
 export default CatalogFullBodyDetail;
