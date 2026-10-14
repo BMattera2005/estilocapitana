@@ -1,4 +1,3 @@
-// src/components/Catalog43Detail.tsx
 import React, { useState } from "react";
 import { ArrowLeft, MessageCircle, FileText, Search, Package, Truck, Layers, Minus, Plus } from "lucide-react";
 import { products43x43, CeramicProduct, packingStandard43 } from "../data/products43";
@@ -8,31 +7,58 @@ interface Catalog43DetailProps {
   onBack: () => void;
 }
 
-// Subcomponente de tarjeta individual con su propio estado de calculadora
-const ProductCard43: React.FC<{ p: CeramicProduct }> = ({ p }) => {
-  const [pallets, setPallets] = useState<number>(1);
-
-  // Datos de empaque
+const ProductCard43: React.FC<{ p: CeramicProduct; onZoom: (src: string, title: string) => void }> = ({ p, onZoom }) => {
   const pkg = p.packaging || packingStandard43;
 
-  // Cálculos dinámicos en tiempo real
-  const totalBoxes = pallets * pkg.boxesPerPallet;
-  const totalSqm = (pallets * pkg.sqmPerPallet).toFixed(2);
-  const totalKg = pallets * pkg.kgPerPallet;
+  // Estado local independiente por unidad
+  const [pallets, setPallets] = useState<number>(1);
+  const [boxes, setBoxes] = useState<number>(pkg.boxesPerPallet);
+  const [sqm, setSqm] = useState<number>(pkg.sqmPerPallet);
+
+  // Sincronización al cambiar Pallets
+  const handlePalletsChange = (val: number) => {
+    const newPallets = Math.max(1, val);
+    setPallets(newPallets);
+    setBoxes(newPallets * pkg.boxesPerPallet);
+    setSqm(Number((newPallets * pkg.sqmPerPallet).toFixed(2)));
+  };
+
+  // Sincronización al cambiar Cajas
+  const handleBoxesChange = (val: number) => {
+    const newBoxes = Math.max(1, val);
+    setBoxes(newBoxes);
+    const calculatedPallets = Math.max(1, Math.round(newBoxes / pkg.boxesPerPallet));
+    setPallets(calculatedPallets);
+    setSqm(Number((newBoxes * pkg.sqmPerBox).toFixed(2)));
+  };
+
+  // Sincronización al cambiar m²
+  const handleSqmChange = (val: number) => {
+    const newSqm = Math.max(0.1, val);
+    setSqm(newSqm);
+    const calculatedBoxes = Math.max(1, Math.ceil(newSqm / pkg.sqmPerBox));
+    setBoxes(calculatedBoxes);
+    setPallets(Math.max(1, Math.ceil(calculatedBoxes / pkg.boxesPerPallet)));
+  };
+
+  const totalKg = Number((boxes * pkg.kgPerBox).toFixed(0));
   const totalTons = (totalKg / 1000).toFixed(2);
 
-  const whatsappMsg = `Hola estilo.capitana, quisiera solicitar cotización para la cerámica Ferrazzano 43x43: ${p.name} (Línea: ${p.line}, Acabado: ${p.finish}). Cantidad: ${pallets} pallet(s) (${totalSqm} m² / ${totalBoxes} cajas / ${totalTons} tn).`;
+  const whatsappMsg = `Hola Estilo Capitana, quisiera solicitar cotización para la cerámica Ferrazzano 43x43: ${p.name} (Línea: ${p.line}, Acabado: ${p.finish}). Cantidad: ${pallets} pallet(s) (${boxes} cajas / ${sqm} m² / ${totalTons} tn).`;
   const whatsappUrl = buildWhatsAppUrl(whatsappMsg);
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
       <div>
-        {/* Imagen del modelo */}
-        <div className="relative w-full h-56 bg-slate-100 overflow-hidden">
+        {/* Imagen del modelo con modal ampliado */}
+        <div
+          className="relative w-full h-56 bg-slate-100 overflow-hidden cursor-pointer group"
+          onClick={() => onZoom(p.image, p.name)}
+        >
           <img
             src={p.image}
             alt={p.name}
-            className="w-full h-full object-cover block"
+            className="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-300"
             onError={(e) => {
               e.currentTarget.style.display = "none";
             }}
@@ -44,7 +70,7 @@ const ProductCard43: React.FC<{ p: CeramicProduct }> = ({ p }) => {
           </div>
         </div>
 
-        {/* Información del Producto */}
+        {/* Informacion del Producto */}
         <div className="p-4 pb-2">
           <span className="text-[11px] font-bold text-sky-600 block mb-0.5 uppercase">
             {p.line} · {p.colorOrDesign}
@@ -64,45 +90,91 @@ const ProductCard43: React.FC<{ p: CeramicProduct }> = ({ p }) => {
             </div>
           </div>
 
-          {/* CALCULADORA DE UNIDADES / PALLETS */}
-          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 my-2">
-            <div className="flex items-center justify-between gap-2 mb-2">
-              <span className="text-[11px] font-bold uppercase text-slate-500">Pallets Cerrados:</span>
+          {/* CALCULADORA MULTI-UNIDAD LIBRE */}
+          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 my-2 space-y-2">
+            <span className="text-[11px] font-bold uppercase text-slate-500 block mb-1">
+              Selección de Cantidad
+            </span>
+
+            {/* Selector de Pallets */}
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-semibold text-slate-700">Pallets:</span>
               <div className="flex items-center bg-white border border-slate-300 rounded-md overflow-hidden">
                 <button
                   type="button"
-                  onClick={() => setPallets(Math.max(1, pallets - 1))}
-                  className="px-2 py-1 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
-                  aria-label="Restar pallet"
+                  onClick={() => handlePalletsChange(pallets - 1)}
+                  className="px-2 py-0.5 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
                 >
-                  <Minus className="w-3.5 h-3.5" />
+                  <Minus className="w-3 h-3" />
                 </button>
                 <input
                   type="number"
                   min="1"
                   value={pallets}
-                  onChange={(e) => setPallets(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-10 text-center font-bold text-xs text-slate-900 focus:outline-none"
+                  onChange={(e) => handlePalletsChange(parseInt(e.target.value) || 1)}
+                  className="w-12 text-center font-bold text-xs text-slate-900 focus:outline-none"
                 />
                 <button
                   type="button"
-                  onClick={() => setPallets(pallets + 1)}
-                  className="px-2 py-1 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
-                  aria-label="Sumar pallet"
+                  onClick={() => handlePalletsChange(pallets + 1)}
+                  className="px-2 py-0.5 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
                 >
-                  <Plus className="w-3.5 h-3.5" />
+                  <Plus className="w-3 h-3" />
                 </button>
               </div>
             </div>
 
-            {/* Rendimiento Dinámico */}
+            {/* Selector de Cajas */}
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-semibold text-slate-700">Cajas:</span>
+              <div className="flex items-center bg-white border border-slate-300 rounded-md overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => handleBoxesChange(boxes - 1)}
+                  className="px-2 py-0.5 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
+                >
+                  <Minus className="w-3 h-3" />
+                </button>
+                <input
+                  type="number"
+                  min="1"
+                  value={boxes}
+                  onChange={(e) => handleBoxesChange(parseInt(e.target.value) || 1)}
+                  className="w-12 text-center font-bold text-xs text-slate-900 focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleBoxesChange(boxes + 1)}
+                  className="px-2 py-0.5 hover:bg-slate-100 text-slate-600 transition-colors cursor-pointer"
+                >
+                  <Plus className="w-3 h-3" />
+                </button>
+              </div>
+            </div>
+
+            {/* Selector de m² */}
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-semibold text-slate-700">Metros (m²):</span>
+              <div className="flex items-center bg-white border border-slate-300 rounded-md overflow-hidden">
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0.1"
+                  value={sqm}
+                  onChange={(e) => handleSqmChange(parseFloat(e.target.value) || 0.1)}
+                  className="w-20 px-1 py-0.5 text-center font-bold text-xs text-slate-900 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Rendimiento Dinámico y Peso */}
             <div className="grid grid-cols-3 gap-1.5 pt-2 border-t border-slate-200/80 text-center">
               <div>
                 <div className="flex items-center justify-center gap-1 text-sky-600 mb-0.5">
                   <Layers className="w-3 h-3" />
                   <span className="text-[9px] font-bold uppercase">Superficie</span>
                 </div>
-                <span className="text-xs font-extrabold text-slate-900">{totalSqm} m²</span>
+                <span className="text-xs font-extrabold text-slate-900">{sqm} m²</span>
               </div>
 
               <div className="border-x border-slate-200">
@@ -110,7 +182,7 @@ const ProductCard43: React.FC<{ p: CeramicProduct }> = ({ p }) => {
                   <Package className="w-3 h-3" />
                   <span className="text-[9px] font-bold uppercase">Cajas</span>
                 </div>
-                <span className="text-xs font-extrabold text-slate-900">{totalBoxes} cajas</span>
+                <span className="text-xs font-extrabold text-slate-900">{boxes} cajas</span>
               </div>
 
               <div>
@@ -125,13 +197,13 @@ const ProductCard43: React.FC<{ p: CeramicProduct }> = ({ p }) => {
         </div>
       </div>
 
-      {/* Botón Acción WhatsApp */}
+      {/* Boton Accion WhatsApp */}
       <div className="p-4 pt-2">
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
+          className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 text-white font-semibold text-xs rounded-lg transition-all shadow-sm cursor-pointer"
         >
           <MessageCircle className="w-4 h-4" />
           Cotizar Lote por WhatsApp
@@ -144,6 +216,7 @@ const ProductCard43: React.FC<{ p: CeramicProduct }> = ({ p }) => {
 export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
   const [selectedFinish, setSelectedFinish] = useState<string>("Todos");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [zoomedImage, setZoomedImage] = useState<{ src: string; title: string } | null>(null);
 
   const finishes = ["Todos", "Brillante", "Satinado", "Mate con Granilla", "Colonial"];
 
@@ -158,23 +231,52 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8">
+      {/* Lightbox / Modal Ampliado */}
+      {zoomedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4"
+          onClick={() => setZoomedImage(null)}
+        >
+          <div
+            className="relative max-w-4xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl p-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setZoomedImage(null)}
+              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-900/70 text-white hover:bg-slate-900 transition-colors cursor-pointer"
+            >
+              ✕
+            </button>
+            <img
+              src={zoomedImage.src}
+              alt={zoomedImage.title}
+              className="w-full h-[75vh] object-contain rounded-xl bg-slate-100"
+            />
+            <div className="p-4 text-center">
+              <h3 className="text-lg font-bold text-slate-900 font-['Montserrat']">{zoomedImage.title}</h3>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <button
           onClick={onBack}
           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          Volver a Catálogos
+          Volver a Colecciones
         </button>
 
         <a
           href="/catalogos/ferrazzano_43.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-emerald-600 text-white rounded-lg text-sm font-semibold hover:opacity-95 transition-opacity shadow-sm cursor-pointer"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
         >
           <FileText className="w-4 h-4" />
-          Descargar PDF 43×43
+          Ver/Descargar Catalogo
         </a>
       </div>
 
@@ -191,14 +293,14 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
       {/* BARRA UNIFICADA CON BUSCADOR Y FILTROS */}
       <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-bold uppercase text-slate-500">Acabado:</span>
+          <span className="text-xs font-bold uppercase text-slate-500">Textura:</span>
           {finishes.map((fn) => (
             <button
               key={fn}
               onClick={() => setSelectedFinish(fn)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 selectedFinish === fn
-                  ? "bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow-sm"
+                  ? "bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm"
                   : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
               }`}
             >
@@ -222,7 +324,7 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
       {/* GRILLA DE MODELOS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((p) => (
-          <ProductCard43 key={p.id} p={p} />
+          <ProductCard43 key={p.id} p={p} onZoom={(src, title) => setZoomedImage({ src, title })} />
         ))}
       </div>
     </div>
