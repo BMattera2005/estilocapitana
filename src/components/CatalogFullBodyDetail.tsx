@@ -17,7 +17,7 @@ interface CatalogFullBodyDetailProps {
   onBack: () => void;
 }
 
-// Componente de Tarjeta individual con la Calculadora de Unidades Integrada y Rectángulo Flotante
+// Componente de Tarjeta individual con la Calculadora de Unidades Integrada
 const ProductCardFullBody: React.FC<{ item: FullBodyProductItem }> = ({ item }) => {
   // Datos del producto (Sintered Stone Full Body 15 mm)
   const sqmPerPiece = 1.92;
@@ -62,7 +62,7 @@ const ProductCardFullBody: React.FC<{ item: FullBodyProductItem }> = ({ item }) 
   return (
     <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all duration-200">
       <div>
-        {/* Imagen del Producto con Rectángulo Flotante Negro */}
+        {/* Imagen del Producto */}
         <div className="w-full h-64 bg-slate-100 relative overflow-hidden flex items-center justify-center">
           <ZoomableImage
             src={item.image}
@@ -72,7 +72,6 @@ const ProductCardFullBody: React.FC<{ item: FullBodyProductItem }> = ({ item }) 
               (e.currentTarget as HTMLElement).style.display = 'none';
             }}
           />
-          {/* RECTÁNGULO FLOTANTE NEGRO */}
           <div className="pointer-events-none absolute top-3 left-3">
             <span className="px-2.5 py-1 rounded bg-slate-900 text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
               {item.allFinishes && item.allFinishes.length > 0 ? item.allFinishes.join(' / ') : 'Glossy'}
@@ -235,46 +234,50 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 font-['Montserrat']">
-      {/* Botón Volver */}
-      <button 
-        onClick={onBack}
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Volver a las Colecciones
-      </button>
+      {/* RECTÁNGULO / CONTENEDOR SUPERIOR DE CABECERA */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 mb-6 shadow-xs">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+          <div>
+            {/* Botón Volver */}
+            <button 
+              onClick={onBack}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Volver a las Colecciones</span>
+            </button>
 
-      {/* Cabecera */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
-              Novedad Importada
-            </span>
-            <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
-              CATÁLOGO · SINTERED STONE FULL BODY 15 MM
-            </span>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                Novedad Importada
+              </span>
+              <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
+                CATÁLOGO · SINTERED STONE FULL BODY 15 MM
+              </span>
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Habitat — Full Body 1,5 cm
+            </h1>
+
+            <p className="text-sm text-slate-500 mt-2 font-normal max-w-3xl leading-relaxed">
+              Superficies de Sintered Stone de masa homogénea (1,5 cm) para mesadas de cocina, islas y mobiliario técnico.
+            </p>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Habitat — Full Body 1,5 cm
-          </h1>
-
-          <p className="text-sm text-slate-500 mt-2 font-normal">
-            Superficies de Sintered Stone de masa homogénea (1,5 cm) para mesadas de cocina, islas y mobiliario técnico.
-          </p>
+          {/* Botón superior de descarga */}
+          <div className="shrink-0">
+            <a
+              href="/catalogos/habitat_ma_full_body.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
+            >
+              <Download className="w-4 h-4" />
+              <span>Ver/Descargar Catalogo</span>
+            </a>
+          </div>
         </div>
-
-        {/* Botón superior de descarga */}
-        <a
-          href="/catalogos/habitat_ma_full_body.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
-        >
-          <Download className="w-4 h-4" />
-          <span>Ver/Descargar Catalogo</span>
-        </a>
       </div>
 
       {/* BARRA DE FILTROS Y BUSCADOR */}
