@@ -1,5 +1,19 @@
 import React, { useState } from "react";
-import { ArrowLeft, MessageCircle, Download, Search, Minus, Plus } from "lucide-react";
+import {
+  ArrowLeft,
+  MessageCircle,
+  Download,
+  Search,
+  Minus,
+  Plus,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  X,
+  Layers,
+  Box,
+  Grid,
+} from "lucide-react";
 import { products43x43, CeramicProduct, packingStandard43 } from "../data/products43";
 import { buildWhatsAppUrl } from "../lib/quote-message";
 
@@ -49,7 +63,7 @@ const ProductCard43: React.FC<{ product: CeramicProduct; onZoom: (src: string, t
   return (
     <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
       <div>
-        {/* Imagen del Producto con Zoom al hacer Clic */}
+        {/* Imagen del Producto - Clic abre Zoom Lightbox */}
         <div
           className="relative w-full h-72 bg-slate-100 overflow-hidden group cursor-pointer"
           onClick={() => onZoom(product.image, product.name)}
@@ -89,21 +103,24 @@ const ProductCard43: React.FC<{ product: CeramicProduct; onZoom: (src: string, t
             </div>
           </div>
 
-          {/* CALCULADORA DE UNIDADES REDISEÑADA SIN DESBORDE */}
-          <div className="mt-3 bg-slate-50 border border-slate-200/80 rounded-lg p-2.5 space-y-2">
+          {/* CALCULADORA DE UNIDADES REDISEÑADA Y HOLGADA */}
+          <div className="mt-4 bg-slate-50 border border-slate-200/80 rounded-xl p-3 space-y-2.5">
             <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider block">
               Calculadora de Unidades
             </span>
 
-            <div className="grid grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-3 gap-2">
               {/* Pallets */}
-              <div className="bg-white border border-slate-200 rounded-md p-1.5 text-center">
-                <span className="text-[9px] text-slate-400 font-bold block uppercase mb-1">Pallets</span>
-                <div className="flex items-center justify-between px-1">
+              <div className="bg-white border border-slate-200 rounded-lg p-2 text-center flex flex-col justify-between shadow-2xs">
+                <div className="flex items-center justify-center gap-1 text-[9px] text-slate-400 font-bold uppercase mb-1">
+                  <Layers className="w-2.5 h-2.5 text-slate-400" />
+                  <span>Pallets</span>
+                </div>
+                <div className="flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => handlePalletsChange(pallets - 1)}
-                    className="text-slate-400 hover:text-slate-800 transition-colors p-0.5"
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors"
                   >
                     <Minus className="w-3 h-3" />
                   </button>
@@ -112,12 +129,12 @@ const ProductCard43: React.FC<{ product: CeramicProduct; onZoom: (src: string, t
                     min="1"
                     value={pallets}
                     onChange={(e) => handlePalletsChange(parseInt(e.target.value) || 1)}
-                    className="w-full text-center font-bold text-xs text-slate-800 focus:outline-none bg-transparent"
+                    className="w-full text-center font-bold text-xs sm:text-sm text-slate-800 focus:outline-none bg-transparent px-0.5"
                   />
                   <button
                     type="button"
                     onClick={() => handlePalletsChange(pallets + 1)}
-                    className="text-slate-400 hover:text-slate-800 transition-colors p-0.5"
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors"
                   >
                     <Plus className="w-3 h-3" />
                   </button>
@@ -125,13 +142,16 @@ const ProductCard43: React.FC<{ product: CeramicProduct; onZoom: (src: string, t
               </div>
 
               {/* Cajas */}
-              <div className="bg-white border border-slate-200 rounded-md p-1.5 text-center">
-                <span className="text-[9px] text-slate-400 font-bold block uppercase mb-1">Cajas</span>
-                <div className="flex items-center justify-between px-1">
+              <div className="bg-white border border-slate-200 rounded-lg p-2 text-center flex flex-col justify-between shadow-2xs">
+                <div className="flex items-center justify-center gap-1 text-[9px] text-slate-400 font-bold uppercase mb-1">
+                  <Box className="w-2.5 h-2.5 text-slate-400" />
+                  <span>Cajas</span>
+                </div>
+                <div className="flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => handleBoxesChange(boxes - 1)}
-                    className="text-slate-400 hover:text-slate-800 transition-colors p-0.5"
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors"
                   >
                     <Minus className="w-3 h-3" />
                   </button>
@@ -140,12 +160,12 @@ const ProductCard43: React.FC<{ product: CeramicProduct; onZoom: (src: string, t
                     min="1"
                     value={boxes}
                     onChange={(e) => handleBoxesChange(parseInt(e.target.value) || 1)}
-                    className="w-full text-center font-bold text-xs text-slate-800 focus:outline-none bg-transparent"
+                    className="w-full text-center font-bold text-xs sm:text-sm text-slate-800 focus:outline-none bg-transparent px-0.5"
                   />
                   <button
                     type="button"
                     onClick={() => handleBoxesChange(boxes + 1)}
-                    className="text-slate-400 hover:text-slate-800 transition-colors p-0.5"
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors"
                   >
                     <Plus className="w-3 h-3" />
                   </button>
@@ -153,16 +173,21 @@ const ProductCard43: React.FC<{ product: CeramicProduct; onZoom: (src: string, t
               </div>
 
               {/* m² */}
-              <div className="bg-white border border-slate-200 rounded-md p-1.5 text-center">
-                <span className="text-[9px] text-slate-400 font-bold block uppercase mb-1">m²</span>
-                <input
-                  type="number"
-                  step="0.01"
-                  min="0.1"
-                  value={sqm}
-                  onChange={(e) => handleSqmChange(parseFloat(e.target.value) || 0.1)}
-                  className="w-full text-center font-bold text-xs text-slate-800 focus:outline-none bg-transparent py-0.5"
-                />
+              <div className="bg-white border border-slate-200 rounded-lg p-2 text-center flex flex-col justify-between shadow-2xs">
+                <div className="flex items-center justify-center gap-1 text-[9px] text-slate-400 font-bold uppercase mb-1">
+                  <Grid className="w-2.5 h-2.5 text-slate-400" />
+                  <span>m²</span>
+                </div>
+                <div className="flex items-center justify-center h-full">
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0.1"
+                    value={sqm}
+                    onChange={(e) => handleSqmChange(parseFloat(e.target.value) || 0.1)}
+                    className="w-full text-center font-bold text-xs sm:text-sm text-slate-800 focus:outline-none bg-transparent py-0.5"
+                  />
+                </div>
               </div>
             </div>
 
@@ -195,6 +220,9 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [zoomedImage, setZoomedImage] = useState<{ src: string; title: string } | null>(null);
 
+  // Estados de control para el Modal con Zoom
+  const [zoomScale, setZoomScale] = useState<number>(1);
+
   const finishes = ["Todos", "Brillante", "Satinado", "Mate con Granilla", "Colonial"];
 
   const filteredProducts = products43x43.filter((product) => {
@@ -206,35 +234,88 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
     return matchesFinish && (name.includes(query) || line.includes(query) || color.includes(query));
   });
 
+  const handleZoomIn = () => setZoomScale((prev) => Math.min(prev + 0.3, 3));
+  const handleZoomOut = () => setZoomScale((prev) => Math.max(prev - 0.3, 0.8));
+  const handleResetZoom = () => setZoomScale(1);
+
+  const openZoom = (src: string, title: string) => {
+    setZoomScale(1);
+    setZoomedImage({ src, title });
+  };
+
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8 font-['Montserrat']">
-      {/* Lightbox / Modal Flotante de Zoom Ampliado */}
+      {/* LIGHTBOX / MODAL CON BARRA DE HERRAMIENTAS DE ZOOM EXACTA A LA IMAGEN */}
       {zoomedImage && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/85 backdrop-blur-sm p-4 cursor-zoom-out"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/85 backdrop-blur-md p-4"
           onClick={() => setZoomedImage(null)}
         >
           <div
-            className="relative max-w-5xl w-full max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl p-2 cursor-default"
+            className="relative max-w-5xl w-full h-[85vh] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col justify-between"
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              type="button"
-              onClick={() => setZoomedImage(null)}
-              className="absolute top-4 right-4 z-10 p-2.5 rounded-full bg-slate-900/80 text-white hover:bg-slate-900 transition-colors cursor-pointer"
-            >
-              ✕
-            </button>
-            <div className="overflow-auto max-h-[80vh] flex items-center justify-center p-2">
-              <img
-                src={zoomedImage.src}
-                alt={zoomedImage.title}
-                className="max-w-none w-auto h-auto min-w-full rounded-xl bg-slate-100 cursor-zoom-in hover:scale-125 transition-transform duration-300 object-contain"
-              />
+            {/* Barra de Herramientas Superior */}
+            <div className="flex items-center justify-between px-6 py-3 border-b border-slate-100 bg-white">
+              <div className="flex items-center gap-3 text-slate-600">
+                <button
+                  type="button"
+                  onClick={handleZoomOut}
+                  className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 transition-colors"
+                  title="Alejar"
+                >
+                  <ZoomOut className="w-4 h-4" />
+                </button>
+
+                <span className="text-xs font-bold text-slate-700 min-w-[45px] text-center">
+                  {Math.round(zoomScale * 100)}%
+                </span>
+
+                <button
+                  type="button"
+                  onClick={handleZoomIn}
+                  className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 transition-colors"
+                  title="Acercar"
+                >
+                  <ZoomIn className="w-4 h-4" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleResetZoom}
+                  className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 transition-colors ml-1"
+                  title="Restablecer"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setZoomedImage(null)}
+                className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-slate-800 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
+
+            {/* Área de Visualización con Scroll y Escala de Zoom */}
+            <div className="relative flex-grow overflow-auto p-4 flex items-center justify-center bg-slate-50/50">
+              <div
+                className="transition-transform duration-200 ease-out origin-center flex items-center justify-center"
+                style={{ transform: `scale(${zoomScale})` }}
+              >
+                <img
+                  src={zoomedImage.src}
+                  alt={zoomedImage.title}
+                  className="max-h-[65vh] w-auto object-contain rounded-lg shadow-sm"
+                />
+              </div>
+            </div>
+
+            {/* Pie de Foto del Modal */}
             <div className="p-3 text-center border-t border-slate-100 bg-white">
-              <h3 className="text-base font-bold text-slate-900">{zoomedImage.title}</h3>
-              <p className="text-xs text-slate-400">Pasa el cursor o toca sobre la imagen para inspeccionar la veta</p>
+              <h3 className="text-sm font-bold text-slate-800">{zoomedImage.title}</h3>
             </div>
           </div>
         </div>
@@ -339,11 +420,7 @@ export const Catalog43Detail: React.FC<Catalog43DetailProps> = ({ onBack }) => {
       {/* Grilla de Productos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((product) => (
-          <ProductCard43
-            key={product.id}
-            product={product}
-            onZoom={(src, title) => setZoomedImage({ src, title })}
-          />
+          <ProductCard43 key={product.id} product={product} onZoom={openZoom} />
         ))}
       </div>
     </div>
