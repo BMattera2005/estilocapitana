@@ -1,11 +1,224 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Download, MessageCircle, Search } from 'lucide-react';
+vimport React, { useState } from 'react';
+import {
+  ArrowLeft,
+  Download,
+  MessageCircle,
+  Search,
+  Minus,
+  Plus,
+  Layers,
+  Box,
+  Grid,
+} from 'lucide-react';
 import { productsHabitatPorcelanato } from '../data/productsHabitatPorcelanato';
 import { ZoomableImage } from '@/components/catalog/ZoomableImage';
 
 interface Props {
   onBack: () => void;
 }
+
+// Componente individual de Tarjeta con la Calculadora de Unidades integrada
+const ProductCardHabitatPorcelanato: React.FC<{ product: any }> = ({ product }) => {
+  const textureLabel =
+    product.finishText ||
+    product.finish ||
+    (product.finishes ? product.finishes.join(' / ') : 'Matt');
+
+  // Valores dinámicos según datos del producto con fallback a los valores del formato 120x120
+  const sqmPerBox = parseFloat(product.sqmPerBox) || 2.88;
+  const kgPerBox = parseFloat(product.weightKg || product.weightPerBox) || 60;
+  const boxesPerPalletConst = 24; // Estimado estándar de empaque mayorista por pallet
+
+  const [pallets, setPallets] = useState<number>(1);
+  const [boxes, setBoxes] = useState<number>(boxesPerPalletConst);
+  const [sqm, setSqm] = useState<number>(Number((boxesPerPalletConst * sqmPerBox).toFixed(2)));
+
+  const handlePalletsChange = (val: number) => {
+    const newPallets = Math.max(1, val);
+    const newBoxes = newPallets * boxesPerPalletConst;
+    setPallets(newPallets);
+    setBoxes(newBoxes);
+    setSqm(Number((newBoxes * sqmPerBox).toFixed(2)));
+  };
+
+  const handleBoxesChange = (val: number) => {
+    const newBoxes = Math.max(1, val);
+    setBoxes(newBoxes);
+    setPallets(Math.max(1, Math.round(newBoxes / boxesPerPalletConst)));
+    setSqm(Number((newBoxes * sqmPerBox).toFixed(2)));
+  };
+
+  const handleSqmChange = (val: number) => {
+    const newSqm = Math.max(0.1, val);
+    setSqm(newSqm);
+    const calculatedBoxes = Math.max(1, Math.ceil(newSqm / sqmPerBox));
+    setBoxes(calculatedBoxes);
+    setPallets(Math.max(1, Math.ceil(calculatedBoxes / boxesPerPalletConst)));
+  };
+
+  const totalKg = Number((boxes * kgPerBox).toFixed(0));
+  const totalTons = (totalKg / 1000).toFixed(2);
+
+  const handleWhatsAppQuote = () => {
+    const phone = "5491161208162";
+    const message = `Hola Estilo Capitana, me interesa cotizar el porcelanato ${product.name} (${product.format || '120x120 cm'} - ${textureLabel}). Cantidad requerida: ${pallets} pallet(s) (${boxes} cajas / ${sqm} m² / ${totalTons} tn). Quisiera consultar disponibilidad.`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  return (
+    <div className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col justify-between group hover:border-slate-300 transition-all duration-200">
+      <div>
+        {/* Imagen del Producto con ZoomableImage */}
+        <div className="relative h-64 bg-slate-100 overflow-hidden">
+          <ZoomableImage
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            loading="lazy"
+          />
+          <div className="pointer-events-none absolute top-3 left-3">
+            <span className="px-2.5 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider">
+              {textureLabel}
+            </span>
+          </div>
+        </div>
+
+        {/* Contenido de la Tarjeta */}
+        <div className="p-5 flex flex-col justify-between space-y-4">
+          <div>
+            <div className="text-[11px] font-bold text-cyan-600 uppercase tracking-wider mb-1">
+              {product.series || 'LUXURY STONE 120X120'}
+            </div>
+            <h3 className="text-base font-bold text-slate-900">
+              {product.name}
+            </h3>
+            {product.description && (
+              <p className="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed">
+                {product.description}
+              </p>
+            )}
+          </div>
+
+          {/* Especificaciones Logísticas */}
+          <div className="pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
+            <div className="flex justify-between">
+              <span className="text-slate-400 font-medium">Packaging:</span>
+              <span className="font-semibold text-slate-700">
+                {sqmPerBox} m² / {kgPerBox} kg por caja
+              </span>
+            </div>
+          </div>
+
+          {/* CALCULADORA DE UNIDADES VERTICAL */}
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+            <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider block mb-1">
+              Calculadora de Unidades
+            </span>
+
+            <div className="space-y-2">
+              {/* Fila 1: Pallets */}
+              <div className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-2xs">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-600 w-24">
+                  <Layers className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>Pallets</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handlePalletsChange(pallets - 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <input
+                    type="number"
+                    min="1"
+                    value={pallets}
+                    onChange={(e) => handlePalletsChange(parseInt(e.target.value) || 1)}
+                    className="w-12 text-center font-bold text-sm text-slate-900 focus:outline-none bg-transparent"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handlePalletsChange(pallets + 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Fila 2: Cajas */}
+              <div className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-2xs">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-600 w-24">
+                  <Box className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>Cajas</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleBoxesChange(boxes - 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <input
+                    type="number"
+                    min="1"
+                    value={boxes}
+                    onChange={(e) => handleBoxesChange(parseInt(e.target.value) || 1)}
+                    className="w-12 text-center font-bold text-sm text-slate-900 focus:outline-none bg-transparent"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleBoxesChange(boxes + 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Fila 3: m² */}
+              <div className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-2xs">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-600 w-24">
+                  <Grid className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>m²</span>
+                </div>
+                <div className="flex items-center justify-end">
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0.1"
+                    value={sqm}
+                    onChange={(e) => handleSqmChange(parseFloat(e.target.value) || 0.1)}
+                    className="w-20 text-right font-bold text-sm text-slate-900 focus:outline-none bg-transparent pr-1"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center text-[10px] text-slate-500 pt-2 border-t border-slate-200/70">
+              <span>Peso estimado:</span>
+              <span className="font-bold text-slate-800">{totalTons} tn ({totalKg} kg)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Botón WhatsApp */}
+      <div className="p-5 pt-0">
+        <button
+          type="button"
+          onClick={handleWhatsAppQuote}
+          className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
+        >
+          <MessageCircle className="w-4 h-4 text-white shrink-0" />
+          <span>Consultar Stock por WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export const CatalogHabitatPorcelanatoDetail: React.FC<Props> = ({ onBack }) => {
   const [selectedFormat, setSelectedFormat] = useState<string>('Todos');
@@ -29,7 +242,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<Props> = ({ onBack }) => 
   const filteredProducts = visibleProducts.filter((product) => {
     const matchesFormat =
       selectedFormat === 'Todos' || product.format === selectedFormat;
-    
+
     const productFinishes = product.finishes || [product.finish || 'Matt'];
     const matchesFinish =
       selectedFinish === 'Todos' || productFinishes.includes(selectedFinish as any);
@@ -156,71 +369,13 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<Props> = ({ onBack }) => 
 
         {/* Grilla de Productos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProducts.map((product) => {
-            const textureLabel = product.finishText || product.finish || (product.finishes ? product.finishes.join(' / ') : 'Matt');
-            const messageText = "Hola Estilo Capitana, quisiera consultar disponibilidad y cotizar el modelo " + product.name + " (" + (product.format || '120x120 cm') + " - " + textureLabel + ").";
-
-            return (
-              <div
-                key={product.id}
-                className="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col group hover:border-slate-300 transition-all duration-200"
-              >
-                {/* Imagen del Producto con Zoom Lightbox */}
-                <div className="relative h-64 bg-slate-100 overflow-hidden group">
-                  <ZoomableImage
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                  <div className="pointer-events-none absolute top-3 left-3">
-                    <span className="px-2.5 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider">
-                      {textureLabel}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Contenido de la Tarjeta */}
-                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                  <div>
-                    <div className="text-[11px] font-bold text-cyan-600 uppercase tracking-wider mb-1">
-                      {product.series || 'LUXURY STONE 120X120'}
-                    </div>
-                    <h3 className="text-base font-bold text-slate-900">
-                      {product.name}
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed">
-                      {product.description}
-                    </p>
-                  </div>
-
-                  {/* Especificaciones Logísticas */}
-                  <div className="pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Packaging:</span>
-                      <span className="font-semibold text-slate-700">
-                        {product.sqmPerBox || '2.88'} m² / kg por caja
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Botón WhatsApp */}
-                  <a
-                    href={`https://wa.me/5491161208162?text=${encodeURIComponent(messageText)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    <span>Consultar Stock por WhatsApp</span>
-                  </a>
-                </div>
-              </div>
-            );
-          })}
+          {filteredProducts.map((product) => (
+            <ProductCardHabitatPorcelanato key={product.id} product={product} />
+          ))}
         </div>
       </div>
-
     </div>
   );
 };
+
+export default CatalogHabitatPorcelanatoDetail;
