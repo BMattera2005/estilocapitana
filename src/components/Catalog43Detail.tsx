@@ -1,4 +1,4 @@
-vimport React, { useState } from "react";
+import React, { useState } from "react";
 import { ArrowLeft, MessageCircle, Download, Search, Minus, Plus } from "lucide-react";
 import { products43x43, CeramicProduct, packingStandard43 } from "../data/products43";
 import { buildWhatsAppUrl } from "../lib/quote-message";
