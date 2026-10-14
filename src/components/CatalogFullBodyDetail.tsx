@@ -17,21 +17,19 @@ interface CatalogFullBodyDetailProps {
   onBack: () => void;
 }
 
-// Componente de Tarjeta individual con la Calculadora de Unidades Integrada
+// Componente de Tarjeta individual con la Calculadora de Unidades Integrada y Rectángulo Flotante
 const ProductCardFullBody: React.FC<{ item: FullBodyProductItem }> = ({ item }) => {
   // Datos del producto (Sintered Stone Full Body 15 mm)
-  // Formato estándar principal: 800x2400 mm (1.92 m² / pieza o placa)
   const sqmPerPiece = 1.92;
   const kgPerPiece = 67;
 
   const [pallets, setPallets] = useState<number>(1);
-  const [boxes, setBoxes] = useState<number>(1); // En placas XL, las cajas equivalen a piezas/placas
+  const [boxes, setBoxes] = useState<number>(1); // En placas XL, equivalen a piezas/placas
   const [sqm, setSqm] = useState<number>(sqmPerPiece);
 
   const handlePalletsChange = (val: number) => {
     const newPallets = Math.max(1, val);
     setPallets(newPallets);
-    // Asumiendo un estimado promedio o relación 1 pallet
     setBoxes(newPallets * 20); 
     setSqm(Number((newPallets * 20 * sqmPerPiece).toFixed(2)));
   };
@@ -64,7 +62,7 @@ const ProductCardFullBody: React.FC<{ item: FullBodyProductItem }> = ({ item }) 
   return (
     <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md hover:border-slate-300 transition-all duration-200">
       <div>
-        {/* Imagen del Producto */}
+        {/* Imagen del Producto con Rectángulo Flotante Negro */}
         <div className="w-full h-64 bg-slate-100 relative overflow-hidden flex items-center justify-center">
           <ZoomableImage
             src={item.image}
@@ -74,9 +72,10 @@ const ProductCardFullBody: React.FC<{ item: FullBodyProductItem }> = ({ item }) 
               (e.currentTarget as HTMLElement).style.display = 'none';
             }}
           />
-          <div className="absolute top-3 right-3 pointer-events-none">
-            <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs">
-              1,5 cm Masa Homogénea
+          {/* RECTÁNGULO FLOTANTE NEGRO */}
+          <div className="pointer-events-none absolute top-3 left-3">
+            <span className="px-2.5 py-1 rounded bg-slate-900 text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
+              {item.allFinishes && item.allFinishes.length > 0 ? item.allFinishes.join(' / ') : 'Glossy'}
             </span>
           </div>
         </div>
@@ -235,7 +234,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
     });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8 font-['Montserrat']">
       {/* Botón Volver */}
       <button 
         onClick={onBack}
@@ -257,7 +256,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Montserrat']">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Habitat — Full Body 1,5 cm
           </h1>
 
