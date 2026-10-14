@@ -1,11 +1,221 @@
-import React, { useState } from "react";
-import { ArrowLeft, MessageCircle, Download, Search } from "lucide-react";
-import { productsLaminas } from "../data/productsLaminas";
-import { ZoomableImage } from "@/components/catalog/ZoomableImage";
+import React, { useState } from 'react';
+import {
+  ArrowLeft,
+  Download,
+  MessageCircle,
+  Search,
+  Minus,
+  Plus,
+  Layers,
+  Box,
+  Grid,
+} from 'lucide-react';
+import { productsLaminas } from '../data/productsLaminas';
+import { ZoomableImage } from '@/components/catalog/ZoomableImage';
 
 interface CatalogLaminasDetailProps {
   onBack: () => void;
 }
+
+// Componente individual de Tarjeta con la Calculadora de Unidades integrada
+const ProductCardLaminas: React.FC<{ product: any }> = ({ product }) => {
+  // Parámetros técnicos del formato Láminas 120x270 cm
+  const sqmPerPiece = parseFloat(product.sqmPerSlab || product.sqm) || 3.24;
+  const kgPerPiece = parseFloat(product.weightKg) || 46;
+  const piecesPerPalletConst = 20; // Estimado promedio por pallet en láminas XL
+
+  const [pallets, setPallets] = useState<number>(1);
+  const [pieces, setPieces] = useState<number>(1); // En láminas XL la unidad física base es la placa
+  const [sqm, setSqm] = useState<number>(sqmPerPiece);
+
+  const handlePalletsChange = (val: number) => {
+    const newPallets = Math.max(1, val);
+    const newPieces = newPallets * piecesPerPalletConst;
+    setPallets(newPallets);
+    setPieces(newPieces);
+    setSqm(Number((newPieces * sqmPerPiece).toFixed(2)));
+  };
+
+  const handlePiecesChange = (val: number) => {
+    const newPieces = Math.max(1, val);
+    setPieces(newPieces);
+    setPallets(Math.max(1, Math.round(newPieces / piecesPerPalletConst)));
+    setSqm(Number((newPieces * sqmPerPiece).toFixed(2)));
+  };
+
+  const handleSqmChange = (val: number) => {
+    const newSqm = Math.max(0.1, val);
+    setSqm(newSqm);
+    const calculatedPieces = Math.max(1, Math.ceil(newSqm / sqmPerPiece));
+    setPieces(calculatedPieces);
+    setPallets(Math.max(1, Math.ceil(calculatedPieces / piecesPerPalletConst)));
+  };
+
+  const totalKg = Number((pieces * kgPerPiece).toFixed(0));
+  const totalTons = (totalKg / 1000).toFixed(2);
+
+  const handleWhatsAppQuote = () => {
+    const phone = "5491161208162";
+    const message = `Hola Estilo Capitana, me interesa cotizar la Lámina Sintered Stone ${product.name} (Código: ${product.code || 'S/C'}, Formato: ${product.format || '120x270 cm'}, Textura: ${product.finish}). Cantidad requerida: ${pallets} pallet(s) (${pieces} placas / ${sqm} m² / ${totalTons} tn). Quisiera consultar disponibilidad.`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
+      <div>
+        {/* Imagen del Producto con Zoom Modal */}
+        <div className="relative w-full h-72 bg-slate-100 overflow-hidden group">
+          <ZoomableImage
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover block transition-transform duration-300 group-hover:scale-105"
+            onError={(e) => {
+              (e.currentTarget as HTMLElement).style.display = "none";
+            }}
+          />
+          <div className="pointer-events-none absolute top-3 right-3">
+            <span className="px-2.5 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
+              {product.finish}
+            </span>
+          </div>
+        </div>
+
+        {/* Ficha Técnica */}
+        <div className="p-4">
+          <span className="text-[11px] font-bold text-sky-600 block mb-0.5">
+            {product.code}
+          </span>
+          <h3 className="text-lg font-bold text-slate-900 leading-tight">
+            {product.name}
+          </h3>
+
+          <div className="mt-3 space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
+            <div className="flex justify-between">
+              <span className="text-slate-400 font-medium">Textura:</span>
+              <span className="font-semibold text-slate-800">{product.finish}</span>
+            </div>
+            {product.faces && (
+              <div className="flex justify-between">
+                <span className="text-slate-400 font-medium">Diseño:</span>
+                <span className="font-semibold text-slate-800">{product.faces}</span>
+              </div>
+            )}
+            <div className="flex justify-between">
+              <span className="text-slate-400 font-medium">Rendimiento:</span>
+              <span className="font-semibold text-slate-800">{sqmPerPiece} m² / placa</span>
+            </div>
+          </div>
+
+          {/* CALCULADORA DE UNIDADES VERTICAL */}
+          <div className="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+            <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider block mb-1">
+              Calculadora de Unidades
+            </span>
+
+            <div className="space-y-2">
+              {/* Fila 1: Pallets */}
+              <div className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-2xs">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-600 w-24">
+                  <Layers className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>Pallets</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handlePalletsChange(pallets - 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <input
+                    type="number"
+                    min="1"
+                    value={pallets}
+                    onChange={(e) => handlePalletsChange(parseInt(e.target.value) || 1)}
+                    className="w-12 text-center font-bold text-sm text-slate-900 focus:outline-none bg-transparent"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handlePalletsChange(pallets + 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Fila 2: Placas */}
+              <div className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-2xs">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-600 w-24">
+                  <Box className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>Placas</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handlePiecesChange(pieces - 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <input
+                    type="number"
+                    min="1"
+                    value={pieces}
+                    onChange={(e) => handlePiecesChange(parseInt(e.target.value) || 1)}
+                    className="w-12 text-center font-bold text-sm text-slate-900 focus:outline-none bg-transparent"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handlePiecesChange(pieces + 1)}
+                    className="p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded transition-colors cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Fila 3: m² */}
+              <div className="flex items-center justify-between bg-white border border-slate-200 rounded-lg px-3 py-1.5 shadow-2xs">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-600 w-24">
+                  <Grid className="w-3.5 h-3.5 text-cyan-600" />
+                  <span>m²</span>
+                </div>
+                <div className="flex items-center justify-end">
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0.1"
+                    value={sqm}
+                    onChange={(e) => handleSqmChange(parseFloat(e.target.value) || 0.1)}
+                    className="w-20 text-right font-bold text-sm text-slate-900 focus:outline-none bg-transparent pr-1"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center text-[10px] text-slate-500 pt-2 border-t border-slate-200/70">
+              <span>Peso estimado:</span>
+              <span className="font-bold text-slate-800">{totalTons} tn ({totalKg} kg)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Botón WhatsApp */}
+      <div className="p-4 pt-0">
+        <button
+          type="button"
+          onClick={handleWhatsAppQuote}
+          className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 text-white font-semibold text-xs rounded-lg transition-all shadow-xs cursor-pointer"
+        >
+          <MessageCircle className="w-4 h-4 text-white shrink-0" />
+          <span>Cotizar por WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBack }) => {
   const [filterFinish, setFilterFinish] = useState<string>("Todos");
@@ -19,7 +229,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
       new Set(
         rawList
           .map((p) => p?.finish)
-          .filter((f) => f != null)
+          .filter((f): f is string => Boolean(f))
       )
     ),
   ];
@@ -70,7 +280,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
             </p>
           </div>
 
-          {/* Botón Superior Ver / Descargar Catálogo con el Color Cian Corporativo Corregido */}
+          {/* Botón Superior Ver / Descargar Catálogo */}
           <div className="shrink-0">
             <a
               href="/catalogos/slabs_sintered_stone.pdf"
@@ -141,74 +351,12 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
 
       {/* Grilla de Productos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map((product) => {
-          const whatsappMsg = `Hola estilo.capitana, consulto cotización por la Lámina ${product.name} (Código: ${product.code}, Medida: ${product.format}, Textura: ${product.finish}).`;
-          const whatsappUrl = `https://wa.me/5491161208162?text=${encodeURIComponent(whatsappMsg)}`;
-
-          return (
-            <div
-              key={product.id}
-              className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between"
-            >
-              <div>
-                {/* Imagen con Zoom Modal */}
-                <div className="relative w-full h-72 bg-slate-100 overflow-hidden group">
-                  <ZoomableImage
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover block transition-transform duration-300 group-hover:scale-105"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-                  <div className="pointer-events-none absolute top-3 right-3">
-                    <span className="px-2.5 py-1 rounded bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
-                      {product.finish}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-4">
-                  <span className="text-[11px] font-bold text-sky-600 block mb-0.5">
-                    {product.code}
-                  </span>
-                  <h3 className="text-lg font-bold text-slate-900 leading-tight">
-                    {product.name}
-                  </h3>
-
-                  <div className="mt-3 space-y-1.5 text-xs text-slate-600 border-t border-slate-100 pt-3">
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 font-medium">Textura:</span>
-                      <span className="font-semibold text-slate-800">{product.finish}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 font-medium">Diseño:</span>
-                      <span className="font-semibold text-slate-800">{product.faces}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400 font-medium">Rendimiento:</span>
-                      <span className="font-semibold text-slate-800">{product.sqmPerSlab} m² / placa</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4 pt-0">
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 text-white font-semibold text-xs rounded-lg transition-all shadow-xs cursor-pointer"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  Cotizar por WhatsApp
-                </a>
-              </div>
-            </div>
-          );
-        })}
+        {filteredProducts.map((product) => (
+          <ProductCardLaminas key={product.id} product={product} />
+        ))}
       </div>
-
     </div>
   );
 };
+
+export default CatalogLaminasDetail;
