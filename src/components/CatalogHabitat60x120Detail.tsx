@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   ArrowLeft,
-  Download,
   MessageCircle,
   Search,
   Minus,
@@ -14,7 +13,7 @@ import {
   RotateCcw,
   ZoomOut,
 } from 'lucide-react';
-import { productsHabitat60x120, Habitat60x120Product } from '../data/productsHabitat60x120';
+import { productsHabitat60x120 } from '../data/productsHabitat60x120';
 
 interface CatalogHabitat60x120DetailProps {
   onBack: () => void;
@@ -59,13 +58,11 @@ const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClos
   );
 };
 
-// Tarjeta individual con Calculadora simplificada por Pallet
-const ProductCardHabitat60x120: React.FC<{ item: Habitat60x120Product; onZoom: (img: string) => void }> = ({ item, onZoom }) => {
-  const sqmPerBox = item.sqmPerBox || 1.44;
-  const kgPerBox = item.weightKgBox || 30;
-  const boxesPerPallet = 48; // Estándar logístico por pallet para 60x120 cm
-  const sqmPerPallet = boxesPerPallet * sqmPerBox;
-  const kgPerPallet = boxesPerPallet * kgPerBox;
+// Tarjeta individual con Calculadora vertical
+const ProductCardHabitat60x120: React.FC<{ item: any; onZoom: (img: string) => void }> = ({ item, onZoom }) => {
+  const boxesPerPallet = item.boxesPerPallet || 48;
+  const sqmPerPallet = item.sqmPerPallet || 69.12;
+  const weightKgPerPallet = item.weightPalletKg || 1440;
 
   const [pallets, setPallets] = useState<number | "">(1);
 
@@ -85,19 +82,22 @@ const ProductCardHabitat60x120: React.FC<{ item: Habitat60x120Product; onZoom: (
   const safePallets = pallets === "" ? 1 : pallets;
   const totalBoxes = safePallets * boxesPerPallet;
   const totalSqm = safePallets * sqmPerPallet;
-  const totalWeightKg = safePallets * kgPerPallet;
+  const totalWeightKg = safePallets * weightKgPerPallet;
   const totalTons = (totalWeightKg / 1000).toFixed(2);
+
+  // Normalización de textura (todo es Matt por defecto en esta línea)
+  const textureName = item.finishText || item.finish || (item.finishes && item.finishes[0]) || 'Matt';
 
   const handleWhatsAppQuote = () => {
     const phone = "5491161208162";
-    const message = `Hola Estilo Capitana, quiero consultar por ${safePallets} pallet(s) de Habitat Porcelanato 60x120 cm — ${item.name} (Cód: ${item.code}). Equivalencia: ~${totalBoxes} cajas / ~${totalSqm.toFixed(2)} m² / ~${totalTons} tn.`;
+    const message = `Hola Estilo Capitana, quiero consultar por ${safePallets} pallet(s) de Porcelanato 60x120 cm — ${item.name} (${textureName}). Equivalencia: ~${totalBoxes} cajas / ~${totalSqm.toFixed(2)} m² / ~${totalTons} tn.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
     <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-200">
       <div>
-        {/* Imagen con Zoom */}
+        {/* Imagen limpia sin recuadro negro superior */}
         <div className="w-full h-56 bg-slate-100 relative overflow-hidden group cursor-zoom-in" onClick={() => onZoom(item.image)}>
           <img
             src={item.image}
@@ -107,36 +107,36 @@ const ProductCardHabitat60x120: React.FC<{ item: Habitat60x120Product; onZoom: (
               (e.currentTarget as HTMLElement).style.display = 'none';
             }}
           />
-          <div className="absolute top-3 right-3">
-            <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs uppercase">
-              {item.finish}
-            </span>
-          </div>
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
             <ZoomIn className="text-white opacity-0 group-hover:opacity-100 transition-opacity w-7 h-7 drop-shadow-md" />
           </div>
         </div>
 
-        {/* Ficha Técnica */}
         <div className="p-4">
-          <div className="text-[11px] font-semibold text-cyan-600 uppercase tracking-wide mb-1">
-            CÓD: {item.code} · {item.faces}
+          {/* Código y Círculo Cyan con la textura calculada */}
+          <div className="flex items-center justify-between mb-1">
+            <div className="text-[11px] font-semibold text-cyan-600 uppercase tracking-wide truncate pr-2">
+              CÓD: {item.code || item.series} {item.faces ? `· ${item.faces}` : ''}
+            </div>
+            <div className="flex items-center gap-1.5 bg-cyan-50 border border-cyan-200 px-2.5 py-0.5 rounded-full shrink-0">
+              <span className="w-2 h-2 rounded-full bg-[#00b4d8] animate-pulse"></span>
+              <span className="text-[10px] font-bold text-cyan-800 uppercase tracking-wider">{textureName}</span>
+            </div>
           </div>
+
           <h3 className="text-lg font-bold text-slate-900 mb-2 font-['Montserrat'] leading-tight">
             {item.name}
           </h3>
 
-          {/* Línea Informativa Fija (1 Pallet) */}
           <div className="bg-slate-50 rounded-lg p-2.5 mb-3 border border-slate-100">
             <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Equivalencia de 1 Pallet:</p>
             <div className="grid grid-cols-3 gap-1 text-[11px] text-slate-700 font-medium">
               <div className="flex items-center gap-1"><Box className="w-3 h-3 text-cyan-600" /> {boxesPerPallet} cajas</div>
               <div className="flex items-center gap-1"><Grid className="w-3 h-3 text-cyan-600" /> {sqmPerPallet.toFixed(2)} m²</div>
-              <div className="flex items-center gap-1"><Weight className="w-3 h-3 text-cyan-600" /> {kgPerPallet} kg</div>
+              <div className="flex items-center gap-1"><Weight className="w-3 h-3 text-cyan-600" /> {weightKgPerPallet} kg</div>
             </div>
           </div>
 
-          {/* CALCULADORA SIMPLIFICADA (SOLO PALLETS) */}
           <div className="pt-2 border-t border-slate-100">
             <label className="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Cantidad de Pallets:</label>
             <div className="flex items-center gap-2 mb-3">
@@ -167,20 +167,16 @@ const ProductCardHabitat60x120: React.FC<{ item: Habitat60x120Product; onZoom: (
               <span className="text-xs font-medium text-slate-600">Pallet(s)</span>
             </div>
 
-            {/* Total Calculado de Solo Lectura */}
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-slate-600 bg-cyan-50/50 px-2.5 py-2 rounded-lg border border-cyan-100/50">
-              <span className="font-semibold text-cyan-800 w-full mb-0.5">Total calculado:</span>
-              <span className="font-medium">{totalBoxes} cajas</span>
-              <span className="text-cyan-200">|</span>
-              <span className="font-medium">{totalSqm.toFixed(2)} m²</span>
-              <span className="text-cyan-200">|</span>
-              <span className="font-medium">{totalTons} tn ({totalWeightKg} kg)</span>
+            <div className="flex flex-col gap-1 text-[11px] text-slate-600 bg-cyan-50/50 px-3 py-2.5 rounded-lg border border-cyan-100/50">
+              <span className="font-semibold text-cyan-800 mb-0.5">Total calculado:</span>
+              <div className="flex items-center gap-1.5"><Box className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> <span className="font-medium text-slate-800">{totalBoxes} cajas</span></div>
+              <div className="flex items-center gap-1.5"><Grid className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> <span className="font-medium text-slate-800">{totalSqm.toFixed(2)} m²</span></div>
+              <div className="flex items-center gap-1.5"><Weight className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> <span className="font-medium text-slate-800">{totalTons} tn ({totalWeightKg} kg)</span></div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Botón WhatsApp */}
       <div className="p-4 pt-0">
         <button
           type="button"
@@ -200,14 +196,21 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
   const [selectedTexture, setSelectedTexture] = useState<string>('Todas');
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
-  const textures = ['Todas',  'Matt'];
+  const textures = ['Todas', 'Matt'];
 
   const filteredProducts = productsHabitat60x120.filter((item) => {
     if (item.isVisible === false) return false;
-    if (selectedTexture !== 'Todas' && item.finish !== selectedTexture) return false;
+    
+    const raw = (item.finishText || item.finish || (item.finishes && item.finishes[0]) || '').toLowerCase();
+    let t = 'Matt';
+    if (raw.includes('glossy') || raw.includes('brillante')) t = 'Glossy';
+    else if (raw.includes('matt') || raw.includes('mate')) t = 'Matt';
+
+    if (selectedTexture !== 'Todas' && t !== selectedTexture) return false;
+
     return (
       item.name.toLowerCase().includes(search.toLowerCase()) ||
-      item.code.toLowerCase().includes(search.toLowerCase()) ||
+      (item.code && item.code.toLowerCase().includes(search.toLowerCase())) ||
       item.series.toLowerCase().includes(search.toLowerCase())
     );
   });
@@ -217,17 +220,15 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
       {zoomedImage && <ZoomableImage src={zoomedImage} alt="Vista ampliada" onClose={() => setZoomedImage(null)} />}
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Botón Volver */}
-        <button 
-          onClick={onBack}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          Volver a las Colecciones
-        </button>
-
-        {/* Cabecera unificada */}
         <div className="bg-white rounded-3xl border border-slate-200/85 p-6 sm:p-8 shadow-xs mb-8">
+          <button 
+            onClick={onBack}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Volver a las Colecciones
+          </button>
+
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
               <div className="flex items-center gap-2 mb-2">
@@ -247,20 +248,10 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
                 Colección Luxury Stone Series · Formato 60×120 cm (1.44 m² / 30 kg por caja) · Venta mayorista por pallet
               </p>
             </div>
-
-            <a
-              href="/catalogos/coleccion_habitat_60x120.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
-            >
-              <Download className="w-4 h-4" />
-              <span>Ver / Descargar Catálogo</span>
-            </a>
+            {/* El botón de Ver / Descargar Catálogo fue removido como solicitaste */}
           </div>
         </div>
 
-        {/* Barra de Filtros y Buscador */}
         <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-bold uppercase text-slate-500">Textura:</span>
@@ -295,8 +286,7 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
           {filteredProducts.length} {filteredProducts.length === 1 ? 'modelo disponible' : 'modelos disponibles'}
         </p>
 
-        {/* Grilla */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
           {filteredProducts.map((p) => (
             <ProductCardHabitat60x120 key={p.id} item={p} onZoom={setZoomedImage} />
           ))}
