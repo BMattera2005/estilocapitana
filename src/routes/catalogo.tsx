@@ -1,15 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Award, FileText, MessageCircle } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { FileText } from "lucide-react";
+import { useState } from "react";
 
-import { CatalogEpsDetail } from "../components/CatalogEpsDetail";
-import { CatalogViguetasDetail } from "../components/CatalogViguetasDetail";
-import { Catalog43Detail } from "../components/Catalog43Detail";
 import { Catalog36Detail } from "../components/Catalog36Detail";
+import { Catalog43Detail } from "../components/Catalog43Detail";
 import { CatalogFullBodyDetail } from "../components/CatalogFullBodyDetail";
-import { CatalogLaminasDetail } from "../components/CatalogLaminasDetail";
-import { CatalogHabitat60x120Detail } from "../components/CatalogHabitat60x120Detail";
 import { CatalogHabitatPorcelanatoDetail } from "../components/CatalogHabitatPorcelanatoDetail";
+import { CatalogLaminasDetail } from "../components/CatalogLaminasDetail";
 
 import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
@@ -22,36 +19,24 @@ function slugifyLinea(value: string) {
   return normalizeText(value).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
+// Los filtros se derivan de los datos: cualquier filterGroup nuevo aparece solo.
 const lineFilters = Array.from(
-  new Set(
-    officialCatalogs
-      .filter((catalog) => catalog.isVisible !== false)
-      .map((catalog) => catalog.filterGroup)
-      .filter(Boolean),
-  ),
+  new Set(officialCatalogs.map((catalog) => catalog.filterGroup).filter(Boolean))
 ).map((group) => ({ id: slugifyLinea(group as string), label: group as string }));
 
 type CatalogFilter = "todas" | (string & {});
 
 const FILTER_IDS = lineFilters.map((filter) => filter.id);
 
-function catalogHref(catalog: OfficialCatalog) {
-  return catalog.fileUrl;
-}
-
 function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
   if (filter === "todas") return true;
-  return slugifyLinea(catalog.filterGroup ?? "") === filter;
+  return slugifyLinea(catalog.filterGroup || "") === filter;
 }
 
 export const Route = createFileRoute("/catalogo")({
-  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter; catalogo?: string } => {
+  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter } => {
     const linea = typeof search["linea"] === "string" ? (search["linea"] as CatalogFilter) : undefined;
-    const catalogo = typeof search["catalogo"] === "string" ? search["catalogo"] : undefined;
-    return {
-      ...(linea && FILTER_IDS.includes(linea) ? { linea } : {}),
-      ...(catalogo ? { catalogo } : {}),
-    };
+    return linea && FILTER_IDS.includes(linea) ? { linea } : {};
   },
   head: () =>
     routeMeta({
@@ -63,9 +48,8 @@ export const Route = createFileRoute("/catalogo")({
 });
 
 function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect?: () => void }) {
-  const href = catalogHref(catalog);
   const whatsappUrl = buildWhatsAppUrl(
-    `Hola, quisiera consultar stock y cotización de la colección ${catalog.title}.`,
+    `Hola, Estilo Capitana quisiera consultar stock y cotización de la colección ${catalog.title}.`,
   );
 
   const primaryActionClass =
@@ -82,8 +66,6 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
     "cat-habitat-60x120",
     "cat-ferrazzano-36",
     "cat-ferrazzano-43",
-    "cat-viguetas",
-    "cat-eps",
   ].includes(catalog.id);
 
   return (
@@ -255,14 +237,11 @@ function CatalogoPage() {
               variant="ghost"
               className={
                 activeFilter === "todas"
-                  ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent cursor-pointer"
-                  : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground cursor-pointer"
+                  ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
+                  : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"
               }
               aria-pressed={activeFilter === "todas"}
-              onClick={() => {
-                setActiveFilter("todas");
-                navigate({ to: "/catalogo", search: {} });
-              }}
+              onClick={() => setActiveFilter("todas")}
             >
               Todas las Colecciones
             </Button>
@@ -276,14 +255,11 @@ function CatalogoPage() {
                   variant="ghost"
                   className={
                     isActive
-                      ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent cursor-pointer"
-                      : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground cursor-pointer"
+                      ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
+                      : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"
                   }
                   aria-pressed={isActive}
-                  onClick={() => {
-                    setActiveFilter(filter.id);
-                    navigate({ to: "/catalogo", search: { linea: filter.id } });
-                  }}
+                  onClick={() => setActiveFilter(filter.id)}
                 >
                   {filter.label}
                 </Button>
@@ -292,7 +268,7 @@ function CatalogoPage() {
           </div>
 
           <p className="mt-6 text-xs font-normal text-muted-foreground" aria-live="polite">
-            {visibleCatalogs.length} {visibleCatalogs.length === 1 ? "colección disponible" : "colecciones disponibles"}
+            {visibleCatalogs.length} {visibleCatalogs.length === 1 ? "catálogo disponible" : "catálogos disponibles"}
           </p>
 
           <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -300,10 +276,7 @@ function CatalogoPage() {
               <CatalogCard
                 key={catalog.id}
                 catalog={catalog}
-                onSelect={() => {
-                  setSelectedCatalogId(catalog.id);
-                  navigate({ to: "/catalogo", search: { catalogo: catalog.id } });
-                }}
+                onSelect={() => setSelectedCatalogId(catalog.id)}
               />
             ))}
           </div>
