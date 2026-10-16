@@ -18,7 +18,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     origin: "Novedad Importada",
     category: "Sintered Stone",
     filterGroup: "Sintered Stone",
-    title: "Habitat — Sintered Stone Full Body 15 mm",
+    title: "Habitat — Sintered Stone Full Body 80x240 cm",
     description: "Superficies de Sintered Stone Full Body de 15 mm de espesor para mesadas, revestimientos y arquitectura de alta gama.",
     fileUrl: "/catalogos/habitat_ma_full_body.pdf",
     isVisible: true,
