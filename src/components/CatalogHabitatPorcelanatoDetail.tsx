@@ -6,6 +6,12 @@ interface CatalogHabitatPorcelanatoDetailProps {
   onBack: () => void;
 }
 
+// Formato numérico argentino, único para toda la tarjeta
+const fmt = (n: number, decimals = 0) =>
+  n.toLocaleString('es-AR', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+
+const getFinish = (item: HabitatPorcelanatoItem) => item.finishText || item.finish || 'Matt';
+
 // Componente para la imagen ampliada (Zoom)
 const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) => {
   const [scale, setScale] = useState(1.4);
@@ -33,9 +39,9 @@ const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClos
         </button>
       </div>
       <div className="overflow-hidden w-full h-full flex items-center justify-center" onWheel={handleWheel}>
-        <img 
-          src={src} 
-          alt={alt} 
+        <img
+          src={src}
+          alt={alt}
           style={{ transform: `scale(${scale}) rotate(${rotation}deg)`, transition: 'transform 0.2s ease-out' }}
           className="max-w-[90vw] max-h-[90vh] object-contain cursor-grab active:cursor-grabbing"
           onClick={(e) => e.stopPropagation()}
@@ -49,12 +55,11 @@ const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClos
 const ProductCard = ({ item, onZoom }: { item: HabitatPorcelanatoItem; onZoom: (img: string) => void }) => {
   const [pallets, setPallets] = useState<number | "">(1);
 
-  const boxesPerPallet = item.boxesPerPallet ?? 32;
-  const sqmPerPallet = item.sqmPerPallet ?? 92.16;
-  const kgPerPallet = item.weightPalletKg ?? 1920;
+  // Todos los datos salen del producto; no hay valores de respaldo inventados
+  const { boxesPerPallet, sqmPerPallet, weightPalletKg } = item;
 
   const handlePalletChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseInt(e.target.value);
+    const val = parseInt(e.target.value, 10);
     if (isNaN(val) || val < 1) {
       setPallets("");
     } else {
@@ -69,66 +74,67 @@ const ProductCard = ({ item, onZoom }: { item: HabitatPorcelanatoItem; onZoom: (
   const safePallets = pallets === "" ? 1 : pallets;
   const totalBoxes = safePallets * boxesPerPallet;
   const totalSqm = safePallets * sqmPerPallet;
-  const totalWeight = safePallets * kgPerPallet;
+  const totalWeight = safePallets * weightPalletKg;
 
   const handleWhatsAppQuote = () => {
     const phone = "5491161208162";
-    const message = `Hola, quiero consultar por ${safePallets} pallet(s) de ${item.name} 120x120 cm (equivale a ~${totalBoxes} cajas / ~${totalSqm.toFixed(2)} m²).`;
+    const message = `Hola, quiero consultar por ${safePallets} pallet(s) de ${item.name} ${item.format} (equivale a ~${fmt(totalBoxes)} cajas / ~${fmt(totalSqm, 2)} m²).`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
-  const textureText = item.finishText || item.finish || "Matt";
-
   return (
-    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col">
+    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
       <div className="relative aspect-square cursor-zoom-in group bg-slate-50 border-b border-slate-100" onClick={() => onZoom(item.image)}>
         <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
           <ZoomIn className="text-white opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 drop-shadow-md" />
         </div>
       </div>
-      
+
       <div className="p-5 flex-1 flex flex-col">
         <div className="mb-4">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-cyan-600 uppercase tracking-wider">{item.series}</span>
-            <span className="text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200/80">{textureText}</span>
+            <span className="text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200/80">{getFinish(item)}</span>
           </div>
           <h3 className="text-lg font-bold text-slate-900 mt-1">{item.name}</h3>
         </div>
 
-        {/* Línea Informativa Fija */}
+        {/* Equivalencia de 1 pallet */}
         <div className="bg-slate-50 rounded-lg p-3 mb-5 border border-slate-100">
-          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Equivalencia de 1 Pallet:</p>
+          <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Equivalencia de 1 pallet:</p>
           <div className="grid grid-cols-3 gap-2 text-xs text-slate-700 font-medium">
-            <div className="flex items-center gap-1.5"><Package className="w-3.5 h-3.5 text-cyan-600" /> {boxesPerPallet} cajas</div>
-            <div className="flex items-center gap-1.5"><Grid className="w-3.5 h-3.5 text-cyan-600" /> {sqmPerPallet.toFixed(2)} m²</div>
-            <div className="flex items-center gap-1.5"><Weight className="w-3.5 h-3.5 text-cyan-600" /> {kgPerPallet} kg</div>
+            <div className="flex items-center gap-1.5"><Package className="w-3.5 h-3.5 text-cyan-600" /> {fmt(boxesPerPallet)} cajas</div>
+            <div className="flex items-center gap-1.5"><Grid className="w-3.5 h-3.5 text-cyan-600" /> {fmt(sqmPerPallet, 2)} m²</div>
+            <div className="flex items-center gap-1.5"><Weight className="w-3.5 h-3.5 text-cyan-600" /> {fmt(weightPalletKg)} kg</div>
           </div>
         </div>
 
-        {/* Calculadora (Solo Pallets) */}
+        {/* Calculadora (solo pallets) */}
         <div className="mt-auto pt-4 border-t border-slate-100">
           <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Cantidad de pallets:</label>
           <div className="flex items-center gap-3 mb-4">
             <div className="flex items-center border border-slate-200 rounded-lg bg-white overflow-hidden w-full max-w-[140px] shadow-sm">
-              <button 
-                onClick={() => setPallets(p => typeof p === 'number' && p > 1 ? p - 1 : 1)}
+              <button
+                onClick={() => setPallets(p => (typeof p === 'number' && p > 1 ? p - 1 : 1))}
                 className="px-3 py-2 text-slate-500 hover:bg-slate-50 hover:text-cyan-600 transition-colors cursor-pointer"
+                aria-label="Restar un pallet"
               >
                 <Minus className="w-4 h-4" />
               </button>
-              <input 
-                type="number" 
+              <input
+                type="number"
                 min="1"
                 value={pallets}
                 onChange={handlePalletChange}
                 onBlur={handleBlur}
                 className="w-full text-center text-sm font-bold text-slate-900 focus:outline-none focus:ring-0 appearance-none p-0"
+                aria-label="Cantidad de pallets"
               />
-              <button 
+              <button
                 onClick={() => setPallets(p => (typeof p === 'number' ? p : 0) + 1)}
                 className="px-3 py-2 text-slate-500 hover:bg-slate-50 hover:text-cyan-600 transition-colors cursor-pointer"
+                aria-label="Sumar un pallet"
               >
                 <Plus className="w-4 h-4" />
               </button>
@@ -136,22 +142,22 @@ const ProductCard = ({ item, onZoom }: { item: HabitatPorcelanatoItem; onZoom: (
             <span className="text-sm font-medium text-slate-600">Pallet(s)</span>
           </div>
 
-          {/* Valores Calculados Solo Lectura */}
+          {/* Valores calculados (solo lectura) */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-slate-600 mb-5 bg-cyan-50/50 px-3 py-2.5 rounded-lg border border-cyan-100/50">
             <span className="font-semibold text-cyan-800 w-full mb-0.5">Total calculado:</span>
-            <span className="font-medium">{totalBoxes} cajas</span>
+            <span className="font-medium">{fmt(totalBoxes)} cajas</span>
             <span className="text-cyan-200">|</span>
-            <span className="font-medium">{totalSqm.toFixed(2)} m²</span>
+            <span className="font-medium">{fmt(totalSqm, 2)} m²</span>
             <span className="text-cyan-200">|</span>
-            <span className="font-medium">{totalWeight.toLocaleString()} kg</span>
+            <span className="font-medium">{fmt(totalWeight)} kg</span>
           </div>
 
-          <button 
+          <button
             onClick={handleWhatsAppQuote}
             className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white hover:brightness-105 transition-all shadow-sm cursor-pointer"
           >
             <MessageCircle className="w-4 h-4" />
-            Consultar por {safePallets} Pallet(s)
+            Consultar por {safePallets} pallet(s)
           </button>
         </div>
       </div>
@@ -164,21 +170,19 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
   const [search, setSearch] = useState<string>('');
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
-  const finishes = ['Todas', 'Matt', 'Glossy', 'Velvet', 'Carving'];
+  // Los botones de textura salen de los datos: si se suma un producto Glossy, aparece solo
+  const finishes = ['Todas', ...Array.from(new Set(productsHabitatPorcelanato.map(getFinish)))];
 
-  const filteredProducts = productsHabitatPorcelanato
-    .filter(item => item.isVisible !== false)
-    .filter(item => {
-      const finishVal = item.finishText || item.finish || 'Matt';
-      const matchesFinish = selectedFinish === 'Todas' || finishVal.includes(selectedFinish);
-      const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase());
-      return matchesFinish && matchesSearch;
-    });
+  const filteredProducts = productsHabitatPorcelanato.filter(item => {
+    const matchesFinish = selectedFinish === 'Todas' || getFinish(item).includes(selectedFinish);
+    const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase());
+    return matchesFinish && matchesSearch;
+  });
 
   return (
     <>
       {zoomedImage && <ZoomableImage src={zoomedImage} alt="Vista ampliada" onClose={() => setZoomedImage(null)} />}
-      
+
       <div className="max-w-7xl mx-auto px-4 py-8 lg:py-12">
         <button onClick={onBack} className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-6 cursor-pointer">
           <ArrowLeft className="w-3.5 h-3.5" /> Volver a las Colecciones
@@ -200,8 +204,8 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
                   key={finish}
                   onClick={() => setSelectedFinish(finish)}
                   className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all cursor-pointer ${
-                    selectedFinish === finish 
-                      ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm' 
+                    selectedFinish === finish
+                      ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
@@ -222,11 +226,15 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredProducts.map(item => (
-            <ProductCard key={item.id} item={item} onZoom={setZoomedImage} />
-          ))}
-        </div>
+        {filteredProducts.length === 0 ? (
+          <p className="text-center text-sm text-slate-500 py-16">No encontramos modelos con ese filtro.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch">
+            {filteredProducts.map(item => (
+              <ProductCard key={item.id} item={item} onZoom={setZoomedImage} />
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
