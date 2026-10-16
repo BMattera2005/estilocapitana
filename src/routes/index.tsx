@@ -80,7 +80,7 @@ const visibleCatalogCount = officialCatalogs.filter(
 // Mosaico superior de las 6 piezas reales con link al catálogo exacto
 const heroMosaicItems = [
   {
-    title: "Sintered Stone Full Body 15 mm",
+    title: "Sintered Stone Full Body 80x240 cm",
     catalogId: "cat-habitat-full-body",
     image: "/products/fullbody/black_salt_pepper.jpg",
     badge: "Full Body 15 mm",
