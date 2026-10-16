@@ -1,12 +1,13 @@
+// src/components/CatalogLaminasDetail.tsx
+
 import React, { useState } from 'react';
 import {
   ArrowLeft,
-  Download,
   MessageCircle,
   Search,
   Minus,
   Plus,
-  Layers,
+  Box,
   Grid,
   Weight,
   ZoomIn,
@@ -59,13 +60,11 @@ const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClos
   );
 };
 
-// Tarjeta individual con Calculadora simplificada por Pallet (Placas XL de 120x270 cm)
+// Tarjeta individual con Calculadora vertical por Pallet / Placas
 const ProductCardLaminas: React.FC<{ item: LaminaItem; onZoom: (img: string) => void }> = ({ item, onZoom }) => {
-  const sqmPerPiece = item.sqm || 3.24;
-  const kgPerPiece = item.weightKg || 68;
-  const piecesPerPallet = 20; 
-  const sqmPerPallet = piecesPerPallet * sqmPerPiece;
-  const kgPerPallet = piecesPerPallet * kgPerPiece;
+  const platesPerPallet = 20;
+  const sqmPerPallet = item.sqm * platesPerPallet;
+  const weightKgPerPallet = item.weightKg * platesPerPallet;
 
   const [pallets, setPallets] = useState<number | "">(1);
 
@@ -83,14 +82,24 @@ const ProductCardLaminas: React.FC<{ item: LaminaItem; onZoom: (img: string) => 
   };
 
   const safePallets = pallets === "" ? 1 : pallets;
-  const totalPieces = safePallets * piecesPerPallet;
+  const totalPlates = safePallets * platesPerPallet;
   const totalSqm = safePallets * sqmPerPallet;
-  const totalWeightKg = safePallets * kgPerPallet;
+  const totalWeightKg = safePallets * weightKgPerPallet;
   const totalTons = (totalWeightKg / 1000).toFixed(2);
+
+  // Normalización estricta: si no es Glossy ni Matt, es Satin[cite: 16]
+  const getNormalizedTexture = (finish: string) => {
+    const lower = finish.toLowerCase();
+    if (lower.includes('glossy') || lower.includes('brillante')) return 'Glossy';
+    if (lower.includes('matt') || lower.includes('mate')) return 'Matt';
+    return 'Satin';
+  };
+
+  const textureName = getNormalizedTexture(item.finish);
 
   const handleWhatsAppQuote = () => {
     const phone = "5491161208162";
-    const message = `Hola Estilo Capitana, quiero consultar por ${safePallets} pallet(s) de Láminas Sintered Stone 120x270 cm — ${item.name} (Cód: ${item.code}). Equivalencia: ~${totalPieces} placas / ~${totalSqm.toFixed(2)} m² / ~${totalTons} tn.`;
+    const message = `Hola Estilo Capitana, quiero consultar por ${safePallets} pallet(s) de Sintered Stone Láminas 120x270 cm — ${item.name} (${textureName}). Equivalencia: ~${totalPlates} placas / ~${totalSqm.toFixed(2)} m² / ~${totalTons} tn.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -106,20 +115,22 @@ const ProductCardLaminas: React.FC<{ item: LaminaItem; onZoom: (img: string) => 
               (e.currentTarget as HTMLElement).style.display = 'none';
             }}
           />
-          <div className="absolute top-3 right-3">
-            <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs uppercase">
-              {item.finish}
-            </span>
-          </div>
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
             <ZoomIn className="text-white opacity-0 group-hover:opacity-100 transition-opacity w-7 h-7 drop-shadow-md" />
           </div>
         </div>
 
         <div className="p-4">
-          <div className="text-[11px] font-semibold text-cyan-600 uppercase tracking-wide mb-1">
-            CÓD: {item.code} · {item.faces}
+          <div className="flex items-center justify-between mb-1">
+            <div className="text-[11px] font-semibold text-cyan-600 uppercase tracking-wide">
+              CÓD: {item.code}
+            </div>
+            <div className="flex items-center gap-1.5 bg-cyan-50 border border-cyan-200 px-2.5 py-0.5 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-[#00b4d8] animate-pulse"></span>
+              <span className="text-[10px] font-bold text-cyan-800 uppercase tracking-wider">{textureName}</span>
+            </div>
           </div>
+
           <h3 className="text-lg font-bold text-slate-900 mb-2 font-['Montserrat'] leading-tight">
             {item.name}
           </h3>
@@ -127,9 +138,9 @@ const ProductCardLaminas: React.FC<{ item: LaminaItem; onZoom: (img: string) => 
           <div className="bg-slate-50 rounded-lg p-2.5 mb-3 border border-slate-100">
             <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Equivalencia de 1 Pallet:</p>
             <div className="grid grid-cols-3 gap-1 text-[11px] text-slate-700 font-medium">
-              <div className="flex items-center gap-1"><Layers className="w-3 h-3 text-cyan-600" /> {piecesPerPallet} placas</div>
+              <div className="flex items-center gap-1"><Box className="w-3 h-3 text-cyan-600" /> {platesPerPallet} placas</div>
               <div className="flex items-center gap-1"><Grid className="w-3 h-3 text-cyan-600" /> {sqmPerPallet.toFixed(2)} m²</div>
-              <div className="flex items-center gap-1"><Weight className="w-3 h-3 text-cyan-600" /> {kgPerPallet} kg</div>
+              <div className="flex items-center gap-1"><Weight className="w-3 h-3 text-cyan-600" /> {weightKgPerPallet} kg</div>
             </div>
           </div>
 
@@ -163,13 +174,11 @@ const ProductCardLaminas: React.FC<{ item: LaminaItem; onZoom: (img: string) => 
               <span className="text-xs font-medium text-slate-600">Pallet(s)</span>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-slate-600 bg-cyan-50/50 px-2.5 py-2 rounded-lg border border-cyan-100/50">
-              <span className="font-semibold text-cyan-800 w-full mb-0.5">Total calculado:</span>
-              <span className="font-medium">{totalPieces} placas</span>
-              <span className="text-cyan-200">|</span>
-              <span className="font-medium">{totalSqm.toFixed(2)} m²</span>
-              <span className="text-cyan-200">|</span>
-              <span className="font-medium">{totalTons} tn ({totalWeightKg} kg)</span>
+            <div className="flex flex-col gap-1 text-[11px] text-slate-600 bg-cyan-50/50 px-3 py-2.5 rounded-lg border border-cyan-100/50">
+              <span className="font-semibold text-cyan-800 mb-0.5">Total calculado:</span>
+              <div className="flex items-center gap-1.5"><Box className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> <span className="font-medium text-slate-800">{totalPlates} placas</span></div>
+              <div className="flex items-center gap-1.5"><Grid className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> <span className="font-medium text-slate-800">{totalSqm.toFixed(2)} m²</span></div>
+              <div className="flex items-center gap-1.5"><Weight className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> <span className="font-medium text-slate-800">{totalTons} tn ({totalWeightKg} kg)</span></div>
             </div>
           </div>
         </div>
@@ -191,13 +200,20 @@ const ProductCardLaminas: React.FC<{ item: LaminaItem; onZoom: (img: string) => 
 
 export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBack }) => {
   const [search, setSearch] = useState<string>('');
-  const [selectedTexture, setSelectedTexture] = useState<string>('Todas');
+  const [selectedTexture, setSelectedTexture] = useState<string>('Todos');
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
-  const textures = ['Todas', 'Glossy', 'Digital Glaze', 'Composite Soft Polish', 'Matte'];
+  const textures = ['Todos', 'Glossy', 'Satin', 'Matt'];
 
   const filteredProducts = productsLaminas.filter((item) => {
-    if (selectedTexture !== 'Todas' && item.finish !== selectedTexture) return false;
+    // Normalización de textura según la regla requerida[cite: 16]
+    const raw = item.finish.trim().toLowerCase();
+    let t = 'Satin';
+    if (raw.includes('matt') || raw.includes('mate')) t = 'Matt';
+    else if (raw.includes('glossy') || raw.includes('brillante')) t = 'Glossy';
+
+    if (selectedTexture !== 'Todos' && t !== selectedTexture) return false;
+
     return (
       item.name.toLowerCase().includes(search.toLowerCase()) ||
       item.code.toLowerCase().includes(search.toLowerCase())
@@ -208,45 +224,36 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
     <>
       {zoomedImage && <ZoomableImage src={zoomedImage} alt="Vista ampliada" onClose={() => setZoomedImage(null)} />}
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <button 
-          onClick={onBack}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          Volver a las Colecciones
-        </button>
-
-        <div className="bg-white rounded-3xl border border-slate-200/85 p-6 sm:p-8 shadow-xs mb-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div className="w-full max-w-7xl mx-auto px-4 py-8 font-['Montserrat']">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 mb-6 shadow-xs">
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+              <button
+                type="button"
+                onClick={onBack}
+                className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors cursor-pointer mb-4"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Volver a las Colecciones</span>
+              </button>
+
+              <div className="flex items-center gap-2 flex-wrap mb-2">
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-[11px] font-medium">
                   Novedad Importada
                 </span>
                 <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
-                  CATÁLOGO · LÁMINAS 120X270 CM
+                  CATÁLOGO · SINTERED STONE LÁMINAS 120X270 CM
                 </span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Montserrat']">
+              <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Habitat — Láminas 120×270 cm
               </h1>
 
-              <p className="text-sm text-slate-500 mt-2 font-normal">
-                Colección Sintered Stone Slabs · Formato 120×270 cm (3.24 m² / 68 kg por placa) · Venta mayorista por pallet
+              <p className="text-slate-500 text-xs sm:text-sm mt-2 max-w-3xl leading-relaxed font-normal">
+                Colección Habitat MA · Formato 120×270 cm (3.24 m² / 68 kg) · Venta mayorista por pallet
               </p>
             </div>
-
-            <a
-              href="/catalogos/slabs_sintered_stone.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
-            >
-              <Download className="w-4 h-4" />
-              <span>Ver / Descargar Catálogo</span>
-            </a>
           </div>
         </div>
 
@@ -284,7 +291,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
           {filteredProducts.length} {filteredProducts.length === 1 ? 'modelo disponible' : 'modelos disponibles'}
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
           {filteredProducts.map((p) => (
             <ProductCardLaminas key={p.id} item={p} onZoom={setZoomedImage} />
           ))}
