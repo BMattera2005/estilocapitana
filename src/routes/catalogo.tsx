@@ -64,7 +64,7 @@ export const Route = createFileRoute("/catalogo")({
 function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect?: () => void }) {
   const href = catalogHref(catalog);
   const whatsappUrl = buildWhatsAppUrl(
-    `Hola Estilo Capitana, quisiera consultar stock y cotización de la colección ${catalog.title}.`,
+    `Hola Estilo Capitana, quisiera consultar stock y cotización de la línea ${catalog.title}.`,
   );
 
   const primaryActionClass =
@@ -82,58 +82,105 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
   ].includes(catalog.id);
 
   return (
-    <article className="flex min-h-[27rem] flex-col rounded-lg border border-border bg-card p-6 shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial">
-      <div className="flex items-start justify-between gap-4">
-        <span className="rounded-full bg-accent px-3 py-1 text-xs font-normal text-accent-foreground">
-          {catalog.origin}
-        </span>
-        <span className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-surface text-primary">
-          <FileText aria-hidden="true" className="size-5" />
-        </span>
-      </div>
-
-      <p className="mt-7 text-xs font-normal uppercase text-primary">{catalog.category}</p>
-      <h2 className="mt-3 text-xl font-semibold leading-snug text-foreground">{catalog.title}</h2>
-      <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
-
-      <div className="mt-auto grid gap-2 pt-7">
-        {isInteractive ? (
-          <button
-            type="button"
-            onClick={onSelect}
-            className={primaryActionClass}
-          >
-            Ver modelos en pantalla
-          </button>
-        ) : (
-          <a
+    <article className="flex flex-col rounded-xl border border-border bg-card shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial overflow-hidden">
+      {/* Imagen superior y elementos flotantes */}
+      {catalog.imageUrl ? (
+        <div className="relative w-full aspect-[16/10] overflow-hidden bg-slate-100">
+          <img 
+            src={catalog.imageUrl} 
+            alt={catalog.title}
+            className="w-full h-full object-cover rounded-t-xl"
+          />
+          {/* Badge de origen superpuesto arriba a la izquierda */}
+          <div className="absolute top-3 left-3 z-10">
+            <span className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md shadow-sm ${
+              catalog.origin === "Novedad Importada" 
+                ? "bg-white/90 text-cyan-800 border border-cyan-200" 
+                : "bg-white/90 text-emerald-800 border border-emerald-200"
+            }`}>
+              {catalog.origin}
+            </span>
+          </div>
+          {/* Botón de descarga PDF superpuesto arriba a la derecha */}
+          <div className="absolute top-3 right-3 z-10">
+            <a 
+              href={href} 
+              download 
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Descargar catálogo completo"
+              className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/80 flex items-center justify-center text-slate-700 hover:bg-white hover:text-cyan-600 transition-colors shadow-sm cursor-pointer"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <FileText aria-hidden="true" className="size-4" />
+            </a>
+          </div>
+        </div>
+      ) : (
+        /* Fallback si alguna tarjeta no tuviera imagen */
+        <div className="flex items-start justify-between gap-4 p-6 pb-0">
+          <span className="rounded-full bg-accent px-3 py-1 text-xs font-normal text-accent-foreground">
+            {catalog.origin}
+          </span>
+          <a 
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className={primaryActionClass}
+            className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-surface text-primary hover:text-cyan-600 transition-colors"
+            onClick={(e) => e.stopPropagation()}
           >
-            Ver / descargar catálogo
+            <FileText aria-hidden="true" className="size-5" />
           </a>
-        )}
+        </div>
+      )}
 
-        {catalog.certificateUrl ? (
-          <a
-            href={catalog.certificateUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-border-strong bg-background px-4 py-2 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            <Award aria-hidden="true" className="size-4" />
-            Ver Certificado Adjunto
-          </a>
-        ) : null}
+      {/* Contenido de texto y botones */}
+      <div className="p-6 flex-1 flex flex-col justify-between">
+        <div>
+          <p className="text-xs font-normal uppercase text-primary">{catalog.category}</p>
+          <h2 className="mt-2 text-xl font-semibold leading-snug text-foreground">{catalog.title}</h2>
+          <p className="mt-3 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
+        </div>
 
-        <Button asChild variant="industrialOutline">
-          <a href={whatsappUrl ?? `https://wa.me/5491161208162`} target="_blank" rel="noopener noreferrer">
-            <MessageCircle aria-hidden="true" />
-            Consultar Stock
-          </a>
-        </Button>
+        <div className="mt-auto grid gap-2 pt-6">
+          {isInteractive ? (
+            <button
+              type="button"
+              onClick={onSelect}
+              className={primaryActionClass}
+            >
+              Ver modelos en pantalla
+            </button>
+          ) : (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={primaryActionClass}
+            >
+              Ver / descargar catálogo
+            </a>
+          )}
+
+          {catalog.certificateUrl ? (
+            <a
+              href={catalog.certificateUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-border-strong bg-background px-4 py-2 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <Award aria-hidden="true" className="size-4" />
+              Ver Certificado Adjunto
+            </a>
+          ) : null}
+
+          <Button asChild variant="industrialOutline">
+            <a href={whatsappUrl ?? `https://wa.me/5491161208162`} target="_blank" rel="noopener noreferrer">
+              <MessageCircle aria-hidden="true" />
+              Consultar Stock
+            </a>
+          </Button>
+        </div>
       </div>
     </article>
   );
@@ -198,7 +245,7 @@ function CatalogoPage() {
     return <CatalogEpsDetail onBack={handleBack} />;
   }
 
-  return (
+  return (v
     <div>
       <section className="brand-watermark-section border-b border-border bg-background px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
         <div className="mx-auto max-w-7xl">
