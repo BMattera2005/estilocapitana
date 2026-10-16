@@ -6,7 +6,7 @@ import {
   Search,
   Minus,
   Plus,
-  Layers,
+  Box,
   Grid,
   Weight,
   ZoomIn,
@@ -20,7 +20,7 @@ interface CatalogFullBodyDetailProps {
   onBack: () => void;
 }
 
-// Componente para la imagen ampliada (Zoom Lightbox)
+// Componente para imagen ampliada (Zoom Lightbox)
 const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) => {
   const [scale, setScale] = useState(1.4);
   const [rotation, setRotation] = useState(0);
@@ -59,13 +59,12 @@ const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClos
   );
 };
 
-// Tarjeta individual con Calculadora de Placas / Pallet para Full Body (80x240 cm)
+// Tarjeta individual con Calculadora vertical por Pallet / Placas
 const ProductCardFullBody: React.FC<{ item: FullBodyProductItem; onZoom: (img: string) => void }> = ({ item, onZoom }) => {
-  const sqmPerPiece = 1.92; // 80x240 cm = 1.92 m²
-  const kgPerPiece = 67;    // 67 kg por placa de 15 mm
-  const piecesPerPallet = 20; // Estándar de caballete/pallet para placas XL de 15 mm
-  const sqmPerPallet = piecesPerPallet * sqmPerPiece;
-  const kgPerPallet = piecesPerPallet * kgPerPiece;
+  // Configuración de empaque predeterminada para 80x240 cm
+  const platesPerPallet = 20;
+  const sqmPerPallet = 38.40;
+  const weightKgPerPallet = 1340;
 
   const [pallets, setPallets] = useState<number | "">(1);
 
@@ -83,21 +82,24 @@ const ProductCardFullBody: React.FC<{ item: FullBodyProductItem; onZoom: (img: s
   };
 
   const safePallets = pallets === "" ? 1 : pallets;
-  const totalPieces = safePallets * piecesPerPallet;
+  const totalPlates = safePallets * platesPerPallet;
   const totalSqm = safePallets * sqmPerPallet;
-  const totalWeightKg = safePallets * kgPerPallet;
+  const totalWeightKg = safePallets * weightKgPerPallet;
   const totalTons = (totalWeightKg / 1000).toFixed(2);
 
   const handleWhatsAppQuote = () => {
     const phone = "5491161208162";
-    const message = `Hola Estilo Capitana, quiero consultar por ${safePallets} pallet(s) de Habitat — Sintered Stone Full Body 80x240 cm — ${item.name} (${item.series}). Equivalencia: ~${totalPieces} placas / ~${totalSqm.toFixed(2)} m² / ~${totalTons} tn.`;
+    const message = `Hola Estilo Capitana, quiero consultar por ${safePallets} pallet(s) de Sintered Stone Full Body 80x240 cm — ${item.name}. Equivalencia: ~${totalPlates} placas / ~${totalSqm.toFixed(2)} m² / ~${totalTons} tn.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
+
+  // Obtenemos la textura (acabado) principal del producto
+  const textureName = item.finishText || (item.allFinishes && item.allFinishes.length > 0 ? item.allFinishes[0] : 'Matt');
 
   return (
     <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-200">
       <div>
-        {/* Imagen con Zoom */}
+        {/* Imagen con Zoom y Textura en la esquina superior derecha */}
         <div className="w-full h-56 bg-slate-100 relative overflow-hidden group cursor-zoom-in" onClick={() => onZoom(item.image)}>
           <img
             src={item.image}
@@ -107,9 +109,9 @@ const ProductCardFullBody: React.FC<{ item: FullBodyProductItem; onZoom: (img: s
               (e.currentTarget as HTMLElement).style.display = 'none';
             }}
           />
-          <div className="absolute top-3 right-3 flex gap-1">
-            <span className="px-2 py-1 rounded-md text-[10px] font-bold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs uppercase">
-              15 mm
+          <div className="absolute top-3 right-3">
+            <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs uppercase">
+              {textureName}
             </span>
           </div>
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
@@ -119,24 +121,32 @@ const ProductCardFullBody: React.FC<{ item: FullBodyProductItem; onZoom: (img: s
 
         {/* Ficha Técnica */}
         <div className="p-4">
-          <div className="text-[11px] font-semibold text-cyan-600 uppercase tracking-wide mb-1">
-            {item.series} · Full Body
+          {/* Serie, Full Body y Círculo Cyan con la textura */}
+          <div className="flex items-center justify-between mb-1">
+            <div className="text-[11px] font-semibold text-cyan-600 uppercase tracking-wide">
+              {item.series} · {item.body}
+            </div>
+            <div className="flex items-center gap-1.5 bg-cyan-50 border border-cyan-200 px-2.5 py-0.5 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-[#00b4d8] animate-pulse"></span>
+              <span className="text-[10px] font-bold text-cyan-800 uppercase tracking-wider">{textureName}</span>
+            </div>
           </div>
+
           <h3 className="text-lg font-bold text-slate-900 mb-2 font-['Montserrat'] leading-tight">
             {item.name}
           </h3>
 
-          {/* Línea Informativa Fija (1 Pallet / Caballete) */}
+          {/* Línea Informativa Fija (1 Pallet) */}
           <div className="bg-slate-50 rounded-lg p-2.5 mb-3 border border-slate-100">
             <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Equivalencia de 1 Pallet:</p>
             <div className="grid grid-cols-3 gap-1 text-[11px] text-slate-700 font-medium">
-              <div className="flex items-center gap-1"><Layers className="w-3 h-3 text-cyan-600" /> {piecesPerPallet} placas</div>
+              <div className="flex items-center gap-1"><Box className="w-3 h-3 text-cyan-600" /> {platesPerPallet} placas</div>
               <div className="flex items-center gap-1"><Grid className="w-3 h-3 text-cyan-600" /> {sqmPerPallet.toFixed(2)} m²</div>
-              <div className="flex items-center gap-1"><Weight className="w-3 h-3 text-cyan-600" /> {kgPerPallet} kg</div>
+              <div className="flex items-center gap-1"><Weight className="w-3 h-3 text-cyan-600" /> {weightKgPerPallet} kg</div>
             </div>
           </div>
 
-          {/* CALCULADORA SIMPLIFICADA (SOLO PALLETS) */}
+          {/* CALCULADORA VERTICAL */}
           <div className="pt-2 border-t border-slate-100">
             <label className="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Cantidad de Pallets:</label>
             <div className="flex items-center gap-2 mb-3">
@@ -167,14 +177,12 @@ const ProductCardFullBody: React.FC<{ item: FullBodyProductItem; onZoom: (img: s
               <span className="text-xs font-medium text-slate-600">Pallet(s)</span>
             </div>
 
-            {/* Total Calculado de Solo Lectura */}
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-slate-600 bg-cyan-50/50 px-2.5 py-2 rounded-lg border border-cyan-100/50">
-              <span className="font-semibold text-cyan-800 w-full mb-0.5">Total calculado:</span>
-              <span className="font-medium">{totalPieces} placas</span>
-              <span className="text-cyan-200">|</span>
-              <span className="font-medium">{totalSqm.toFixed(2)} m²</span>
-              <span className="text-cyan-200">|</span>
-              <span className="font-medium">{totalTons} tn ({totalWeightKg} kg)</span>
+            {/* Total Calculado de Solo Lectura (Vertical) */}
+            <div className="flex flex-col gap-1 text-[11px] text-slate-600 bg-cyan-50/50 px-3 py-2.5 rounded-lg border border-cyan-100/50">
+              <span className="font-semibold text-cyan-800 mb-0.5">Total calculado:</span>
+              <div className="flex items-center gap-1.5"><Box className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> <span className="font-medium text-slate-800">{totalPlates} placas</span></div>
+              <div className="flex items-center gap-1.5"><Grid className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> <span className="font-medium text-slate-800">{totalSqm.toFixed(2)} m²</span></div>
+              <div className="flex items-center gap-1.5"><Weight className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> <span className="font-medium text-slate-800">{totalTons} tn ({totalWeightKg} kg)</span></div>
             </div>
           </div>
         </div>
@@ -197,14 +205,15 @@ const ProductCardFullBody: React.FC<{ item: FullBodyProductItem; onZoom: (img: s
 
 export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ onBack }) => {
   const [search, setSearch] = useState<string>('');
-  const [selectedTextura, setSelectedTextura] = useState<string>('Todas');
+  const [selectedFinish, setSelectedFinish] = useState<string>('Todos');
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
-  const texturas = ['Todas', 'Glossy', 'Matt'];
+  const finishes = ['Todos', 'Glossy', 'Matt'];
 
   const filteredProducts = productsFullBody.filter((item) => {
     if (item.isVisible === false) return false;
-    if (selectedTextura !== 'Todas' && !item.allFinishes.includes(selectedTextura as any)) return false;
+    const t = item.finishText || (item.allFinishes ? item.allFinishes[0] : 'Matt');
+    if (selectedFinish !== 'Todos' && t !== selectedFinish) return false;
     return (
       item.name.toLowerCase().includes(search.toLowerCase()) ||
       item.series.toLowerCase().includes(search.toLowerCase())
@@ -216,17 +225,16 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
       {zoomedImage && <ZoomableImage src={zoomedImage} alt="Vista ampliada" onClose={() => setZoomedImage(null)} />}
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Botón Volver */}
-        <button 
-          onClick={onBack}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          Volver a las Colecciones
-        </button>
-
-        {/* Cabecera unificada */}
+        {/* Cabecera unificada dentro del rectángulo blanco */}
         <div className="bg-white rounded-3xl border border-slate-200/85 p-6 sm:p-8 shadow-xs mb-8">
+          <button 
+            onClick={onBack}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition-colors mb-4 cursor-pointer"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Volver a las Colecciones
+          </button>
+
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
               <div className="flex items-center gap-2 mb-2">
@@ -239,11 +247,11 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
               </div>
 
               <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Montserrat']">
-                Habitat — Sintered Stone Full Body 80x240 cm
+                Habitat — Full Body 80x240 cm
               </h1>
 
               <p className="text-sm text-slate-500 mt-2 font-normal">
-                Colección Full Body 15 mm · Formato 80×240 cm (1.92 m² / 67 kg por placa) · Venta mayorista por pallet
+                Superficies de Sintered Stone de masa homogénea (1,5 cm) para mesadas de cocina, islas y mobiliario técnico.
               </p>
             </div>
 
@@ -254,7 +262,7 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#00b4d8] to-[#00a86b] hover:brightness-105 shadow-sm transition-all duration-200 cursor-pointer"
             >
               <Download className="w-4 h-4" />
-              <span>Ver / Descargar Catálogo</span>
+              <span>Ver/Descargar Catalogo</span>
             </a>
           </div>
         </div>
@@ -263,13 +271,13 @@ export const CatalogFullBodyDetail: React.FC<CatalogFullBodyDetailProps> = ({ on
         <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-bold uppercase text-slate-500">Textura:</span>
-            {texturas.map((fn) => (
+            {finishes.map((fn) => (
               <button
                 key={fn}
                 type="button"
-                onClick={() => setSelectedTextura(fn)}
+                onClick={() => setSelectedFinish(fn)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  selectedTextura === fn
+                  selectedFinish === fn
                     ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm'
                     : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
                 }`}
