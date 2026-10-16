@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Award, FileText, Download, MessageCircle } from "lucide-react";
+import { Award, FileText, MessageCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { CatalogEpsDetail } from "../components/CatalogEpsDetail";
@@ -74,6 +74,7 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
   const secondaryActionClass = 
     "inline-flex min-h-11 w-full items-center justify-center rounded-md border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors duration-200 hover:bg-accent hover:text-cyan-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer";
 
+  // Incluimos Viguetas y EPS para que tengan el botón "Ver modelos en pantalla"
   const isInteractive = [
     "cat-habitat-full-body",
     "cat-habitat-laminas",
@@ -81,6 +82,8 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
     "cat-habitat-60x120",
     "cat-ferrazzano-36",
     "cat-ferrazzano-43",
+    "cat-viguetas",
+    "cat-eps",
   ].includes(catalog.id);
 
   return (
@@ -104,18 +107,18 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
               {catalog.origin || (catalog as any).badge}
             </span>
           </div>
-          {/* Botón de PDF superior derecho para descarga directa */}
+          {/* Botón de PDF superior derecho para DESCARGA DIRECTA (con logo PDF) */}
           <div className="absolute top-3 right-3 z-10">
             <a 
               href={href} 
               download={catalog.downloadName || `${catalog.title}.pdf`}
               target="_blank"
               rel="noopener noreferrer"
-              title="Descargar catálogo completo"
+              title="Descargar archivo directamente"
               className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/80 flex items-center justify-center text-slate-700 hover:bg-white hover:text-cyan-600 transition-colors shadow-sm cursor-pointer"
               onClick={(e) => e.stopPropagation()}
             >
-              <Download aria-hidden="true" className="size-4" />
+              <FileText aria-hidden="true" className="size-4" />
             </a>
           </div>
         </div>
@@ -130,10 +133,11 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
             download={catalog.downloadName || `${catalog.title}.pdf`}
             target="_blank"
             rel="noopener noreferrer"
+            title="Descargar archivo directamente"
             className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-surface text-primary hover:text-cyan-600 transition-colors cursor-pointer"
             onClick={(e) => e.stopPropagation()}
           >
-            <Download aria-hidden="true" className="size-5" />
+            <FileText aria-hidden="true" className="size-5" />
           </a>
         </div>
       )}
@@ -148,7 +152,7 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
 
         <div className="mt-auto grid gap-2 pt-6 border-t border-slate-100">
           
-          {/* Botón principal interactivo */}
+          {/* 1. Botón: Ver modelos en pantalla */}
           {isInteractive && onSelect ? (
             <button
               type="button"
@@ -159,17 +163,17 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
             </button>
           ) : null}
 
-          {/* Botón secundario previsualizador PDF / Principal si no es interactivo */}
+          {/* 2. Botón: Ver el PDF en pantalla */}
           <a
             href={href}
             target="_blank"
             rel="noopener noreferrer"
             className={isInteractive ? secondaryActionClass : primaryActionClass}
           >
-            {isInteractive ? "Abrir catálogo PDF" : "Ver / descargar catálogo"}
+            {isInteractive ? "Ver el PDF en pantalla" : "Ver / descargar catálogo"}
           </a>
 
-          {/* Botón de Certificado de Viguetas */}
+          {/* 3. Botón: Ver Certificado Adjunto (Solo Viguetas) */}
           {catalog.certificateUrl ? (
             <a
               href={catalog.certificateUrl}
@@ -182,7 +186,7 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
             </a>
           ) : null}
 
-          {/* Botón de WhatsApp */}
+          {/* 4. Botón: Consultar Stock (WhatsApp) */}
           <Button asChild variant="industrialOutline">
             <a href={whatsappUrl ?? `https://wa.me/5491161208162`} target="_blank" rel="noopener noreferrer">
               <MessageCircle aria-hidden="true" />
