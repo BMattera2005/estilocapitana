@@ -6,7 +6,7 @@ interface Catalog36DetailProps {
   onBack: () => void;
 }
 
-// Componente para la imagen ampliada (Zoom)
+// Componente per la imagen ampliada (Zoom)
 const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) => {
   const [scale, setScale] = useState(1.4);
   const [rotation, setRotation] = useState(0);
@@ -86,7 +86,7 @@ const ProductCard = ({ item, onZoom }: { item: CeramicProduct36, onZoom: (img: s
         <div className="mb-4">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-cyan-600 uppercase tracking-wider">{item.line}</span>
-            <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">{item.finish}</span>
+            <span className="text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200/80">{item.finish}</span>
           </div>
           <h3 className="text-lg font-bold text-slate-900 mt-1">{item.name}</h3>
         </div>
@@ -132,7 +132,7 @@ const ProductCard = ({ item, onZoom }: { item: CeramicProduct36, onZoom: (img: s
 
           {/* Valores Calculados Solo Lectura */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-slate-600 mb-5 bg-cyan-50/50 px-3 py-2.5 rounded-lg border border-cyan-100/50">
-            <span className="font-semibold text-cyan-800 w-full mb-0.5">Total calculado:</span>
+            <span className="font-semibold text-cyan-800 w-full mb-0.5">Total calculated:</span>
             <span className="font-medium">{totalBoxes} cajas</span>
             <span className="text-cyan-200">|</span>
             <span className="font-medium">{totalSqm.toFixed(2)} m²</span>
