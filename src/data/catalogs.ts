@@ -65,7 +65,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     description: "Pisos cerámicos de fabricación tradicional Salteña en formato 36×36 cm, diseñados con ingeniería de pliegos.",
     fileUrl: "/catalogos/ferrazzano_36x36.pdf",
     isVisible: true,
-    imageUrl: "/products/36x36/esteco_azul.jpg",
+    imageUrl: "/products/36x36/burano_marron.jpg",
   },
   {
     id: "cat-ferrazzano-43",
