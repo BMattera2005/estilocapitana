@@ -1,12 +1,26 @@
 import React, { useState } from 'react';
-import { ArrowLeft, MessageCircle, Search, Minus, Plus, Package, Grid, Weight, ZoomIn, X, RotateCcw, ZoomOut } from 'lucide-react';
+import {
+  ArrowLeft,
+  Download,
+  MessageCircle,
+  Search,
+  Minus,
+  Plus,
+  Box,
+  Grid,
+  Weight,
+  ZoomIn,
+  X,
+  RotateCcw,
+  ZoomOut,
+} from 'lucide-react';
 import { productsHabitat60x120, Habitat60x120Product } from '../data/productsHabitat60x120';
 
 interface CatalogHabitat60x120DetailProps {
   onBack: () => void;
 }
 
-// Componente para la imagen ampliada (Zoom Lightbox)
+// Componente para imagen ampliada (Zoom Lightbox)
 const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) => {
   const [scale, setScale] = useState(1.4);
   const [rotation, setRotation] = useState(0);
@@ -19,16 +33,16 @@ const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClos
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm" onClick={onClose}>
       <div className="absolute top-4 right-4 flex gap-2">
-        <button onClick={(e) => { e.stopPropagation(); setScale(s => Math.max(1, s - 0.2)); }} className="p-2 bg-white/10 text-white rounded-full hover:bg-white/25 transition-colors cursor-pointer">
+        <button onClick={(e) => { e.stopPropagation(); setScale(s => Math.max(1, s - 0.2)); }} className="p-2 bg-white/10 text-white rounded-full hover:bg-white/20 transition-colors cursor-pointer">
           <ZoomOut className="w-5 h-5" />
         </button>
-        <button onClick={(e) => { e.stopPropagation(); setScale(s => Math.min(3, s + 0.2)); }} className="p-2 bg-white/10 text-white rounded-full hover:bg-white/25 transition-colors cursor-pointer">
+        <button onClick={(e) => { e.stopPropagation(); setScale(s => Math.min(3, s + 0.2)); }} className="p-2 bg-white/10 text-white rounded-full hover:bg-white/20 transition-colors cursor-pointer">
           <ZoomIn className="w-5 h-5" />
         </button>
-        <button onClick={(e) => { e.stopPropagation(); setRotation(r => r - 90); }} className="p-2 bg-white/10 text-white rounded-full hover:bg-white/25 transition-colors cursor-pointer">
+        <button onClick={(e) => { e.stopPropagation(); setRotation(r => r - 90); }} className="p-2 bg-white/10 text-white rounded-full hover:bg-white/20 transition-colors cursor-pointer">
           <RotateCcw className="w-5 h-5" />
         </button>
-        <button onClick={onClose} className="p-2 bg-white/10 text-white rounded-full hover:bg-white/25 transition-colors cursor-pointer">
+        <button onClick={onClose} className="p-2 bg-white/10 text-white rounded-full hover:bg-white/20 transition-colors cursor-pointer">
           <X className="w-5 h-5" />
         </button>
       </div>
@@ -45,16 +59,15 @@ const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClos
   );
 };
 
-// Componente individual de Tarjeta con Calculadora exclusiva por Pallet (idéntico al 120x120)
+// Tarjeta individual con Calculadora simplificada por Pallet
 const ProductCardHabitat60x120: React.FC<{ item: Habitat60x120Product; onZoom: (img: string) => void }> = ({ item, onZoom }) => {
-  const [pallets, setPallets] = useState<number | "">(1);
-
-  // Parámetros estándar logísticos para el formato 60x120 cm (ej. 48 cajas por pallet, 1.44 m² y 30 kg por caja)
   const sqmPerBox = item.sqmPerBox || 1.44;
   const kgPerBox = item.weightKgBox || 30;
-  const boxesPerPallet = 48; 
+  const boxesPerPallet = 48; // Estándar logístico por pallet para 60x120 cm
   const sqmPerPallet = boxesPerPallet * sqmPerBox;
   const kgPerPallet = boxesPerPallet * kgPerBox;
+
+  const [pallets, setPallets] = useState<number | "">(1);
 
   const handlePalletChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseInt(e.target.value);
@@ -72,22 +85,20 @@ const ProductCardHabitat60x120: React.FC<{ item: Habitat60x120Product; onZoom: (
   const safePallets = pallets === "" ? 1 : pallets;
   const totalBoxes = safePallets * boxesPerPallet;
   const totalSqm = safePallets * sqmPerPallet;
-  const totalWeight = safePallets * kgPerPallet;
-  const totalTons = (totalWeight / 1000).toFixed(2);
+  const totalWeightKg = safePallets * kgPerPallet;
+  const totalTons = (totalWeightKg / 1000).toFixed(2);
 
   const handleWhatsAppQuote = () => {
     const phone = "5491161208162";
-    const message = `Hola Estilo Capitana, quiero consultar por ${safePallets} pallet(s) de Habitat Luxury Stone 60x120 cm — ${item.name}. Equivalencia: ~${totalBoxes} cajas / ~${totalSqm.toFixed(2)} m² / ~${totalTons} tn.`;
+    const message = `Hola Estilo Capitana, quiero consultar por ${safePallets} pallet(s) de Habitat Porcelanato 60x120 cm — ${item.name} (Cód: ${item.code}). Equivalencia: ~${totalBoxes} cajas / ~${totalSqm.toFixed(2)} m² / ~${totalTons} tn.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
-  const textureText = item.finish || 'Matt';
-
   return (
-    <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+    <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-200">
       <div>
         {/* Imagen con Zoom */}
-        <div className="w-full h-56 bg-slate-100 relative overflow-hidden group cursor-zoom-in border-b border-slate-100" onClick={() => onZoom(item.image)}>
+        <div className="w-full h-56 bg-slate-100 relative overflow-hidden group cursor-zoom-in" onClick={() => onZoom(item.image)}>
           <img
             src={item.image}
             alt={item.name}
@@ -98,7 +109,7 @@ const ProductCardHabitat60x120: React.FC<{ item: Habitat60x120Product; onZoom: (
           />
           <div className="absolute top-3 right-3">
             <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-900/85 text-white backdrop-blur-xs shadow-xs uppercase">
-              {textureText}
+              {item.finish}
             </span>
           </div>
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
@@ -119,13 +130,13 @@ const ProductCardHabitat60x120: React.FC<{ item: Habitat60x120Product; onZoom: (
           <div className="bg-slate-50 rounded-lg p-2.5 mb-3 border border-slate-100">
             <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Equivalencia de 1 Pallet:</p>
             <div className="grid grid-cols-3 gap-1 text-[11px] text-slate-700 font-medium">
-              <div className="flex items-center gap-1"><Package className="w-3 h-3 text-cyan-600" /> {boxesPerPallet} cajas</div>
+              <div className="flex items-center gap-1"><Box className="w-3 h-3 text-cyan-600" /> {boxesPerPallet} cajas</div>
               <div className="flex items-center gap-1"><Grid className="w-3 h-3 text-cyan-600" /> {sqmPerPallet.toFixed(2)} m²</div>
               <div className="flex items-center gap-1"><Weight className="w-3 h-3 text-cyan-600" /> {kgPerPallet} kg</div>
             </div>
           </div>
 
-          {/* CALCULADORA EXCLUSIVA POR PALLETS (IDÉNTICA A 120x120) */}
+          {/* CALCULADORA SIMPLIFICADA (SOLO PALLETS) */}
           <div className="pt-2 border-t border-slate-100">
             <label className="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Cantidad de Pallets:</label>
             <div className="flex items-center gap-2 mb-3">
@@ -163,7 +174,7 @@ const ProductCardHabitat60x120: React.FC<{ item: Habitat60x120Product; onZoom: (
               <span className="text-cyan-200">|</span>
               <span className="font-medium">{totalSqm.toFixed(2)} m²</span>
               <span className="text-cyan-200">|</span>
-              <span className="font-medium">{totalTons} tn ({totalWeight} kg)</span>
+              <span className="font-medium">{totalTons} tn ({totalWeightKg} kg)</span>
             </div>
           </div>
         </div>
@@ -229,7 +240,7 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
               </div>
 
               <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Montserrat']">
-                Habitat — Luxury Stone 60×120 cm
+                Habitat — Porcelanato 60×120 cm
               </h1>
 
               <p className="text-sm text-slate-500 mt-2 font-normal">
