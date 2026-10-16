@@ -40,9 +40,8 @@ export const Route = createFileRoute("/catalogo")({
   },
   head: () =>
     routeMeta({
-      title: "Colecciones y catálogos de materiales — estilo.capitana",
-      description:
-        "Consultá las líneas de Sintered Stone, Porcelanato, Pisos Cerámicos, Viguetas Pretensadas y Telgopor de Construcción representadas por estilo.capitana.",
+      title: "Colecciones y catálogos — Habitat MA",
+      description: "Consultá las colecciones de Sintered Stone, Porcelanatos, Pisos Cerámicos, Viguetas Pretensadas y EPS de Construcción.",
       path: "/catalogo",
     }),
   component: CatalogoPage,
@@ -50,13 +49,16 @@ export const Route = createFileRoute("/catalogo")({
 
 function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect?: () => void }) {
   const whatsappUrl = buildWhatsAppUrl(
-    `Hola estilo.capitana, quisiera consultar stock y cotización de la línea ${catalog.title}.`
+    `Hola, Estilo Capitana quisiera consultar stock y cotización de la colección ${catalog.title}.`,
   );
 
   const primaryActionClass =
     "inline-flex min-h-11 w-full items-center justify-center rounded-md bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:brightness-105 motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer";
 
-  // Incluye todos los catálogos interactivos con vista de modelos
+  const secondaryActionClass = 
+    "inline-flex min-h-11 w-full items-center justify-center rounded-md border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors duration-200 hover:bg-accent hover:text-cyan-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer";
+
+  // Incluimos Viguetas y EPS para que tengan el botón "Ver modelos en pantalla"
   const isInteractive = [
     "cat-habitat-full-body",
     "cat-habitat-laminas",
@@ -67,33 +69,34 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
   ].includes(catalog.id);
 
   return (
-    <article className="flex flex-col rounded-2xl border border-slate-200/80 bg-card shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+    <article className="flex min-h-[27rem] flex-col rounded-xl border border-slate-200/80 bg-card shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial overflow-hidden">
+      
       {/* Imagen superior con aspect-ratio 16/10 y elementos flotantes */}
       {catalog.imageUrl ? (
-        <div className="relative w-full aspect-[16/10] overflow-hidden bg-slate-100">
+        <div className="relative w-full aspect-[16/10] overflow-hidden bg-slate-100 border-b border-border/50">
           <img 
             src={catalog.imageUrl} 
             alt={catalog.title}
-            className="w-full h-full object-cover rounded-t-2xl"
+            className="w-full h-full object-cover"
           />
           {/* Badge superior izquierdo */}
           <div className="absolute top-3 left-3 z-10">
-            <span className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md shadow-sm ${
-              catalog.origin === "Novedad Importada" || catalog.badge === "Novedad Importada"
+            <span className={`px-3 py-1 rounded-full text-[11px] font-semibold backdrop-blur-md shadow-sm ${
+              catalog.origin === "Novedad Importada" || (catalog as any).badge === "Novedad Importada"
                 ? "bg-white/90 text-cyan-800 border border-cyan-200" 
                 : "bg-white/90 text-emerald-800 border border-emerald-200"
             }`}>
-              {catalog.origin || catalog.badge}
+              {catalog.origin || (catalog as any).badge}
             </span>
           </div>
-          {/* Botón de PDF superior derecho para descarga directa */}
+          {/* Botón de PDF superior derecho para DESCARGA DIRECTA (con logo PDF) */}
           <div className="absolute top-3 right-3 z-10">
             <a 
-              href={catalog.fileUrl} 
-              download 
+              href={href} 
+              download={catalog.downloadName || `${catalog.title}.pdf`}
               target="_blank"
               rel="noopener noreferrer"
-              title="Descargar catálogo completo"
+              title="Descargar archivo directamente"
               className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/80 flex items-center justify-center text-slate-700 hover:bg-white hover:text-cyan-600 transition-colors shadow-sm cursor-pointer"
               onClick={(e) => e.stopPropagation()}
             >
@@ -105,14 +108,15 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
         /* Fallback si no tuviera imagen */
         <div className="flex items-start justify-between gap-4 p-6 pb-0">
           <span className="rounded-full bg-accent px-3 py-1 text-xs font-normal text-accent-foreground">
-            {catalog.origin || catalog.badge}
+            {catalog.origin || (catalog as any).badge}
           </span>
           <a 
-            href={catalog.fileUrl}
-            download
+            href={href}
+            download={catalog.downloadName || `${catalog.title}.pdf`}
             target="_blank"
             rel="noopener noreferrer"
-            className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-surface text-primary hover:text-cyan-600 transition-colors"
+            title="Descargar archivo directamente"
+            className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-surface text-primary hover:text-cyan-600 transition-colors cursor-pointer"
             onClick={(e) => e.stopPropagation()}
           >
             <FileText aria-hidden="true" className="size-5" />
@@ -123,30 +127,54 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
       {/* Contenido de texto y botones */}
       <div className="p-6 flex-1 flex flex-col justify-between">
         <div>
-          <p className="text-xs font-normal uppercase text-primary">{catalog.category}</p>
-          <h2 className="mt-3 text-xl font-semibold leading-snug text-foreground">{catalog.title}</h2>
-          <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
+          <p className="mt-1 text-xs font-bold uppercase text-primary tracking-wider">{catalog.category}</p>
+          <h2 className="mt-2 text-xl font-semibold leading-snug text-foreground">{catalog.title}</h2>
+          <p className="mt-3 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
         </div>
 
-        <div className="mt-auto pt-6 grid gap-2">
+        <div className="mt-auto grid gap-2 pt-6 border-t border-slate-100">
+          
+          {/* 1. Botón: Ver modelos en pantalla */}
           {isInteractive && onSelect ? (
-            <button type="button" onClick={onSelect} className={primaryActionClass}>
+            <button
+              type="button"
+              onClick={onSelect}
+              className={primaryActionClass}
+            >
               Ver modelos en pantalla
             </button>
-          ) : (
-            <a href={catalog.fileUrl} download target="_blank" rel="noopener noreferrer" className={primaryActionClass}>
-              Ver / Descargar Catálogo
-            </a>
-          )}
+          ) : null}
 
+          {/* 2. Botón: Ver el PDF en pantalla */}
           <a
-            href={whatsappUrl}
+            href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-1 inline-flex min-h-10 w-full items-center justify-center rounded-md border border-border bg-surface px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-accent cursor-pointer"
+            className={isInteractive ? secondaryActionClass : primaryActionClass}
           >
-            Consultar por WhatsApp
+            {isInteractive ? "Ver el PDF en pantalla" : "Ver / descargar catálogo"}
           </a>
+
+          {/* 3. Botón: Ver Certificado Adjunto (Solo Viguetas) */}
+          {catalog.certificateUrl ? (
+            <a
+              href={catalog.certificateUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-border-strong bg-background px-4 py-2 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+            >
+              <Award aria-hidden="true" className="size-4" />
+              Ver Certificado Adjunto
+            </a>
+          ) : null}
+
+          {/* 4. Botón: Consultar Stock (WhatsApp) */}
+          <Button asChild variant="industrialOutline">
+            <a href={whatsappUrl ?? `https://wa.me/5491161208162`} target="_blank" rel="noopener noreferrer">
+              <MessageCircle aria-hidden="true" />
+              Consultar Stock
+            </a>
+          </Button>
         </div>
       </div>
     </article>
@@ -154,29 +182,41 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
 }
 
 function CatalogoPage() {
-  const [selectedCatalogId, setSelectedCatalogId] = useState<string | null>(null);
-  const [activeFilter, setActiveFilter] = useState<CatalogFilter>("todas");
+  const { linea, catalogo } = Route.useSearch();
+  const navigate = Route.useNavigate();
+  const [activeFilter, setActiveFilter] = useState<CatalogFilter>(linea ?? "todas");
+  const [selectedCatalogId, setSelectedCatalogId] = useState<string | null>(catalogo ?? null);
 
-  // Renders interactivos de cada colección
-  if (selectedCatalogId === "cat-habitat-full-body") {
-    return <CatalogFullBodyDetail onBack={() => setSelectedCatalogId(null)} />;
-  }
-  if (selectedCatalogId === "cat-habitat-laminas") {
-    return <CatalogLaminasDetail onBack={() => setSelectedCatalogId(null)} />;
-  }
-  if (selectedCatalogId === "cat-habitat-porcelanato") {
-    return <CatalogHabitatPorcelanatoDetail onBack={() => setSelectedCatalogId(null)} />;
-  }
-  if (selectedCatalogId === "cat-ferrazzano-43") {
-    return <Catalog43Detail onBack={() => setSelectedCatalogId(null)} />;
-  }
-  if (selectedCatalogId === "cat-ferrazzano-36") {
-    return <Catalog36Detail onBack={() => setSelectedCatalogId(null)} />;
-  }
+  useEffect(() => {
+    if (linea) setActiveFilter(linea);
+  }, [linea]);
 
-  const visibleCatalogs = officialCatalogs.filter((catalog) =>
-    matchesFilter(catalog, activeFilter)
+  useEffect(() => {
+    if (catalogo) setSelectedCatalogId(catalogo);
+  }, [catalogo]);
+
+  const handleBack = () => {
+    setSelectedCatalogId(null);
+    navigate({ to: "/catalogo", search: {} });
+  };
+
+  const visibleCatalogs = useMemo(
+    () =>
+      officialCatalogs
+        .filter((catalog) => catalog.isVisible !== false)
+        .filter((catalog) => matchesFilter(catalog, activeFilter)),
+    [activeFilter],
   );
+
+  // Renderizados interactivos
+  if (selectedCatalogId === "cat-ferrazzano-43") return <Catalog43Detail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-ferrazzano-36") return <Catalog36Detail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-habitat-full-body") return <CatalogFullBodyDetail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-habitat-laminas") return <CatalogLaminasDetail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-habitat-porcelanato") return <CatalogHabitatPorcelanatoDetail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-habitat-60x120") return <CatalogHabitat60x120Detail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-viguetas") return <CatalogViguetasDetail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-eps") return <CatalogEpsDetail onBack={handleBack} />;
 
   return (
     <div className="bg-surface">
@@ -186,7 +226,7 @@ function CatalogoPage() {
             Colecciones y catálogos
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Seleccioná una colección para ver los modelos interactivos o descargar el catálogo oficial en PDF.
+            Seleccioná una colección para ver los modelos interactivos o abrir el catálogo oficial en PDF.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filtrar catálogos por colección">

@@ -9,6 +9,7 @@ export interface OfficialCatalog {
   certificateUrl?: string;
   isVisible?: boolean;
   imageUrl?: string; // Nuevo campo opcional
+  downloadName?: string; // Nombre sugerido al descargar el PDF
 }
 
 export const officialCatalogs: OfficialCatalog[] = [
@@ -65,7 +66,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     description: "Pisos cerámicos de fabricación tradicional Salteña en formato 36×36 cm, diseñados con ingeniería de pliegos.",
     fileUrl: "/catalogos/ferrazzano_36x36.pdf",
     isVisible: true,
-    imageUrl: "/products/36x36/esteco_azul.jpg",
+    imageUrl: "/products/36x36/burano_marron.jpg",
   },
   {
     id: "cat-ferrazzano-43",
@@ -76,7 +77,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     description: "Línea pensada para mayor rotación de stock con excelente relación precio/formato y variedad antideslizante.",
     fileUrl: "/catalogos/ferrazzano_43x43.pdf",
     isVisible: true,
-    imageUrl: "/products/43x43/molle_natural.jpg",
+    imageUrl: "/products/43x43/cebil_natural.jpg",
   },
   {
     id: "cat-viguetas",
