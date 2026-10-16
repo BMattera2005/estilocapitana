@@ -18,7 +18,6 @@ export interface HabitatPorcelanatoItem {
   weightPalletKg: number;
   description: string;
   image: string;
-  isVisible?: boolean;
 }
 
 export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
@@ -40,7 +39,6 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
     weightPalletKg: 1920,
     description: "Placa de gran formato 120×120 cm con acabado mate suave y textura mineral en color arena claro.",
     image: "/products/habitatIndia/sand_light.jpg",
-    isVisible: true,
   },
   {
     id: "hab-porc-unico-beige",
@@ -60,7 +58,6 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
     weightPalletKg: 1920,
     description: "Porcelanato rústico y cálido de gran dimensión para salones, locales y galerías continuas.",
     image: "/products/habitatIndia/unico_beige.jpg",
-    isVisible: true,
   },
   {
     id: "hab-porc-unico-grey",
@@ -80,6 +77,5 @@ export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
     weightPalletKg: 1920,
     description: "Textura mate cementicia en formato 120×120 cm de alta resistencia al tránsito e impacto.",
     image: "/products/habitatIndia/unico_grey.jpg",
-    isVisible: true,
   },
 ];
