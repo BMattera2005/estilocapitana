@@ -18,6 +18,7 @@ export interface HabitatPorcelanatoItem {
   weightPalletKg: number;
   description: string;
   image: string;
+  isVisible?: boolean; // false = pausado: no se muestra en la web pero se conserva la ficha
 }
 
 export const productsHabitatPorcelanato: HabitatPorcelanatoItem[] = [
