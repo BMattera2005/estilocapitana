@@ -84,8 +84,8 @@ const ProductCard = ({ item, onZoom }: { item: HabitatPorcelanatoItem; onZoom: (
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
-      <div className="relative aspect-square cursor-zoom-in group bg-slate-50 border-b border-slate-100" onClick={() => onZoom(item.image)}>
-        <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+      <div className="relative h-64 w-full shrink-0 cursor-zoom-in group bg-slate-50 border-b border-slate-100 overflow-hidden" onClick={() => onZoom(item.image)}>
+        <img src={item.image} alt={item.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
           <ZoomIn className="text-white opacity-0 group-hover:opacity-100 transition-opacity w-8 h-8 drop-shadow-md" />
         </div>
@@ -174,6 +174,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
   const finishes = ['Todas', ...Array.from(new Set(productsHabitatPorcelanato.map(getFinish)))];
 
   const filteredProducts = productsHabitatPorcelanato.filter(item => {
+    if (item.isVisible === false) return false;
     const matchesFinish = selectedFinish === 'Todas' || getFinish(item).includes(selectedFinish);
     const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase());
     return matchesFinish && matchesSearch;
