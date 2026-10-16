@@ -13,9 +13,9 @@ import {
   RotateCcw,
   ZoomOut,
 } from 'lucide-react';
-import { productsLaminas, LaminasProductItem } from '../data/productsLaminas';
+import { productsHabitatPorcelanato, HabitatPorcelanatoItem } from '../data/productsHabitatPorcelanato';
 
-interface CatalogLaminasDetailProps {
+interface CatalogHabitatPorcelanatoDetailProps {
   onBack: () => void;
 }
 
@@ -58,11 +58,13 @@ const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClos
   );
 };
 
-// Tarjeta individual con Calculadora vertical por Pallet / Placas
-const ProductCardLaminas: React.FC<{ item: LaminasProductItem; onZoom: (img: string) => void }> = ({ item, onZoom }) => {
-  const platesPerPallet = item.platesPerPallet || 20;
-  const sqmPerPallet = item.sqmPerPallet || 64.80;
-  const weightKgPerPallet = item.weightPalletKg || 1050;
+// Tarjeta individual
+const ProductCardHabitatPorcelanato: React.FC<{ item: HabitatPorcelanatoItem; onZoom: (img: string) => void }> = ({ item, onZoom }) => {
+  const sqmPerBox = item.sqmPerBox || 2.88;
+  const kgPerBox = item.weightBoxKg || 60;
+  const boxesPerPallet = item.boxesPerPallet || 32;
+  const sqmPerPallet = item.sqmPerPallet || (boxesPerPallet * sqmPerBox);
+  const kgPerPallet = item.weightPalletKg || (boxesPerPallet * kgPerBox);
 
   const [pallets, setPallets] = useState<number | "">(1);
 
@@ -80,31 +82,23 @@ const ProductCardLaminas: React.FC<{ item: LaminasProductItem; onZoom: (img: str
   };
 
   const safePallets = pallets === "" ? 1 : pallets;
-  const totalPlates = safePallets * platesPerPallet;
+  const totalBoxes = safePallets * boxesPerPallet;
   const totalSqm = safePallets * sqmPerPallet;
-  const totalWeightKg = safePallets * weightKgPerPallet;
+  const totalWeightKg = safePallets * kgPerPallet;
   const totalTons = (totalWeightKg / 1000).toFixed(2);
 
-  // Función para determinar la textura normalizada según la regla
-  const getTexture = (finishText?: string, finishes?: string[]) => {
-    const raw = (finishText || (finishes && finishes[0]) || '').trim().toLowerCase();
-    if (raw.includes('matt') || raw.includes('mate')) return 'Matt';
-    if (raw.includes('glossy') || raw.includes('brillante')) return 'Glossy';
-    return 'Satin';
-  };
-
-  const textureName = getTexture(item.finishText, item.finishes);
+  const textureName = item.finishText || (item.finishes ? item.finishes[0] : 'Matt');
 
   const handleWhatsAppQuote = () => {
     const phone = "5491161208162";
-    const message = `Hola Estilo Capitana, quiero consultar por ${safePallets} pallet(s) de Sintered Stone Láminas 120x270 cm — ${item.name} (${textureName}). Equivalencia: ~${totalPlates} placas / ~${totalSqm.toFixed(2)} m² / ~${totalTons} tn.`;
+    const message = `Hola Estilo Capitana, quiero consultar por ${safePallets} pallet(s) de Luxury Stone 120x120 cm — ${item.name} (${textureName}). Equivalencia: ~${totalBoxes} cajas / ~${totalSqm.toFixed(2)} m² / ~${totalTons} tn.`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
     <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between hover:shadow-md transition-all duration-200">
       <div>
-        {/* Imagen con Zoom (sin el cuadrado negro) */}
+        {/* Imagen limpia sin el recuadro negro */}
         <div className="w-full h-56 bg-slate-100 relative overflow-hidden group cursor-zoom-in" onClick={() => onZoom(item.image)}>
           <img
             src={item.image}
@@ -119,12 +113,11 @@ const ProductCardLaminas: React.FC<{ item: LaminasProductItem; onZoom: (img: str
           </div>
         </div>
 
-        {/* Ficha Técnica */}
         <div className="p-4">
-          {/* Código, Caras y Círculo Cyan con la textura */}
+          {/* Círculo Cyan con la Textura */}
           <div className="flex items-center justify-between mb-1">
             <div className="text-[11px] font-semibold text-cyan-600 uppercase tracking-wide">
-              CÓD: {item.code || item.series} {item.faces ? `· ${item.faces}` : ''}
+              {item.series} · {item.faces}
             </div>
             <div className="flex items-center gap-1.5 bg-cyan-50 border border-cyan-200 px-2.5 py-0.5 rounded-full">
               <span className="w-2 h-2 rounded-full bg-[#00b4d8] animate-pulse"></span>
@@ -136,17 +129,15 @@ const ProductCardLaminas: React.FC<{ item: LaminasProductItem; onZoom: (img: str
             {item.name}
           </h3>
 
-          {/* Línea Informativa Fija (1 Pallet) */}
           <div className="bg-slate-50 rounded-lg p-2.5 mb-3 border border-slate-100">
             <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Equivalencia de 1 Pallet:</p>
             <div className="grid grid-cols-3 gap-1 text-[11px] text-slate-700 font-medium">
-              <div className="flex items-center gap-1"><Box className="w-3 h-3 text-cyan-600" /> {platesPerPallet} placas</div>
+              <div className="flex items-center gap-1"><Box className="w-3 h-3 text-cyan-600" /> {boxesPerPallet} cajas</div>
               <div className="flex items-center gap-1"><Grid className="w-3 h-3 text-cyan-600" /> {sqmPerPallet.toFixed(2)} m²</div>
-              <div className="flex items-center gap-1"><Weight className="w-3 h-3 text-cyan-600" /> {weightKgPerPallet} kg</div>
+              <div className="flex items-center gap-1"><Weight className="w-3 h-3 text-cyan-600" /> {kgPerPallet} kg</div>
             </div>
           </div>
 
-          {/* CALCULADORA VERTICAL */}
           <div className="pt-2 border-t border-slate-100">
             <label className="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Cantidad de Pallets:</label>
             <div className="flex items-center gap-2 mb-3">
@@ -177,10 +168,9 @@ const ProductCardLaminas: React.FC<{ item: LaminasProductItem; onZoom: (img: str
               <span className="text-xs font-medium text-slate-600">Pallet(s)</span>
             </div>
 
-            {/* Total Calculado de Solo Lectura (Vertical) */}
             <div className="flex flex-col gap-1 text-[11px] text-slate-600 bg-cyan-50/50 px-3 py-2.5 rounded-lg border border-cyan-100/50">
               <span className="font-semibold text-cyan-800 mb-0.5">Total calculado:</span>
-              <div className="flex items-center gap-1.5"><Box className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> <span className="font-medium text-slate-800">{totalPlates} placas</span></div>
+              <div className="flex items-center gap-1.5"><Box className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> <span className="font-medium text-slate-800">{totalBoxes} cajas</span></div>
               <div className="flex items-center gap-1.5"><Grid className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> <span className="font-medium text-slate-800">{totalSqm.toFixed(2)} m²</span></div>
               <div className="flex items-center gap-1.5"><Weight className="w-3.5 h-3.5 text-cyan-600 shrink-0" /> <span className="font-medium text-slate-800">{totalTons} tn ({totalWeightKg} kg)</span></div>
             </div>
@@ -188,7 +178,6 @@ const ProductCardLaminas: React.FC<{ item: LaminasProductItem; onZoom: (img: str
         </div>
       </div>
 
-      {/* Botón WhatsApp */}
       <div className="p-4 pt-0">
         <button
           type="button"
@@ -203,27 +192,20 @@ const ProductCardLaminas: React.FC<{ item: LaminasProductItem; onZoom: (img: str
   );
 };
 
-export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBack }) => {
+// EXPORTACIÓN NOMBRADA OBLIGATORIA PARA VITE
+export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanatoDetailProps> = ({ onBack }) => {
   const [search, setSearch] = useState<string>('');
   const [selectedTexture, setSelectedTexture] = useState<string>('Todas');
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
-  const textures = ['Todas', 'Glossy', 'Satin', 'Matt'];
+  const textures = ['Todas', 'Matt'];
 
-  const filteredProducts = productsLaminas.filter((item) => {
+  const filteredProducts = productsHabitatPorcelanato.filter((item) => {
     if (item.isVisible === false) return false;
-    
-    // Normalización de textura según la regla requerida
-    const raw = (item.finishText || (item.finishes && item.finishes[0]) || '').trim().toLowerCase();
-    let t = 'Satin';
-    if (raw.includes('matt') || raw.includes('mate')) t = 'Matt';
-    else if (raw.includes('glossy') || raw.includes('brillante')) t = 'Glossy';
-
+    const t = item.finishText || (item.finishes ? item.finishes[0] : 'Matt');
     if (selectedTexture !== 'Todas' && t !== selectedTexture) return false;
-
     return (
       item.name.toLowerCase().includes(search.toLowerCase()) ||
-      item.code?.toLowerCase().includes(search.toLowerCase()) ||
       item.series.toLowerCase().includes(search.toLowerCase())
     );
   });
@@ -233,7 +215,6 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
       {zoomedImage && <ZoomableImage src={zoomedImage} alt="Vista ampliada" onClose={() => setZoomedImage(null)} />}
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Cabecera unificada dentro del rectángulo blanco */}
         <div className="bg-white rounded-3xl border border-slate-200/85 p-6 sm:p-8 shadow-xs mb-8">
           <button 
             onClick={onBack}
@@ -250,24 +231,22 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
                   Novedad Importada
                 </span>
                 <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider">
-                  CATÁLOGO · LÁMINAS 120X270 CM
+                  CATÁLOGO · PORCELANATO 120X120 CM
                 </span>
               </div>
 
               <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Montserrat']">
-                Habitat — Láminas 120x270 cm
+                Luxury Stone 120×120 cm
               </h1>
 
               <p className="text-sm text-slate-500 mt-2 font-normal">
-                Colección Sintered Stone Slabs · Formato 120x270 cm (3.24 m² / 68 kg por placa) · Venta mayorista por pallet
+                Colección Luxury Stone Series · Formato 120×120 cm (2.88 m² / 60 kg por caja) · Venta mayorista por pallet
               </p>
             </div>
-            
-            {/* El botón de Ver Catálogo fue removido como pediste */}
+            {/* Se eliminó el botón de Ver Catálogo */}
           </div>
         </div>
 
-        {/* Barra de Filtros y Buscador */}
         <div className="mb-8 p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-bold uppercase text-slate-500">Textura:</span>
@@ -290,7 +269,7 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
             <input
               type="text"
-              placeholder="Buscar modelo o código..."
+              placeholder="Buscar modelo o serie..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-500 shadow-2xs transition-all"
@@ -302,10 +281,9 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
           {filteredProducts.length} {filteredProducts.length === 1 ? 'modelo disponible' : 'modelos disponibles'}
         </p>
 
-        {/* Grilla */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
           {filteredProducts.map((p) => (
-            <ProductCardLaminas key={p.id} item={p} onZoom={setZoomedImage} />
+            <ProductCardHabitatPorcelanato key={p.id} item={p} onZoom={setZoomedImage} />
           ))}
         </div>
       </div>
@@ -313,4 +291,4 @@ export const CatalogLaminasDetail: React.FC<CatalogLaminasDetailProps> = ({ onBa
   );
 };
 
-export default CatalogLaminasDetail;
+export default CatalogHabitatPorcelanatoDetail;
