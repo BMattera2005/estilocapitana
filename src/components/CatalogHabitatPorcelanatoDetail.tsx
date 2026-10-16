@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, MessageCircle, Search, Minus, Plus, Package, Grid, Weight, ZoomIn, X, RotateCcw, ZoomOut } from 'lucide-react';
-import { productsPorcelanato, PorcelanatoProduct } from '../data/habitatPorcelanatoItem';
+import { productsHabitatPorcelanato, HabitatPorcelanatoItem } from '../data/productsHabitatPorcelanato';
 
 interface CatalogHabitatPorcelanatoDetailProps {
   onBack: () => void;
@@ -46,13 +46,12 @@ const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClos
 };
 
 // Componente individual de Tarjeta
-const ProductCard = ({ item, onZoom }: { item: PorcelanatoProduct; onZoom: (img: string) => void }) => {
+const ProductCard = ({ item, onZoom }: { item: HabitatPorcelanatoItem; onZoom: (img: string) => void }) => {
   const [pallets, setPallets] = useState<number | "">(1);
 
-  // Obtener datos de empaque directos o anidados
-  const boxesPerPallet = (item as any).packaging?.boxesPerPallet ?? (item as any).boxesPerPallet ?? 32;
-  const sqmPerPallet = (item as any).packaging?.sqmPerPallet ?? (item as any).sqmPerPallet ?? 92.16;
-  const kgPerPallet = (item as any).packaging?.kgPerPallet ?? (item as any).weightPalletKg ?? 1400;
+  const boxesPerPallet = item.boxesPerPallet ?? 32;
+  const sqmPerPallet = item.sqmPerPallet ?? 92.16;
+  const kgPerPallet = item.weightPalletKg ?? 1920;
 
   const handlePalletChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseInt(e.target.value);
@@ -78,7 +77,7 @@ const ProductCard = ({ item, onZoom }: { item: PorcelanatoProduct; onZoom: (img:
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
-  const textureText = (item as any).finish || (item as any).texture || "Matt";
+  const textureText = item.finishText || item.finish || "Matt";
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col">
@@ -92,7 +91,7 @@ const ProductCard = ({ item, onZoom }: { item: PorcelanatoProduct; onZoom: (img:
       <div className="p-5 flex-1 flex flex-col">
         <div className="mb-4">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-cyan-600 uppercase tracking-wider">Luxury Stone 120x120</span>
+            <span className="text-xs font-semibold text-cyan-600 uppercase tracking-wider">{item.series}</span>
             <span className="text-[10px] font-medium px-2.5 py-0.5 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200/80">{textureText}</span>
           </div>
           <h3 className="text-lg font-bold text-slate-900 mt-1">{item.name}</h3>
@@ -165,13 +164,13 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
   const [search, setSearch] = useState<string>('');
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
-  const finishes = ['Todas', 'Matt', 'Glossy', 'Satinado'];
+  const finishes = ['Todas', 'Matt', 'Glossy', 'Velvet', 'Carving'];
 
-  const filteredProducts = productsPorcelanato
-    .filter(item => (item as any).isVisible !== false)
+  const filteredProducts = productsHabitatPorcelanato
+    .filter(item => item.isVisible !== false)
     .filter(item => {
-      const finishVal = (item as any).finish || (item as any).texture || 'Matt';
-      const matchesFinish = selectedFinish === 'Todas' || finishVal === selectedFinish;
+      const finishVal = item.finishText || item.finish || 'Matt';
+      const matchesFinish = selectedFinish === 'Todas' || finishVal.includes(selectedFinish);
       const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase());
       return matchesFinish && matchesSearch;
     });
