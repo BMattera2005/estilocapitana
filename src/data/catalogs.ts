@@ -77,7 +77,7 @@ export const officialCatalogs: OfficialCatalog[] = [
     description: "Línea pensada para mayor rotación de stock con excelente relación precio/formato y variedad antideslizante.",
     fileUrl: "/catalogos/ferrazzano_43x43.pdf",
     isVisible: true,
-    imageUrl: "/products/43x43/cebil_natural.jpg",
+    imageUrl: "/products/43x43/tolombon_gris.jpg",
   },
   {
     id: "cat-viguetas",
