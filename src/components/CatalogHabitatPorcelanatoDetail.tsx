@@ -171,7 +171,7 @@ export const CatalogHabitatPorcelanatoDetail: React.FC<CatalogHabitatPorcelanato
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
   // Los botones de textura salen de los datos: si se suma un producto Glossy, aparece solo
-  const finishes = ['Todas', ...Array.from(new Set(productsHabitatPorcelanato.map(getFinish)))];
+  const finishes = ['Todas', ...Array.from(new Set(productsHabitatPorcelanato.filter(i => i.isVisible !== false).map(getFinish)))];
 
   const filteredProducts = productsHabitatPorcelanato.filter(item => {
     if (item.isVisible === false) return false;
