@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, MessageCircle, Search, Minus, Plus, Package, Grid, Weight, ZoomIn, X, RotateCcw, ZoomOut } from 'lucide-react';
-import { productsPorcelanato, PorcelanatoProduct } from '../data/productsHabitatPorcelanato';
+import { productsPorcelanato, PorcelanatoProduct } from '../data/productsHabitatPorcelanato.ts';
 
 interface CatalogHabitatPorcelanatoDetailProps {
   onBack: () => void;
