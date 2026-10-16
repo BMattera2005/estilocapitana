@@ -1,13 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FileText } from "lucide-react";
-import { useState } from "react";
+import { Award, FileText, Download, MessageCircle } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
-import { Catalog36Detail } from "../components/Catalog36Detail";
+import { CatalogEpsDetail } from "../components/CatalogEpsDetail";
+import { CatalogViguetasDetail } from "../components/CatalogViguetasDetail";
 import { Catalog43Detail } from "../components/Catalog43Detail";
+import { Catalog36Detail } from "../components/Catalog36Detail";
 import { CatalogFullBodyDetail } from "../components/CatalogFullBodyDetail";
-import { CatalogHabitatPorcelanatoDetail } from "../components/CatalogHabitatPorcelanatoDetail";
 import { CatalogLaminasDetail } from "../components/CatalogLaminasDetail";
-import { Catalog60x120Detail } from "../components/Catalog60x120Detail";
+import { CatalogHabitat60x120Detail } from "../components/CatalogHabitat60x120Detail";
+import { CatalogHabitatPorcelanatoDetail } from "../components/CatalogHabitatPorcelanatoDetail";
 
 import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
@@ -20,44 +22,58 @@ function slugifyLinea(value: string) {
   return normalizeText(value).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
-// Los filtros se derivan de los datos: cualquier filterGroup nuevo aparece solo.
 const lineFilters = Array.from(
-  new Set(officialCatalogs.map((catalog) => catalog.filterGroup).filter(Boolean))
+  new Set(
+    officialCatalogs
+      .filter((catalog) => catalog.isVisible !== false)
+      .map((catalog) => catalog.filterGroup)
+      .filter(Boolean),
+  ),
 ).map((group) => ({ id: slugifyLinea(group as string), label: group as string }));
 
 type CatalogFilter = "todas" | (string & {});
 
 const FILTER_IDS = lineFilters.map((filter) => filter.id);
 
+function catalogHref(catalog: OfficialCatalog) {
+  return catalog.fileUrl;
+}
+
 function matchesFilter(catalog: OfficialCatalog, filter: CatalogFilter) {
   if (filter === "todas") return true;
-  return slugifyLinea(catalog.filterGroup || "") === filter;
+  return slugifyLinea(catalog.filterGroup ?? "") === filter;
 }
 
 export const Route = createFileRoute("/catalogo")({
-  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter } => {
+  validateSearch: (search: Record<string, unknown>): { linea?: CatalogFilter; catalogo?: string } => {
     const linea = typeof search["linea"] === "string" ? (search["linea"] as CatalogFilter) : undefined;
-    return linea && FILTER_IDS.includes(linea) ? { linea } : {};
+    const catalogo = typeof search["catalogo"] === "string" ? search["catalogo"] : undefined;
+    return {
+      ...(linea && FILTER_IDS.includes(linea) ? { linea } : {}),
+      ...(catalogo ? { catalogo } : {}),
+    };
   },
   head: () =>
     routeMeta({
-      title: "Colecciones y catálogos de materiales — estilo.capitana",
-      description:
-        "Consultá las líneas de Sintered Stone, Porcelanato, Pisos Cerámicos, Viguetas Pretensadas y Telgopor de Construcción representadas por estilo.capitana.",
+      title: "Colecciones y catálogos — Habitat MA",
+      description: "Consultá las colecciones de Sintered Stone, Porcelanatos, Pisos Cerámicos, Viguetas Pretensadas y EPS de Construcción.",
       path: "/catalogo",
     }),
   component: CatalogoPage,
 });
 
 function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect?: () => void }) {
+  const href = catalogHref(catalog);
   const whatsappUrl = buildWhatsAppUrl(
-    `Hola estilo.capitana, quisiera consultar stock y cotización de la línea ${catalog.title}.`
+    `Hola, quisiera consultar stock y cotización de la colección ${catalog.title}.`,
   );
 
   const primaryActionClass =
     "inline-flex min-h-11 w-full items-center justify-center rounded-md bg-brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-industrial transition-all duration-200 hover:brightness-105 motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer";
 
-  // Incluye todos los catálogos interactivos con vista de modelos
+  const secondaryActionClass = 
+    "inline-flex min-h-11 w-full items-center justify-center rounded-md border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground transition-colors duration-200 hover:bg-accent hover:text-cyan-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer";
+
   const isInteractive = [
     "cat-habitat-full-body",
     "cat-habitat-laminas",
@@ -68,37 +84,38 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
   ].includes(catalog.id);
 
   return (
-    <article className="flex flex-col rounded-2xl border border-slate-200/80 bg-card shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+    <article className="flex min-h-[27rem] flex-col rounded-xl border border-slate-200/80 bg-card shadow-glass transition-all duration-200 hover:border-border-strong hover:shadow-industrial overflow-hidden">
+      
       {/* Imagen superior con aspect-ratio 16/10 y elementos flotantes */}
       {catalog.imageUrl ? (
-        <div className="relative w-full aspect-[16/10] overflow-hidden bg-slate-100">
+        <div className="relative w-full aspect-[16/10] overflow-hidden bg-slate-100 border-b border-border/50">
           <img 
             src={catalog.imageUrl} 
             alt={catalog.title}
-            className="w-full h-full object-cover rounded-t-2xl"
+            className="w-full h-full object-cover"
           />
           {/* Badge superior izquierdo */}
           <div className="absolute top-3 left-3 z-10">
-            <span className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md shadow-sm ${
-              catalog.origin === "Novedad Importada" || catalog.badge === "Novedad Importada"
+            <span className={`px-3 py-1 rounded-full text-[11px] font-semibold backdrop-blur-md shadow-sm ${
+              catalog.origin === "Novedad Importada" || (catalog as any).badge === "Novedad Importada"
                 ? "bg-white/90 text-cyan-800 border border-cyan-200" 
                 : "bg-white/90 text-emerald-800 border border-emerald-200"
             }`}>
-              {catalog.origin || catalog.badge}
+              {catalog.origin || (catalog as any).badge}
             </span>
           </div>
           {/* Botón de PDF superior derecho para descarga directa */}
           <div className="absolute top-3 right-3 z-10">
             <a 
-              href={catalog.fileUrl} 
-              download 
+              href={href} 
+              download={catalog.downloadName || `${catalog.title}.pdf`}
               target="_blank"
               rel="noopener noreferrer"
               title="Descargar catálogo completo"
               className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/80 flex items-center justify-center text-slate-700 hover:bg-white hover:text-cyan-600 transition-colors shadow-sm cursor-pointer"
               onClick={(e) => e.stopPropagation()}
             >
-              <FileText aria-hidden="true" className="size-4" />
+              <Download aria-hidden="true" className="size-4" />
             </a>
           </div>
         </div>
@@ -106,17 +123,17 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
         /* Fallback si no tuviera imagen */
         <div className="flex items-start justify-between gap-4 p-6 pb-0">
           <span className="rounded-full bg-accent px-3 py-1 text-xs font-normal text-accent-foreground">
-            {catalog.origin || catalog.badge}
+            {catalog.origin || (catalog as any).badge}
           </span>
           <a 
-            href={catalog.fileUrl}
-            download
+            href={href}
+            download={catalog.downloadName || `${catalog.title}.pdf`}
             target="_blank"
             rel="noopener noreferrer"
-            className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-surface text-primary hover:text-cyan-600 transition-colors"
+            className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-surface text-primary hover:text-cyan-600 transition-colors cursor-pointer"
             onClick={(e) => e.stopPropagation()}
           >
-            <FileText aria-hidden="true" className="size-5" />
+            <Download aria-hidden="true" className="size-5" />
           </a>
         </div>
       )}
@@ -124,51 +141,54 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
       {/* Contenido de texto y botones */}
       <div className="p-6 flex-1 flex flex-col justify-between">
         <div>
-          <p className="text-xs font-normal uppercase text-primary">{catalog.category}</p>
-          <h2 className="mt-3 text-xl font-semibold leading-snug text-foreground">{catalog.title}</h2>
-          <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
+          <p className="mt-1 text-xs font-bold uppercase text-primary tracking-wider">{catalog.category}</p>
+          <h2 className="mt-2 text-xl font-semibold leading-snug text-foreground">{catalog.title}</h2>
+          <p className="mt-3 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
         </div>
 
-            <div className="mt-auto pt-6 grid gap-2">
+        <div className="mt-auto grid gap-2 pt-6 border-t border-slate-100">
+          
+          {/* Botón principal interactivo */}
           {isInteractive && onSelect ? (
-          <button type="button" onClick={onSelect} className={primaryActionClass}>
-            Ver modelos en pantalla
-          </button>
-        ) : (
-          <a href={catalog.fileUrl} target="_blank" rel="noopener noreferrer" className={primaryActionClass}>
-            Ver / Descargar Catálogo
-          </a>
-        )}
-      
-        {catalog.certificateUrl ? (
-          <a
-            href={catalog.certificateUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-border-strong bg-background px-4 py-2 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Ver Certificado Adjunto
-            </a>
-        ) : null}
+            <button
+              type="button"
+              onClick={onSelect}
+              className={primaryActionClass}
+            >
+              Ver modelos en pantalla
+            </button>
+          ) : null}
 
-        <a 
-            href={catalog.fileUrl} 
-              download={catalog.downloadName || "Habitat MA Coleccion 2026.pdf"}
-               target="_blank"
-                rel="noopener noreferrer"
-                  className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-border bg-surface px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-accent cursor-pointer"
-                    >
-                      Descargar Catálogo Completo (PDF)
-                  </a>
-              </div>
-              <a
-            href={whatsappUrl}
+          {/* Botón secundario previsualizador PDF / Principal si no es interactivo */}
+          <a
+            href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-1 inline-flex min-h-10 w-full items-center justify-center rounded-md border border-border bg-surface px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-accent cursor-pointer"
-              >
-            Consultar por WhatsApp
+            className={isInteractive ? secondaryActionClass : primaryActionClass}
+          >
+            {isInteractive ? "Abrir catálogo PDF" : "Ver / descargar catálogo"}
           </a>
+
+          {/* Botón de Certificado de Viguetas */}
+          {catalog.certificateUrl ? (
+            <a
+              href={catalog.certificateUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-border-strong bg-background px-4 py-2 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer"
+            >
+              <Award aria-hidden="true" className="size-4" />
+              Ver Certificado Adjunto
+            </a>
+          ) : null}
+
+          {/* Botón de WhatsApp */}
+          <Button asChild variant="industrialOutline">
+            <a href={whatsappUrl ?? `https://wa.me/5491161208162`} target="_blank" rel="noopener noreferrer">
+              <MessageCircle aria-hidden="true" />
+              Consultar Stock
+            </a>
+          </Button>
         </div>
       </div>
     </article>
@@ -176,32 +196,41 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
 }
 
 function CatalogoPage() {
-  const [selectedCatalogId, setSelectedCatalogId] = useState<string | null>(null);
-  const [activeFilter, setActiveFilter] = useState<CatalogFilter>("todas");
+  const { linea, catalogo } = Route.useSearch();
+  const navigate = Route.useNavigate();
+  const [activeFilter, setActiveFilter] = useState<CatalogFilter>(linea ?? "todas");
+  const [selectedCatalogId, setSelectedCatalogId] = useState<string | null>(catalogo ?? null);
 
-  // Renders interactivos de cada colección
-  if (selectedCatalogId === "cat-habitat-full-body") {
-    return <CatalogFullBodyDetail onBack={() => setSelectedCatalogId(null)} />;
-  }
-  if (selectedCatalogId === "cat-habitat-laminas") {
-    return <CatalogLaminasDetail onBack={() => setSelectedCatalogId(null)} />;
-  }
-  if (selectedCatalogId === "cat-habitat-porcelanato") {
-    return <CatalogHabitatPorcelanatoDetail onBack={() => setSelectedCatalogId(null)} />;
-  }
-  if (selectedCatalogId === "cat-ferrazzano-43") {
-    return <Catalog43Detail onBack={() => setSelectedCatalogId(null)} />;
-  }
-  if (selectedCatalogId === "cat-ferrazzano-36") {
-    return <Catalog36Detail onBack={() => setSelectedCatalogId(null)} />;
-  }
-  if (selectedCatalogId === "cat-habitat-60x120") {
-    return <Catalog60x120Detail onBack={() => setSelectedCatalogId(null)} />;
-  }
+  useEffect(() => {
+    if (linea) setActiveFilter(linea);
+  }, [linea]);
 
-  const visibleCatalogs = officialCatalogs.filter((catalog) =>
-    matchesFilter(catalog, activeFilter)
+  useEffect(() => {
+    if (catalogo) setSelectedCatalogId(catalogo);
+  }, [catalogo]);
+
+  const handleBack = () => {
+    setSelectedCatalogId(null);
+    navigate({ to: "/catalogo", search: {} });
+  };
+
+  const visibleCatalogs = useMemo(
+    () =>
+      officialCatalogs
+        .filter((catalog) => catalog.isVisible !== false)
+        .filter((catalog) => matchesFilter(catalog, activeFilter)),
+    [activeFilter],
   );
+
+  // Renderizados interactivos
+  if (selectedCatalogId === "cat-ferrazzano-43") return <Catalog43Detail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-ferrazzano-36") return <Catalog36Detail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-habitat-full-body") return <CatalogFullBodyDetail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-habitat-laminas") return <CatalogLaminasDetail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-habitat-porcelanato") return <CatalogHabitatPorcelanatoDetail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-habitat-60x120") return <CatalogHabitat60x120Detail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-viguetas") return <CatalogViguetasDetail onBack={handleBack} />;
+  if (selectedCatalogId === "cat-eps") return <CatalogEpsDetail onBack={handleBack} />;
 
   return (
     <div className="bg-surface">
@@ -211,7 +240,7 @@ function CatalogoPage() {
             Colecciones y catálogos
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Seleccioná una colección para ver los modelos interactivos o descargar el catálogo oficial en PDF.
+            Seleccioná una colección para ver los modelos interactivos o abrir el catálogo oficial en PDF.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filtrar catálogos por colección">
@@ -222,11 +251,14 @@ function CatalogoPage() {
               variant="ghost"
               className={
                 activeFilter === "todas"
-                  ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
-                  : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"
+                  ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent cursor-pointer"
+                  : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground cursor-pointer"
               }
               aria-pressed={activeFilter === "todas"}
-              onClick={() => setActiveFilter("todas")}
+              onClick={() => {
+                setActiveFilter("todas");
+                navigate({ to: "/catalogo", search: {} });
+              }}
             >
               Todas las Colecciones
             </Button>
@@ -240,11 +272,14 @@ function CatalogoPage() {
                   variant="ghost"
                   className={
                     isActive
-                      ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent"
-                      : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground"
+                      ? "text-brand-gradient relative rounded-none bg-transparent px-1 pb-3 font-semibold shadow-none after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-brand-gradient hover:bg-transparent cursor-pointer"
+                      : "rounded-none px-1 pb-3 text-muted-foreground hover:bg-transparent hover:text-foreground cursor-pointer"
                   }
                   aria-pressed={isActive}
-                  onClick={() => setActiveFilter(filter.id)}
+                  onClick={() => {
+                    setActiveFilter(filter.id);
+                    navigate({ to: "/catalogo", search: { linea: filter.id } });
+                  }}
                 >
                   {filter.label}
                 </Button>
@@ -253,7 +288,7 @@ function CatalogoPage() {
           </div>
 
           <p className="mt-6 text-xs font-normal text-muted-foreground" aria-live="polite">
-            {visibleCatalogs.length} {visibleCatalogs.length === 1 ? "catálogo disponible" : "catálogos disponibles"}
+            {visibleCatalogs.length} {visibleCatalogs.length === 1 ? "colección disponible" : "colecciones disponibles"}
           </p>
 
           <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -261,7 +296,10 @@ function CatalogoPage() {
               <CatalogCard
                 key={catalog.id}
                 catalog={catalog}
-                onSelect={() => setSelectedCatalogId(catalog.id)}
+                onSelect={() => {
+                  setSelectedCatalogId(catalog.id);
+                  navigate({ to: "/catalogo", search: { catalogo: catalog.id } });
+                }}
               />
             ))}
           </div>
