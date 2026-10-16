@@ -200,7 +200,7 @@ export const CatalogHabitat60x120Detail: React.FC<CatalogHabitat60x120DetailProp
   const [selectedTexture, setSelectedTexture] = useState<string>('Todas');
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
-  const textures = ['Todas', 'Glossy', 'Matt'];
+  const textures = ['Todas',  'Matt'];
 
   const filteredProducts = productsHabitat60x120.filter((item) => {
     if (item.isVisible === false) return false;
