@@ -9,6 +9,7 @@ export interface OfficialCatalog {
   certificateUrl?: string;
   isVisible?: boolean;
   imageUrl?: string; // Nuevo campo opcional
+  downloadName?: string; // Nombre sugerido al descargar el PDF
 }
 
 export const officialCatalogs: OfficialCatalog[] = [
