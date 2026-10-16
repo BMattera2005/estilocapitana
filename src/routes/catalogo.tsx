@@ -7,6 +7,7 @@ import { Catalog43Detail } from "../components/Catalog43Detail";
 import { CatalogFullBodyDetail } from "../components/CatalogFullBodyDetail";
 import { CatalogHabitatPorcelanatoDetail } from "../components/CatalogHabitatPorcelanatoDetail";
 import { CatalogLaminasDetail } from "../components/CatalogLaminasDetail";
+import { Catalog60x120Detail } from "../components/Catalog60x120Detail";
 
 import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
@@ -128,17 +129,38 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
           <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
         </div>
 
-        <div className="mt-auto pt-6 grid gap-2">
-          {isInteractive && onSelect ? (
-            <button type="button" onClick={onSelect} className={primaryActionClass}>
-              Ver modelos en pantalla
-            </button>
-          ) : (
-            <a href={catalog.fileUrl} download target="_blank" rel="noopener noreferrer" className={primaryActionClass}>
-              Ver / Descargar Catálogo
-            </a>
-          )}
+      <div className="mt-auto pt-6 grid gap-2">
+  {isInteractive && onSelect ? (
+    <button type="button" onClick={onSelect} className={primaryActionClass}>
+      Ver modelos en pantalla
+    </button>
+  ) : (
+    <a href={catalog.fileUrl} target="_blank" rel="noopener noreferrer" className={primaryActionClass}>
+      Ver / Descargar Catálogo
+    </a>
+  )}
 
+  {catalog.certificateUrl ? (
+    <a
+      href={catalog.certificateUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-border-strong bg-background px-4 py-2 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      Ver Certificado Adjunto
+    </a>
+  ) : null}
+
+  <a 
+    href={catalog.fileUrl} 
+    download={catalog.downloadName || "Habitat MA Coleccion 2026.pdf"}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-border bg-surface px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-accent cursor-pointer"
+  >
+    Descargar Catálogo Completo (PDF)
+  </a>
+</div>
           <a
             href={whatsappUrl}
             target="_blank"
@@ -172,6 +194,9 @@ function CatalogoPage() {
   }
   if (selectedCatalogId === "cat-ferrazzano-36") {
     return <Catalog36Detail onBack={() => setSelectedCatalogId(null)} />;
+  }
+  if (selectedCatalogId === "cat-habitat-60x120") {
+    return <Catalog60x120Detail onBack={() => setSelectedCatalogId(null)} />;
   }
 
   const visibleCatalogs = officialCatalogs.filter((catalog) =>
