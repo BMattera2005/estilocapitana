@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, MessageCircle, Search, Minus, Plus, Package, Grid, Weight, ZoomIn, X, RotateCcw, ZoomOut } from 'lucide-react';
-import { products36, Product36Item } from '../data/products36';
+import { products36x36, CeramicProduct36 } from '../data/products36';
 
 interface Catalog36DetailProps {
   onBack: () => void;
@@ -46,7 +46,7 @@ const ZoomableImage = ({ src, alt, onClose }: { src: string; alt: string; onClos
 };
 
 // Componente individual de Tarjeta para manejar el estado de los pallets por producto
-const ProductCard = ({ item, onZoom }: { item: Product36Item, onZoom: (img: string) => void }) => {
+const ProductCard = ({ item, onZoom }: { item: CeramicProduct36, onZoom: (img: string) => void }) => {
   const [pallets, setPallets] = useState<number | "">(1);
 
   const handlePalletChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +84,10 @@ const ProductCard = ({ item, onZoom }: { item: Product36Item, onZoom: (img: stri
       
       <div className="p-5 flex-1 flex flex-col">
         <div className="mb-4">
-          <p className="text-xs font-semibold text-cyan-600 uppercase tracking-wider">{item.family}</p>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-cyan-600 uppercase tracking-wider">{item.line}</span>
+            <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">{item.finish}</span>
+          </div>
           <h3 className="text-lg font-bold text-slate-900 mt-1">{item.name}</h3>
         </div>
 
@@ -151,18 +154,18 @@ const ProductCard = ({ item, onZoom }: { item: Product36Item, onZoom: (img: stri
 };
 
 export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
-  const [selectedFamily, setSelectedFamily] = useState<string>('Todas');
+  const [selectedFinish, setSelectedFinish] = useState<string>('Todas');
   const [search, setSearch] = useState<string>('');
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
-  const families = ['Todas', ...Array.from(new Set(products36.map(item => item.family)))];
+  const finishes = ['Todas', 'Brillante', 'Mate', 'Colonial'];
 
-  const filteredProducts = products36
+  const filteredProducts = products36x36
     .filter(item => item.isVisible !== false)
     .filter(item => {
-      const matchesFamily = selectedFamily === 'Todas' || item.family === selectedFamily;
-      const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase());
-      return matchesFamily && matchesSearch;
+      const matchesFinish = selectedFinish === 'Todas' || item.finish === selectedFinish;
+      const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase()) || item.line.toLowerCase().includes(search.toLowerCase());
+      return matchesFinish && matchesSearch;
     });
 
   return (
@@ -185,17 +188,17 @@ export const Catalog36Detail: React.FC<Catalog36DetailProps> = ({ onBack }) => {
         <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-8">
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
             <div className="flex flex-wrap gap-2">
-              {families.map(family => (
+              {finishes.map(finish => (
                 <button
-                  key={family}
-                  onClick={() => setSelectedFamily(family)}
+                  key={finish}
+                  onClick={() => setSelectedFinish(finish)}
                   className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all cursor-pointer ${
-                    selectedFamily === family 
+                    selectedFinish === finish 
                       ? 'bg-gradient-to-r from-[#00b4d8] to-[#00a86b] text-white shadow-sm' 
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
-                  {family}
+                  {finish === 'Todas' ? 'Todas las terminaciones' : finish}
                 </button>
               ))}
             </div>
