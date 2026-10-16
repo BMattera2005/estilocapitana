@@ -109,8 +109,8 @@ const ProductCard43: React.FC<{ item: any; onZoom: (img: string) => void }> = ({
   return (
     <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm flex flex-col justify-between h-full hover:shadow-md transition-all duration-200">
       <div>
-        {/* Imagen de alto fijo: todas las tarjetas quedan iguales */}
-        <div className="w-full h-56 bg-slate-100 relative overflow-hidden group cursor-zoom-in" onClick={() => onZoom(item.image)}>
+        {/* Imagen 16:9 igual que Láminas: todas las tarjetas quedan iguales */}
+        <div className="w-full aspect-video bg-slate-100 relative overflow-hidden group cursor-zoom-in" onClick={() => onZoom(item.image)}>
           <img
             src={item.image}
             alt={item.name}
