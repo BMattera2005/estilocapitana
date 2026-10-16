@@ -1,12 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FileText } from "lucide-react";
-import { useState } from "react";
+import { Award, FileText, MessageCircle } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Catalog36Detail } from "../components/Catalog36Detail";
 import { Catalog43Detail } from "../components/Catalog43Detail";
 import { CatalogFullBodyDetail } from "../components/CatalogFullBodyDetail";
 import { CatalogHabitatPorcelanatoDetail } from "../components/CatalogHabitatPorcelanatoDetail";
 import { CatalogLaminasDetail } from "../components/CatalogLaminasDetail";
+import { CatalogHabitat60x120Detail } from "../components/CatalogHabitat60x120Detail";
+import { CatalogViguetasDetail } from "../components/CatalogViguetasDetail";
+import { CatalogEpsDetail } from "../components/CatalogEpsDetail";
 
 import { Button } from "@/components/ui/button";
 import { routeMeta } from "@/config/seo";
@@ -48,6 +51,7 @@ export const Route = createFileRoute("/catalogo")({
 });
 
 function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect?: () => void }) {
+    const href = catalog.fileUrl;
   const whatsappUrl = buildWhatsAppUrl(
     `Hola, Estilo Capitana quisiera consultar stock y cotización de la colección ${catalog.title}.`,
   );
