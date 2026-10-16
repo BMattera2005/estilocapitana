@@ -11,6 +11,7 @@ export interface EpsProduct {
   description: string;
   image: string;
   isVisible?: boolean;
+  mainApplications?: string; // Aplicaciones principales (texto breve para la tarjeta)
 }
 
 export const productsEps: EpsProduct[] = [
