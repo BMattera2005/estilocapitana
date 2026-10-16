@@ -129,44 +129,44 @@ function CatalogCard({ catalog, onSelect }: { catalog: OfficialCatalog; onSelect
           <p className="mt-4 text-sm font-normal leading-6 text-muted-foreground">{catalog.description}</p>
         </div>
 
-      <div className="mt-auto pt-6 grid gap-2">
-  {isInteractive && onSelect ? (
-    <button type="button" onClick={onSelect} className={primaryActionClass}>
-      Ver modelos en pantalla
-    </button>
-  ) : (
-    <a href={catalog.fileUrl} target="_blank" rel="noopener noreferrer" className={primaryActionClass}>
-      Ver / Descargar Catálogo
-    </a>
-  )}
-
-  {catalog.certificateUrl ? (
-    <a
-      href={catalog.certificateUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-border-strong bg-background px-4 py-2 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-    >
-      Ver Certificado Adjunto
-    </a>
-  ) : null}
-
-  <a 
-    href={catalog.fileUrl} 
-    download={catalog.downloadName || "Habitat MA Coleccion 2026.pdf"}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-border bg-surface px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-accent cursor-pointer"
-  >
-    Descargar Catálogo Completo (PDF)
-  </a>
-</div>
+            <div className="mt-auto pt-6 grid gap-2">
+          {isInteractive && onSelect ? (
+          <button type="button" onClick={onSelect} className={primaryActionClass}>
+            Ver modelos en pantalla
+          </button>
+        ) : (
+          <a href={catalog.fileUrl} target="_blank" rel="noopener noreferrer" className={primaryActionClass}>
+            Ver / Descargar Catálogo
+          </a>
+        )}
+      
+        {catalog.certificateUrl ? (
           <a
+            href={catalog.certificateUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-border-strong bg-background px-4 py-2 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            Ver Certificado Adjunto
+            </a>
+        ) : null}
+
+        <a 
+            href={catalog.fileUrl} 
+              download={catalog.downloadName || "Habitat MA Coleccion 2026.pdf"}
+               target="_blank"
+                rel="noopener noreferrer"
+                  className="inline-flex min-h-11 w-full items-center justify-center rounded-md border border-border bg-surface px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-accent cursor-pointer"
+                    >
+                      Descargar Catálogo Completo (PDF)
+                  </a>
+              </div>
+              <a
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-1 inline-flex min-h-10 w-full items-center justify-center rounded-md border border-border bg-surface px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-accent cursor-pointer"
-          >
+              >
             Consultar por WhatsApp
           </a>
         </div>
